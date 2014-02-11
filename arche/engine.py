@@ -21,7 +21,8 @@ class Game(object):
     def __init__(self, width, height, fullscreen=False):
         log.info("initializing game engine")
 
-        exec(open("config/engine.cfg").read())
+        if path.exists("config/engine.cfg"):
+            exec(open("config/engine.cfg").read())
         log.debug("Game.limitFramerate = %d"%(self.limitFramerate))
 
         self.width = width

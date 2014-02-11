@@ -3,13 +3,15 @@ import traceback
 import logging
 from logging import *
 import sys
+from os import path
 
 formatLogging = "%(lineno)4d | %(asctime)s | %(levelname)8s | %(name)s |: %(message)s"
 levelGameConsole = INFO
 levelSystemConsole = INFO
 levelLogFile = INFO
 
-exec(open("config/debug.cfg").read())
+if path.exists("config/debug.cfg"):
+    exec(open("config/debug.cfg").read())
 
 alog = logging.getLogger("R")
 alog.setLevel(DEBUG)

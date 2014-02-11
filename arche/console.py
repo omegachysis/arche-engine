@@ -183,7 +183,8 @@ class GameConsole(object):
         
     def resetConfiguration(self):
         """ Load default console configuration. """
-        exec(open("config/console.cfg", 'r').read())
+        if path.exists("config/console.cfg"):
+            exec(open("config/console.cfg", 'r').read())
 
     def blacklistSource(self, source):
         """ Prevent a logging source from logging to the console. """
