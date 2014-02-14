@@ -7,6 +7,8 @@ import pygame.freetype
 import traceback
 import logging
 
+from os import path
+
 from .motion import action
 
 from . import debug

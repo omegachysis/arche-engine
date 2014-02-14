@@ -4,6 +4,8 @@ import logging
 import traceback
 import sys
 
+from os import path
+
 from pygame.locals import *
 
 log = logging.getLogger("R.Console")
