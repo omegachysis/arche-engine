@@ -1,5 +1,7 @@
 *.py[cod]
 
+desktop.ini
+
 # Error log
 error.log
 
