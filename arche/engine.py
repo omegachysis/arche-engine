@@ -126,6 +126,9 @@ class Application(object):
 
         self.addLayer("default")
 
+    def start(self):
+        self.game.startApp(self)
+
     def getLayerlevel(self, layer):
         return self._layers.index(layer)
 

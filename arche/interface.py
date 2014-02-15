@@ -3,8 +3,8 @@ import pygame
 from pygame.locals import *
 import logging
 
-from . import Engine
-from . import Sprite
+from . import engine
+from . import sprite
 
 log = logging.getLogger("R.Interface")
 
@@ -47,7 +47,7 @@ def loadButtonImageGroup(prefix, suffix, group=("Reset","Hover","Press"),
                 pygame.image.load(prefix.group[1]+suffix).convert(),
                 pygame.image.load(prefix+group[2].suffix).convert())
 
-class Button(Sprite.Sprite):
+class Button(sprite.Sprite):
     STATE_RESET = 0
     STATE_HOVER = 1
     STATE_PRESS = 2
@@ -83,8 +83,8 @@ class Button(Sprite.Sprite):
         super(Button, self).setY(y)
         if self.text:
             self.text.y = self.y + self.text._parentedY
-    x = property(Sprite.Sprite.getX, setX)
-    y = property(Sprite.Sprite.getY, setY)
+    x = property(sprite.Sprite.getX, setX)
+    y = property(sprite.Sprite.getY, setY)
 
     def update(self, dt):
         pass
