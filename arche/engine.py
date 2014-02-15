@@ -116,7 +116,7 @@ class Application(object):
         self.layers = {}
         self.registrar = {}
 
-        log.info("initializing application")
+        log.info("initializing application " + repr(self))
         
         self.width, self.height = Application.canvas.get_size()
         self.backgroundsurface = None
