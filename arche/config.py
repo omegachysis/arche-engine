@@ -28,7 +28,7 @@ levelGameConsole =	 INFO
 levelSystemConsole =	 DEBUG
 levelLogFile =		 DEBUG
 
-formatLogging = "%(lineno)4d | %(levelname)8s | %(name)-15s |: %(message)s"
+formatLogging = "%(levelname)8s | %(lineno)4d | %(name)-15s |: %(message)s"
 
 """
 

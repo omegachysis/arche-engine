@@ -1,12 +1,12 @@
 
-from Arche.Motion.Action import Action
+from arche.motion.action import Action
 
 import logging
 
 log = logging.getLogger("R.Engine.Motion")
 
 class ChangeColor(Action):
-    name = "anim.changecolor
+    name = "anim.changecolor"
     def __init__(self, sprite, time):
         self.time = time
         self.b = sprite.color

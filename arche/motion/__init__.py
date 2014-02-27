@@ -16,5 +16,14 @@ def looped(action, times):
     action.loop = times
     return action
 
+from . import actin
+from . import actout
+from . import actanim
+from . import action
+
+__all__ = [
+    "actanim", "actin", "action", "actout",
+    ]
+
 if __name__ == "__main__":
     pass

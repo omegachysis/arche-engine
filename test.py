@@ -4,6 +4,7 @@ from arche import debug
 from arche import engine
 from arche import sprite
 from arche import interface
+from arche import motion
 
 log = debug.log("main")
 
@@ -52,6 +53,8 @@ class StartScreen(engine.Application):
         self.beginButton.x = self.game.xprop(.50)
         self.beginButton.y = self.game.yprop(.50)
         self.addSprite(self.beginButton)
+
+        motion.actin.Fade(self.beginButton, 4.0, 255)
         
     def nextScreen(self):
         nextApp = NextScreen()

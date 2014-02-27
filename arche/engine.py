@@ -15,7 +15,6 @@ from . import debug
 #import Interface
 from . import console
 from . import sprite
-
 from . import config
 
 log = logging.getLogger("R.Engine")

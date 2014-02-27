@@ -6,6 +6,7 @@ from pygame import transform
 import pygame.freetype
 import traceback
 import logging
+from .motion.action import Action
 
 log = logging.getLogger("R.Engine.Sprite")
 

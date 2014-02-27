@@ -1,5 +1,5 @@
 
-from Arche.Motion.Action import Action
+from arche.motion.action import Action
 
 import logging
 
