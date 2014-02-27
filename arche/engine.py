@@ -16,6 +16,8 @@ from . import debug
 from . import console
 from . import sprite
 
+from . import config
+
 log = logging.getLogger("R.Engine")
 
 class Game(object):
@@ -23,8 +25,7 @@ class Game(object):
     def __init__(self, width, height, fullscreen=False):
         log.info("initializing game engine")
 
-        if path.exists("config/engine.cfg"):
-            exec(open("config/engine.cfg").read())
+        exec(config.loadConfiguration("engine.cfg").read())
         log.debug("Game.limitFramerate = %d"%(self.limitFramerate))
 
         self.width = width

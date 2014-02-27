@@ -5,13 +5,14 @@ from logging import *
 import sys
 from os import path
 
+from . import config
+
 formatLogging = "%(lineno)4d | %(asctime)s | %(levelname)8s | %(name)s |: %(message)s"
 levelGameConsole = INFO
 levelSystemConsole = INFO
 levelLogFile = INFO
 
-if path.exists("config/debug.cfg"):
-    exec(open("config/debug.cfg").read())
+exec(config.loadConfiguration("debug.cfg").read())
 
 alog = logging.getLogger("R")
 alog.setLevel(DEBUG)

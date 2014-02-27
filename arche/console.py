@@ -6,6 +6,8 @@ import sys
 
 from os import path
 
+from . import config
+
 from pygame.locals import *
 
 log = logging.getLogger("R.Console")
@@ -185,8 +187,7 @@ class GameConsole(object):
         
     def resetConfiguration(self):
         """ Load default console configuration. """
-        if path.exists("config/console.cfg"):
-            exec(open("config/console.cfg", 'r').read())
+        exec(config.loadConfiguration("console.cfg").read())
 
     def blacklistSource(self, source):
         """ Prevent a logging source from logging to the console. """
