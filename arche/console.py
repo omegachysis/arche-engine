@@ -7,6 +7,7 @@ import sys
 from os import path
 
 from . import config
+from . import compat
 
 from pygame.locals import *
 
@@ -23,8 +24,7 @@ class DialogEntry(object):
         self._dialogRect.centerx = game.width / 2
         self._dialogRect.centery = game.height / 2
 
-        self.font = pygame.freetype.Font("font/consola.ttf",
-                                 ptsize = 12)
+        self.font = compat.freetypeFont("font/consola.ttf", 12)
 
         self._promptSurface, self._promptRect = \
                              self.font.render(prompt, (0,0,0,255))
@@ -164,8 +164,7 @@ class GameConsole(object):
         self._consoleSurface.set_alpha(200)
         self._consoleSurface = self._consoleSurface.convert_alpha()
 
-        self.font = pygame.freetype.Font("font/consola.ttf",
-                                         ptsize = 12)
+        self.font = compat.freetypeFont("font/consola.ttf", 12)
 
         self._renderEntry()
 

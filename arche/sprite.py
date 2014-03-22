@@ -2,11 +2,11 @@
 import pygame
 import sys
 from pygame.locals import *
-from pygame import transform
-import pygame.freetype
 import traceback
 import logging
 from .motion.action import Action
+
+from . import compat
 
 log = logging.getLogger("R.Engine.Sprite")
 
@@ -207,13 +207,14 @@ class Text(Sprite):
         super(Text, self).__init__(self._surface, x, y)
 
     def render(self):
-        self._surface, self._rect = self._font.render(self._value, self._color, None,
-                                                rotation = 0, ptsize = self._size)
+        self._surface, self._rect = compat.freetypeRender(
+            self._font, self._value, self._color, 
+            rotation = 0, size = self._size)
     
     def getFont(self):
         return self._fontFilename
     def setFont(self, font):
-        self._font = pygame.freetype.Font(font, ptsize = self._size)
+        self._font = compat.freetypeFont(font, self._size)
         self._fontFilename = font
         self.render()
     font = property(getFont, setFont)
