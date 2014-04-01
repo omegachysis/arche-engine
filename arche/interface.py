@@ -65,6 +65,7 @@ class Button(sprite.Sprite):
         if textObject:
             self.text._parentedX = self.text.x
             self.text._parentedY = self.text.y
+            self.text._parentedAlpha = self.text.alpha
             self.text.x = self.x + self.text._parentedX
             self.text.y = self.y + self.text._parentedY
 
@@ -74,6 +75,13 @@ class Button(sprite.Sprite):
         super(Button, self).draw(canvas)
         if self.text:
             self.text.draw(canvas)
+
+    def setAlpha(self, alpha):
+        super(Button, self).setAlpha(alpha)
+        if self.text:
+            self.text.alpha = alpha
+    def getAlpha(self):
+        return super(Button, self).getAlpha()
         
     def setX(self, x):
         super(Button, self).setX(x)

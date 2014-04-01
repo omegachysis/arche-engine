@@ -54,6 +54,15 @@ class StartScreen(engine.Application):
         self.beginButton.y = self.game.yprop(.50)
         self.addSprite(self.beginButton)
 
+        self.testText = sprite.Text("Hello World!",
+                                    x = self.game.xprop(.20),
+                                    y = self.game.yprop(.20),
+                                    color = (255,255,255),
+                                    size = 20,
+                                    font = "font/consola.ttf")
+        self.testText.alpha = 100
+        self.addSprite(self.testText)
+
         motion.actin.Fade(self.beginButton, 4.0, 255)
         
     def nextScreen(self):

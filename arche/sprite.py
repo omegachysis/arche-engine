@@ -197,6 +197,7 @@ class Text(Sprite):
         self._value = value
         self._color = color
         self._size = size
+        self._alpha = 255
 
         # setting prop values will auto render the text on each assignment
         self.font = font
@@ -210,6 +211,13 @@ class Text(Sprite):
         self._surface, self._rect = compat.freetypeRender(
             self._font, self._value, self._color, 
             rotation = 0, size = self._size)
+        self._surface.set_alpha(100)
+
+    def setAlpha(self, alpha):
+        self._surface.set_alpha(alpha)
+    def getAlpha(self):
+        return self._alpha
+    alpha = property(getAlpha, setAlpha)
     
     def getFont(self):
         return self._fontFilename
