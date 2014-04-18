@@ -60,10 +60,11 @@ class StartScreen(engine.Application):
                                     color = (255,255,255),
                                     size = 20,
                                     font = "font/consola.ttf")
-        self.testText.alpha = 100
         self.addSprite(self.testText)
 
-        motion.actin.Fade(self.beginButton, 4.0, 255)
+        self.testText.alpha = 120
+
+        #motion.actin.Fade(self.beginButton, 4.0, 255)
         
     def nextScreen(self):
         nextApp = NextScreen()

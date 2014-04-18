@@ -6,6 +6,8 @@ import traceback
 import logging
 from .motion.action import Action
 
+from pygame import transform
+
 from . import compat
 
 log = logging.getLogger("R.Engine.Sprite")
@@ -68,8 +70,8 @@ class Sprite(object):
     def getAlpha(self):
         return self._alpha
     def setAlpha(self, alpha):
-        self._surface.set_alpha(alpha)
         self._alpha = alpha
+        self.applyAlpha()
     alpha = property(getAlpha, setAlpha)
 
     def addMotion(self, motion):
@@ -103,16 +105,24 @@ class Sprite(object):
     
     def draw(self, canvas):
         if not self.hidden:
-            #-TEST
-            self._surface.set_alpha(30)
-            #
             canvas.blit(self._surface, self._rect)
+
+    def applyScale(self):
+        if hasattr(self, "_rect"):
+            self._surface = scaleImage(self._surface, self._rect.width, self._rect.height)
+    def applyAlpha(self):
+        if hasattr(self, "_alpha"):
+            self._surface.fill((255,255,255,self._alpha), None, BLEND_RGBA_MULT)
+        else:
+            log.warning("No _alpha attribute!")
+    def apply(self):
+        """ Apply any surface modifiers. """
+        self._surface = self.__surface__.convert_alpha()
+        self.applyScale()
+        self.applyAlpha()
             
     def destroy(self):
         self.app.removeSprite(self)
-
-    # ----------------------------------------------
-    # Setup class properties
     
     def getX(self):
         return self._x
@@ -155,30 +165,40 @@ class Sprite(object):
     def getHeight(self):
         return self._rect.height
     def setWidth(self, width):
-        self._surface = scaleImage(self.__surface__, width, self._rect.height)
         self._rect.width = width
+        applyScale()
     def setHeight(self, height):
-        self._surface = scaleImage(self.__surface__, self._rect.width, height)
         self._rect.height = height
+        applyScale()
     width = property(getWidth, setWidth)
     height= property(getHeight, setHeight)
+
+    def resetScale(self):
+        self.setWidth(self.__surface__.get_size()[0])
+        self.setHeight(self.__surface__.get_size()[1])
+    def resetAlpha(self):
+        self.setAlpha(255)
+    def reset(self):
+        self.resetScale()
+        self.resetAlpha()
 
     def getSurface(self):
         return self._surface
     def setSurface(self, surface):
         self.__surface__ = surface # __surface__ original, untouched surface object
-        self._surface = surface
-        if hasattr(self, "_rect"):
-            if self._rect == None:
-                self._rect = surface.get_rect()
-        else:
-            self._rect = surface.get_rect()
+        #self._surface = surface
+##        if hasattr(self, "_rect"):
+##            if self._rect == None:
+##                self._rect = surface.get_rect()
+##        else:
+##            self._rect = surface.get_rect()
             
-        if surface.get_width() - self._rect.width >= 1 or \
-           surface.get_height()- self._rect.height >= 1:
-            self.setWidth(self.getWidth())
-            self.setHeight(self.getHeight())
-        self._rect = self._surface.get_rect()
+##        if surface.get_width() - self._rect.width >= 1 or \
+##           surface.get_height()- self._rect.height >= 1:
+##            self.setWidth(self.getWidth())
+##            self.setHeight(self.getHeight())
+        self._rect = surface.get_rect()
+        self.apply()
         
     surface = property(getSurface, setSurface)
 
@@ -211,19 +231,9 @@ class Text(Sprite):
         super(Text, self).__init__(self._surface, x, y)
 
     def render(self):
-        self._surface, self._rect = compat.freetypeRender(
+        self.surface, self.rect = compat.freetypeRender(
             self._font, self._value, self._color, 
             rotation = 0, size = self._size)
-        self._surface = self._surface.convert_alpha()
-        #-TEST
-        self._surface.fill((255,255,255,50), None, BLEND_RGBA_MULT)
-        #
-
-    def setAlpha(self, alpha):
-        self._surface.set_alpha(alpha)
-    def getAlpha(self):
-        return self._alpha
-    alpha = property(getAlpha, setAlpha)
     
     def getFont(self):
         return self._fontFilename
