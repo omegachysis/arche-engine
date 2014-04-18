@@ -120,14 +120,13 @@ class Sprite(object):
         if hasattr(self, "_rect"):
             self._surface = scaleImage(self.__surface__, self._rect.width, self._rect.height)
 
-    def applyAlpha(self):
-        if hasattr(self, "_alpha"):
-            if not hasattr(self, "_color"):
-                self._color = (255,255,255)
-            self._surface.fill((self._color[0], self._color[1],
-                                self._color[2], self._alpha), None, BLEND_RGBA_MULT)
-        else:
-            log.debug("No _alpha attribute!")
+    def applyColor(self):
+        if not hasattr(self, "_alpha"):
+            self._alpha = 255
+        if not hasattr(self, "_color"):
+            self._color = (255,255,255)
+        self._surface.fill((self._color[0], self._color[1],
+                            self._color[2], self._alpha), None, BLEND_RGBA_MULT)
 
     def resetSurface(self):
         self._surface = self.__surface__.convert_alpha()
@@ -136,7 +135,7 @@ class Sprite(object):
         """ Apply any surface modifiers. """
         self.resetSurface()
         self.applyScale()
-        self.applyAlpha()
+        self.applyColor()
             
     def destroy(self):
         self.app.removeSprite(self)

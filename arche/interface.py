@@ -172,10 +172,13 @@ class SolidButton(Button):
         self.colorPress = colorPress
 
     def hover(self):
+        self.setAlpha(20)
         self.color = self.colorHover
     def press(self):
+        self.setAlpha(20)
         self.color = self.colorPress
     def reset(self):
+        self.setAlpha(20)
         self.color = self.colorReset
 
 class ImageButton(Button):
