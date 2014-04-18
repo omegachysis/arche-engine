@@ -103,6 +103,9 @@ class Sprite(object):
     
     def draw(self, canvas):
         if not self.hidden:
+            #-TEST
+            self._surface.set_alpha(30)
+            #
             canvas.blit(self._surface, self._rect)
             
     def destroy(self):
@@ -211,7 +214,10 @@ class Text(Sprite):
         self._surface, self._rect = compat.freetypeRender(
             self._font, self._value, self._color, 
             rotation = 0, size = self._size)
-        self._surface.set_alpha(100)
+        self._surface = self._surface.convert_alpha()
+        #-TEST
+        self._surface.fill((255,255,255,50), None, BLEND_RGBA_MULT)
+        #
 
     def setAlpha(self, alpha):
         self._surface.set_alpha(alpha)
