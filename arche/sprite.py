@@ -27,6 +27,7 @@ class Sprite(object):
         self.x = x
         self.y = y
 
+        self.color = (255,255,255)
         self.alpha = 255
 
         self.hidden = False
@@ -71,7 +72,7 @@ class Sprite(object):
         return self._alpha
     def setAlpha(self, alpha):
         self._alpha = alpha
-        self.applyAlpha()
+        self.apply()
     alpha = property(getAlpha, setAlpha)
 
     def addMotion(self, motion):
@@ -107,17 +108,33 @@ class Sprite(object):
         if not self.hidden:
             canvas.blit(self._surface, self._rect)
 
+    def getColor(self):
+        return self._color
+    def setColor(self, color):
+        self._color = color
+        self.apply()
+        
+    color = property(getColor, setColor)
+
     def applyScale(self):
         if hasattr(self, "_rect"):
-            self._surface = scaleImage(self._surface, self._rect.width, self._rect.height)
+            self._surface = scaleImage(self.__surface__, self._rect.width, self._rect.height)
+
     def applyAlpha(self):
         if hasattr(self, "_alpha"):
-            self._surface.fill((255,255,255,self._alpha), None, BLEND_RGBA_MULT)
+            if not hasattr(self, "_color"):
+                self._color = (255,255,255)
+            self._surface.fill((self._color[0], self._color[1],
+                                self._color[2], self._alpha), None, BLEND_RGBA_MULT)
         else:
-            log.warning("No _alpha attribute!")
+            log.debug("No _alpha attribute!")
+
+    def resetSurface(self):
+        self._surface = self.__surface__.convert_alpha()
+        
     def apply(self):
         """ Apply any surface modifiers. """
-        self._surface = self.__surface__.convert_alpha()
+        self.resetSurface()
         self.applyScale()
         self.applyAlpha()
             

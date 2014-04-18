@@ -159,22 +159,24 @@ class SolidButton(Button):
         """
         log.debug("intializing new solid button")
 
-        # Fill a rectangular and blank surface with the reset color
+        # Fill a rectangular and blank surface with plain white color
         self.surface = pygame.Surface((width, height))
-        self.surface.fill(colorReset)
+        self.surface.fill((255,255,255,255))
 
         super(SolidButton, self).__init__(self.surface, x, y, command, textObject)
+
+        self.color = colorReset
 
         self.colorReset = colorReset
         self.colorHover = colorHover
         self.colorPress = colorPress
 
     def hover(self):
-        self.surface.fill(self.colorHover)
+        self.color = self.colorHover
     def press(self):
-        self.surface.fill(self.colorPress)
+        self.color = self.colorPress
     def reset(self):
-        self.surface.fill(self.colorReset)
+        self.color = self.colorReset
 
 class ImageButton(Button):
     STATE_RESET = 0
