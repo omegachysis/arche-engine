@@ -53,7 +53,8 @@ class Button(sprite.Sprite):
     STATE_PRESS = 2
     def __init__(self, surface, x=0, y=0, command=None, textObject=None):
 
-        self.text = None # Changing coordinates in init would cause problems without defining this.
+        self.text = None # Changing coordinates in init would
+                         # cause problems without defining this.
         
         super(Button, self).__init__(surface, x, y)
 
@@ -172,13 +173,10 @@ class SolidButton(Button):
         self.colorPress = colorPress
 
     def hover(self):
-        self.setAlpha(20)
         self.color = self.colorHover
     def press(self):
-        self.setAlpha(20)
         self.color = self.colorPress
     def reset(self):
-        self.setAlpha(20)
         self.color = self.colorReset
 
 class ImageButton(Button):
