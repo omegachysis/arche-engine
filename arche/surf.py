@@ -36,15 +36,33 @@ class ImageSurface(object):
         self.refresh()
 
     def refresh(self):
+        """ Apply all modified image parameters. """
         self.applyScale()
 
+    def replace(self, surface, normalize=True):
+        """ Replace source surface with another. """
+        if not self._pixelAlpha:
+            self._surface = surface.convert()
+        else:
+            self._surface = surface.convert_alpha()
+        self.refresh()
+        if normalize:
+            self.normalize()
+
+    def normalize(self):
+        """ Reset scaling parameters to fit source surface. """
+        self.size = self._surface.get_size()
+
     def get(self):
+        """ Get the finished composite surface. """
         return self.composite
 
     def rect(self):
+        """ Get rectangle of compsite surface. """
         return self.composite.get_rect()
 
     def convert(self):
+        """ Return a converted version of the source surface. """
         if not self._pixelAlpha:
             return self._surface.convert()
         else:
