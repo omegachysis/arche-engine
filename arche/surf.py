@@ -8,14 +8,17 @@ log = logging.getLogger("R.Surface")
 def scaleImage(surface, width, height):
     """ Return surface scaled to fit width and height. """
     log.debug("scaled image %s" % repr(surface))
-    return transform.smoothscale(surface, (width, height))
+    return pygame.transform.smoothscale(surface, (width, height))
 
 class ImageSurface(object):
-    def __init__(self, pygameSurface, pixelAlpha=True):
+    def __init__(self, surface, pixelAlpha=True):
+        if isinstance(surface, str):
+            surface = pygame.image.load(surface)
+        
         if not pixelAlpha:
-            self._surface = pygameSurface.convert()
+            self._surface = surface.convert()
         else:
-            self._surface = pygameSurface.convert_alpha()
+            self._surface = surface.convert_alpha()
 
         self.composite = self._surface
         self._modScale = None
@@ -37,6 +40,9 @@ class ImageSurface(object):
 
     def get(self):
         return self.composite
+
+    def rect(self):
+        return self.composite.get_rect()
 
     def convert(self):
         if not self._pixelAlpha:
@@ -69,7 +75,7 @@ class ImageSurface(object):
             self._modColor.set_alpha(alpha)
             self.composite = self._modColor
         else:
-            self.applyColor(self._red, self._green, self._blue, self._alpha)
+            self.applyColor()
 
     def getWidth(self):
         return self._width
