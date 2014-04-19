@@ -22,6 +22,19 @@ class ImageSurface(object):
         self._modColor = None
         self._pixelAlpha = pixelAlpha
 
+        self._width  = self._surface.get_width()
+        self._height = self._surface.get_height()
+
+        self._red = 255
+        self._green = 255
+        self._blue = 255
+        self._alpha = 255
+
+        self.refresh()
+
+    def refresh(self):
+        self.applyScale()
+
     def convert(self):
         if not self._pixelAlpha:
             return self._surface.convert()
@@ -55,25 +68,62 @@ class ImageSurface(object):
         else:
             self.applyColor(self._red, self._green, self._blue, self._alpha)
 
-    def getWidth()
-    def setWidth()
+    def getWidth(self):
+        return self._width
+    def setWidth(self, width):
+        self._width = width
+        self.applyScale()
+    width = property(getWidth, setWidth)
 
-    def getHeight()
-    def setHeight()
+    def getHeight(self):
+        return self._height
+    def setHeight(self, height):
+        self._height = height
+        self.applyScale()
+    height = property(getHeight, setHeight)
 
-    def getSize()
-    def setSize()
+    def getSize(self):
+        return (self._width, self._height)
+    def setSize(self, size):
+        self._width = size[0]
+        self._height = size[1]
+        self.applyScale()
+    size = property(getSize, setSize)
 
-    def getRed()
-    def setRed()
+    def getRed(self):
+        return self._red
+    def setRed(self, red):
+        self._red = red
+        self.applyColor()
+    red = property(getRed, setRed)
 
-    def getGreen()
-    def setGreen()
+    def getGreen(self):
+        return self._green
+    def setGreen(self, green):
+        self._green = green
+        self.applyColor()
+    green = property(getGreen, setGreen)
 
-    def getBlue()
-    def setBlue()
+    def getBlue(self):
+        return self._blue
+    def setBlue(self, blue):
+        self._blue = blue
+        self.applyColor()
+    blue = property(getBlue, setBlue)
 
-    def getAlpha()
-    def setAlpha()
+    def getAlpha(self):
+        return self._alpha
+    def setAlpha(self, alpha):
+        self._alpha = alpha
+        self.applyAlpha()
+    alpha = property(getAlpha, setAlpha)
+
+    def getColor(self):
+        return (self._red, self._green, self._blue)
+    def setColor(self, color):
+        self._red = color[0]
+        self._green = color[1]
+        self._blue = color[2]
+    color = property(getColor, setColor)
         
             
