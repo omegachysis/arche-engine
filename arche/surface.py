@@ -35,6 +35,9 @@ class ImageSurface(object):
     def refresh(self):
         self.applyScale()
 
+    def get(self):
+        return self.composite
+
     def convert(self):
         if not self._pixelAlpha:
             return self._surface.convert()
@@ -124,6 +127,7 @@ class ImageSurface(object):
         self._red = color[0]
         self._green = color[1]
         self._blue = color[2]
+        self.applyColor()
     color = property(getColor, setColor)
         
             
