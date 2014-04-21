@@ -11,7 +11,7 @@ log = debug.log("main")
 def main():
     log.info("starting main")
 
-    game = engine.Game(1024, 768, False)
+    game = engine.Game(1280, 800, False)
     StartScreen().start()
     game.run()
 

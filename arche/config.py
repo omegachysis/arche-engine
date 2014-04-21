@@ -34,8 +34,11 @@ formatLogging = "%(levelname)8s | %(lineno)4d | %(name)-15s |: %(message)s"
 
 configDefaultEngine = """
 # Limit framerate to this number of frames per second.  Zero for no limit.  Lower numbers save energy.
-
 self.limitFramerate = 60
+
+# Store all ImageSurface objects in memory for profiling and debugging.
+#  (uncomment to enable)
+#surf.profilerRecordImageSurfaces()
 
 """
 

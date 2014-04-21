@@ -15,8 +15,11 @@ def createDefaultSurface():
     surface.fill((255,255,255,255))
     return surface
 
+def profilerRecordImageSurfaces():
+    log.info("PERFORMANCE PROFILER ENGAGED: RecordImageSurfaces")
+    ImageSurface.debugRecordSurfaces = True
 def profilerRevealPixelAlpha():
-    log.debug("PERFORMANCE PROFILER ENGAGED: RevealPixelAlpha")
+    log.info("PERFORMANCE PROFILER ENGAGED: RevealPixelAlpha")
     ImageSurface.debugRevealPixelAlpha = True
     for surf in ImageSurface.imageSurfaces:
         surf.refresh()

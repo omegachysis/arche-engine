@@ -16,6 +16,7 @@ from . import debug
 from . import console
 from . import sprite
 from . import config
+from . import surf
 
 log = logging.getLogger("R.Engine")
 
@@ -23,6 +24,8 @@ class Game(object):
     
     def __init__(self, width, height, fullscreen=False):
         log.info("initializing game engine")
+
+        self.limitFramerate = 0
 
         exec(config.loadConfiguration("engine.cfg").read())
         log.debug("Game.limitFramerate = %d"%(self.limitFramerate))
