@@ -27,6 +27,12 @@ class StartScreen(engine.Application):
         
         self.backgroundColor = (0,0,0)
 
+##        self.testSprite = sprite.Sprite("image/test.png", 100, 100)
+##        self.testSprite.width = 200
+##        self.testSprite.color = (255,100,100)
+##        self.testSprite.alpha = 100
+##        self.addSprite(self.testSprite)
+
         self.quitButton = interface.SolidButton(
             width = 50, height = 30,
             colorReset = (100,100,100),

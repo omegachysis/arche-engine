@@ -9,26 +9,23 @@ from .motion.action import Action
 from pygame import transform
 
 from . import compat
+from . import surf
 
 log = logging.getLogger("R.Engine.Sprite")
 
 class Sprite(object):
     game = None
-    def __init__(self, surface, x, y):
+    def __init__(self, surface, x, y, pixelAlpha=True):
         self.log = log # Compatibility reasons - refactoring
 
         # set up any private class variables.
         self._name = None
-        self._rect = None
-        self._surface = None
-        self.__surface__ = None
-        
-        self.surface = surface
+
+        self._pixelAlpha = pixelAlpha
+        self.surface = surf.ImageSurface(surface, pixelAlpha)
+
         self.x = x
         self.y = y
-
-        self.color = (255,255,255)
-        self.alpha = 255
 
         self.hidden = False
 
@@ -41,6 +38,25 @@ class Sprite(object):
         self.layer = None
 
         self.motions = []
+
+    def getSurface(self):
+        return self._surface
+    def setSurface(self, surface):
+        self._surface = surf.ImageSurface(surface, self._pixelAlpha)
+        self.rect = self._surface.rect()
+    surface = property(getSurface, setSurface)
+
+    def getAlpha(self):
+        return self._surface.alpha
+    def setAlpha(self, alpha):
+        self._surface.alpha = alpha
+    alpha = property(getAlpha, setAlpha)
+
+    def getColor(self):
+        return self._surface.color
+    def setColor(self, color):
+        self._surface.color = color
+    color = property(getColor, setColor)
 
     def getName(self):
         return self._name
@@ -67,13 +83,6 @@ class Sprite(object):
 
     def isActive(self):
         return (self.app != None)
-    
-    def getAlpha(self):
-        return self._alpha
-    def setAlpha(self, alpha):
-        self._alpha = alpha
-        self.apply()
-    alpha = property(getAlpha, setAlpha)
 
     def addMotion(self, motion):
         self.log.info("adding motion %s to sprite"%(motion))
@@ -106,36 +115,7 @@ class Sprite(object):
     
     def draw(self, canvas):
         if not self.hidden:
-            canvas.blit(self._surface, self._rect)
-
-    def getColor(self):
-        return self._color
-    def setColor(self, color):
-        self._color = color
-        self.apply()
-        
-    color = property(getColor, setColor)
-
-    def applyScale(self):
-        if hasattr(self, "_rect"):
-            self._surface = scaleImage(self.__surface__, self._rect.width, self._rect.height)
-
-    def applyColor(self):
-        if not hasattr(self, "_alpha"):
-            self._alpha = 255
-        if not hasattr(self, "_color"):
-            self._color = (255,255,255)
-        self._surface.fill((self._color[0], self._color[1],
-                            self._color[2], self._alpha), None, BLEND_RGBA_MULT)
-
-    def resetSurface(self):
-        self._surface = self.__surface__.convert_alpha()
-        
-    def apply(self):
-        """ Apply any surface modifiers. """
-        self.resetSurface()
-        self.applyScale()
-        self.applyColor()
+            canvas.blit(self._surface.get(), self.rect)
             
     def destroy(self):
         self.app.removeSprite(self)
@@ -143,33 +123,33 @@ class Sprite(object):
     def getX(self):
         return self._x
     def setX(self, x):
-        self._rect.centerx = x
+        self.rect.centerx = x
         self._x = x
     def getY(self):
         return self._y
     def setY(self, y):
-        self._rect.centery = y
+        self.rect.centery = y
         self._y = y
         
     x = property(getX, setX)
     y = property(getY, setY)
 
     def getLeft(self):
-        return self._x - self._rect.width / 2
+        return self._x - self.rect.width / 2
     def setLeft(self, left):
-        self._x = left + self._rect.width / 2
+        self._x = left + self.rect.width / 2
     def getRight(self):
-        return self._x + self._rect.width / 2
+        return self._x + self.rect.width / 2
     def setRight(self, right):
-        self._x = right - self._rect.width / 2
+        self._x = right - self.rect.width / 2
     def getTop(self):
-        return self._y - self._rect.height / 2
+        return self._y - self.rect.height / 2
     def setTop(self, top):
-        self._y = top + self._rect.height / 2
+        self._y = top + self.rect.height / 2
     def getBottom(self):
-        return self._y + self._rect.height / 2
+        return self._y + self.rect.height / 2
     def setBottom(self, bottom):
-        self._y = bottom - self._rect.height / 2
+        self._y = bottom - self.rect.height / 2
         
     left = property(getLeft, setLeft)
     right = property(getRight, setRight)
@@ -177,59 +157,24 @@ class Sprite(object):
     bottom = property(getBottom, setBottom)
 
     def getWidth(self):
-        return self._rect.width
+        return self.rect.width
     def getHeight(self):
-        return self._rect.height
+        return self.rect.height
     def setWidth(self, width):
-        self._rect.width = width
-        applyScale()
+        self.rect.width = width
+        self._surface.width = width
     def setHeight(self, height):
-        self._rect.height = height
-        applyScale()
+        self.rect.height = height
+        self._surface.height = height
     width = property(getWidth, setWidth)
     height= property(getHeight, setHeight)
-
-    def resetScale(self):
-        self.setWidth(self.__surface__.get_size()[0])
-        self.setHeight(self.__surface__.get_size()[1])
-    def resetAlpha(self):
-        self.setAlpha(255)
-    def reset(self):
-        self.resetScale()
-        self.resetAlpha()
-
-    def getSurface(self):
-        return self._surface
-    def setSurface(self, surface):
-        self.__surface__ = surface # __surface__ original, untouched surface object
-        #self._surface = surface
-##        if hasattr(self, "_rect"):
-##            if self._rect == None:
-##                self._rect = surface.get_rect()
-##        else:
-##            self._rect = surface.get_rect()
-            
-##        if surface.get_width() - self._rect.width >= 1 or \
-##           surface.get_height()- self._rect.height >= 1:
-##            self.setWidth(self.getWidth())
-##            self.setHeight(self.getHeight())
-        self._rect = surface.get_rect()
-        self.apply()
-        
-    surface = property(getSurface, setSurface)
-
-    def getRect(self):        
-        return self._rect
-    def setRect(self, rect):
-        self._rect = rect
-    rect = property(getRect, setRect)
-
-    #---------------------------------------------
 
 class Text(Sprite):
     game = None
     def __init__(self, value, x, y, color, size, font=None):
         log.debug("initializing text object of value '%s'"%(value))
+
+        super(Text, self).__init__(None, x, y)
         
         # manually set values to avoid problems in auto render
         self._font = font
@@ -244,12 +189,17 @@ class Text(Sprite):
         self.color = color
         self.size = size
 
-        super(Text, self).__init__(self._surface, x, y)
+        self.surface = surf.createDefaultSurface()
+        
+        self.render()
 
     def render(self):
-        self.surface, self.rect = compat.freetypeRender(
+        surface, rect = compat.freetypeRender(
             self._font, self._value, self._color, 
             rotation = 0, size = self._size)
+
+        self.surface.source = surface
+        self.rect = self.surface.rect()
     
     def getFont(self):
         return self._fontFilename
