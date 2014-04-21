@@ -104,23 +104,6 @@ def splitLine(string, overflow=70):
         w.append(string[i:i+overflow])
     return w
 
-##def lightenColor(color, value):
-##    """
-##    Brighten every color element value by 'value'
-##    """
-##    r, g, b, a = color
-##    r += value
-##    g += value
-##    b += value
-##    a = 255
-##    if r > 255:
-##        r = 255
-##    if g > 255:
-##        g = 255
-##    if b > 255:
-##        b = 255
-##    return (r,g,b,a)
-
 class Shell(object): pass
 
 class GameConsole(object):
