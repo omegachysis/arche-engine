@@ -51,12 +51,13 @@ class Button(sprite.Sprite):
     STATE_RESET = 0
     STATE_HOVER = 1
     STATE_PRESS = 2
-    def __init__(self, surface, x=0, y=0, command=None, textObject=None):
+    def __init__(self, surface, x=0, y=0, command=None, textObject=None,
+                 pixelAlpha=True):
 
         self.text = None # Changing coordinates in init would
                          # cause problems without defining this.
         
-        super(Button, self).__init__(surface, x, y)
+        super(Button, self).__init__(surface, x, y, pixelAlpha)
 
         self.surface = surface
 
@@ -83,6 +84,7 @@ class Button(sprite.Sprite):
             self.text.alpha = alpha
     def getAlpha(self):
         return super(Button, self).getAlpha()
+    alpha  = property(getAlpha, setAlpha)
         
     def setX(self, x):
         super(Button, self).setX(x)
@@ -160,11 +162,14 @@ class SolidButton(Button):
         """
         log.debug("intializing new solid button")
 
+        self._pixelAlpha = False
+
         # Fill a rectangular and blank surface with plain white color
         self.surface = pygame.Surface((width, height))
-        self.surface.fill((255,255,255,255))
+        self.surface.source.fill((255,255,255,255))
 
-        super(SolidButton, self).__init__(self.surface, x, y, command, textObject)
+        super(SolidButton, self).__init__(self.surface, x, y, command, textObject,
+                                          pixelAlpha = False)
 
         self.color = colorReset
 

@@ -121,6 +121,8 @@ def splitLine(string, overflow=70):
 ##        b = 255
 ##    return (r,g,b,a)
 
+class Shell(object): pass
+
 class GameConsole(object):
     MESSAGE_HEIGHT = 15 # spacing in pixels to give each message, including the message itself
     CONSOLE_PADDING = 50 # space in pixels from the bottom of the screen where messages start
@@ -135,6 +137,8 @@ class GameConsole(object):
         sys.stdout = ConsoleSTDOUT(self)
         
         rootLogger = logging.getLogger("R")
+
+        self.shell = Shell()
 
         self.fps = 0
         self._fpsUpdateWait = 0

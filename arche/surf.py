@@ -7,33 +7,76 @@ log = logging.getLogger("R.Surface")
 
 def scaleImage(surface, width, height):
     """ Return surface scaled to fit width and height. """
-    log.debug("scaled image %s" % repr(surface))
+    #log.debug("scaled image %s" % repr(surface))
     return pygame.transform.smoothscale(surface, (width, height))
 
+def createDefaultSurface():
+    surface = pygame.Surface((1,1))
+    surface.fill((255,255,255,255))
+    return surface
+
+def profilerRevealPixelAlpha():
+    log.debug("PERFORMANCE PROFILER ENGAGED: RevealPixelAlpha")
+    ImageSurface.debugRevealPixelAlpha = True
+    for surf in ImageSurface.imageSurfaces:
+        surf.refresh()
+    if not ImageSurface.debugRecordSurfaces:
+        log.warning("PERFORMANCE PROFILER FAILED: Not recording surfaces; "+\
+                    "inconsistancies may occur.")
+
 class ImageSurface(object):
+    imageSurfaces = []
+    debugRecordSurfaces = False
+    debugRevealPixelAlpha = False
+    if debugRevealPixelAlpha:
+        log.debug("PERFORMANCE PROFILER ENGAGED: RevealPixelAlpha")
     def __init__(self, surface, pixelAlpha=True):
+        if ImageSurface.debugRecordSurfaces:
+            ImageSurface.imageSurfaces.append(self)
+            
         if isinstance(surface, str):
             surface = pygame.image.load(surface)
+        elif isinstance(surface, ImageSurface):
+            surface = surface.source
         
-        if not pixelAlpha:
-            self._surface = surface.convert()
+        if surface:
+            if not pixelAlpha:
+                self._surface = surface.convert()
+            else:
+                self._surface = surface.convert_alpha()
         else:
-            self._surface = surface.convert_alpha()
+            self._surface = None
 
-        self.composite = self._surface
+        self.composite = None
         self._modScale = None
         self._modColor = None
+        
         self._pixelAlpha = pixelAlpha
 
-        self._width  = self._surface.get_width()
-        self._height = self._surface.get_height()
+        if self._surface:
+            self._width  = self._surface.get_width()
+            self._height = self._surface.get_height()
+        else:
+            self._width = 0
+            self._height = 0
 
         self._red = 255
         self._green = 255
         self._blue = 255
         self._alpha = 255
 
-        self.refresh()
+        if self._surface:
+            self.refresh()
+
+    def _revealPixelAlpha(self):
+        if self._pixelAlpha:
+            surface = pygame.Surface((self._width, self._height)).convert_alpha()
+            surface.fill((255,0,0,255))
+            return surface
+        else:
+            surface = pygame.Surface((self._width, self._height)).convert()
+            surface.fill((0,255,0,255))
+            return surface
 
     def refresh(self):
         """ Apply all modified image parameters. """
@@ -41,6 +84,8 @@ class ImageSurface(object):
 
     def replace(self, surface, normalize=True):
         """ Replace source surface with another. """
+        if ImageSurface.debugRevealPixelAlpha:
+            surface = self._revealPixelAlpha()
         if not self._pixelAlpha:
             self._surface = surface.convert()
         else:
@@ -59,7 +104,10 @@ class ImageSurface(object):
 
     def rect(self):
         """ Get rectangle of compsite surface. """
-        return self.composite.get_rect()
+        if self.composite:
+            return self.composite.get_rect()
+        else:
+            return pygame.Rect((0,0,1,1))
 
     def convert(self):
         """ Return a converted version of the source surface. """
@@ -71,29 +119,48 @@ class ImageSurface(object):
     def applyScale(self):
         # This is a slow pass.  Do this as little as possible.
         self._modScale = scaleImage(self._surface, self._width, self._height)
+        if ImageSurface.debugRevealPixelAlpha:
+            if self._pixelAlpha:
+                self._modScale.fill((255,0,0,255))
+            else:
+                self._modScale.fill((0,255,0,255))
         self.applyColor()
         self.applyAlpha()
 
     def applyColor(self):
         # This is a semi fast pass.  Use the scaling slow passed image.
-        if not self._pixelAlpha:
-            self._modColor = self._modScale.convert()
-            self._modColor.fill((self._red, self._green, self._blue),
-                                None, BLEND_RGB_MULT)
-            self.applyAlpha()
+        if not ImageSurface.debugRevealPixelAlpha:
+            if not self._pixelAlpha:
+                self._modColor = self._modScale.convert()
+                self._modColor.fill((self._red, self._green, self._blue),
+                                    None, BLEND_RGB_MULT)
+                self.applyAlpha()
+            else:
+                self._modColor = self._modScale.convert_alpha()
+                self._modColor.fill((self._red, self._green, self._blue, self._alpha),
+                                    None, BLEND_RGBA_MULT)
+                self.composite = self._modColor
         else:
-            self._modColor = self._modScale.convert_alpha()
-            self._modColor.fill((self._red, self._green, self._blue, self._alpha),
-                                None, BLEND_RGBA_MULT)
-            self.composite = self._modColor
+            self.composite = self._modScale
         
     def applyAlpha(self):
         # This is a fast pass.  Use the double passed image from scale and color.
-        if not self._pixelAlpha:
-            self._modColor.set_alpha(alpha)
-            self.composite = self._modColor
+        if not ImageSurface.debugRevealPixelAlpha:
+            if not self._pixelAlpha:
+                self._modColor.set_alpha(self._alpha)
+                self.composite = self._modColor
+            else:
+                self.applyColor()
         else:
-            self.applyColor()
+            self.composite = self._modScale
+
+    def getSource(self):
+        return self._surface
+    def setSource(self, source):
+        self.replace(source, True)
+        
+    source = property(getSource, setSource)
+    image = property(getSource, setSource)
 
     def getWidth(self):
         return self._width
