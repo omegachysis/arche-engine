@@ -69,9 +69,8 @@ class StartScreen(engine.Application):
         self.addSprite(self.testText)
 
         self.testText.alpha = 120
-        self.beginButton.alpha = 100
 
-        #motion.actin.Fade(self.beginButton, 4.0, 255)
+        motion.actin.Fade(self.beginButton, 4.0, 255)
         
     def nextScreen(self):
         nextApp = NextScreen()
