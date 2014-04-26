@@ -250,18 +250,18 @@ class GameConsole(object):
             else:
                 if command[0] == "#":
                     self = c
-                    if command[1] == "?":
-                        exec("print(" + command[2:] + ")")
+                    if command[-1] == "?":
+                        exec("print(" + command[1:-1] + ")")
                     else:
                         exec(command[1:])
                 elif command[0] == ">":
-                    if command[1] == "?":
-                        exec("print(c.shell." + command[2:] + ")")
+                    if command[-1] == "?":
+                        exec("print(c.shell." + command[1:-1] + ")")
                     else:
                         exec("c.shell." + command[1:])
                 else:
-                    if command[0] == "?":
-                        exec("print(" + command[1:] + ")")
+                    if command[-1] == "?":
+                        exec("print(" + command[:-1] + ")")
                     else:
                         exec(command)
         except:
