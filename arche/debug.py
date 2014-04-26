@@ -50,7 +50,7 @@ def log(name):
     return logging.getLogger(name)
 
 def test(main):
-    alog.info("starting tests")
+    alog.info("========================================================")
     criticalError = False
     try:
         main()
