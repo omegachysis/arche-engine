@@ -23,8 +23,17 @@ log = logging.getLogger("R.Engine")
 
 class Game(object):
     
-    def __init__(self, width, height, fullscreen=False, titleName="My Game", frame=True):
+    def __init__(self, width, height, fullscreen=False, titleName="My Game", frame=True,
+                 windowIcon="image/arche-engine.bmp", windowIconColorKey=False):
         log.info("initializing game engine")
+
+        if windowIcon:
+            if not windowIconColorKey:
+                pygame.display.set_icon(pygame.image.load(windowIcon))
+            else:
+                image = pygame.image.load(windowIcon)
+                image.set_colorkey(image.get_at((0,0)))
+                pygame.display.set_icon(image)
 
         self.limitFramerate = 0
 

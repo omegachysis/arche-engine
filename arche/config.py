@@ -25,7 +25,7 @@ configDefaultDebug = """
 #  CRITCAL
 
 levelGameConsole =	 INFO
-levelSystemConsole =	 DEBUG
+levelSystemConsole =	 INFO
 levelLogFile =		 DEBUG
 
 formatLogging = "%(levelname)8s | %(lineno)4d | %(name)-15s |: %(message)s"
@@ -39,7 +39,7 @@ standardErrorLog = True
 
 configDefaultEngine = """
 # Limit framerate to this number of frames per second.  Zero for no limit.  Lower numbers save energy.
-self.limitFramerate = 60
+self.limitFramerate = 0
 
 # Store all ImageSurface objects in memory for profiling and debugging.
 #  (uncomment to enable)
