@@ -4,6 +4,7 @@ import logging
 from logging import *
 import sys
 from os import path
+import os
 
 import time
 
@@ -21,21 +22,22 @@ alog.setLevel(DEBUG)
 
 console = logging.StreamHandler()
 console.setLevel(levelSystemConsole)
-##logfile = logging.FileHandler(logFile)
-##logfile.setLevel(levelLogFile)
+logfile = logging.FileHandler("error.log")
+logfile.setLevel(levelLogFile)
 
-logfileTimestamp = logging.FileHandler("log/{}.log".format(time.strftime("%y %j %H %M %S %A %b %d")))
+timestampName = "log/{}.log".format(time.strftime("%y %j %H %M %S %A %b %d"))
+logfileTimestamp = logging.FileHandler(timestampName)
 logfileTimestamp.setLevel(levelLogFile)
 
 formatter = logging.Formatter(formatLogging)
 
 console.setFormatter(formatter)
-##logfile.setFormatter(formatter)
+logfile.setFormatter(formatter)
 
 logfileTimestamp.setFormatter(formatter)
 
 alog.addHandler(console)
-##alog.addHandler(logfile)
+alog.addHandler(logfile)
 
 alog.addHandler(logfileTimestamp)
 
@@ -61,3 +63,7 @@ def test(main):
     except:
         criticalError = True
         alog.critical(traceback.format_exc())
+    logfileTimestamp.close()
+    if not criticalError:
+        if purgeNonCriticalLogs:
+            os.remove(timestampName)
