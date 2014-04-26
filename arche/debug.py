@@ -11,6 +11,7 @@ formatLogging = "%(lineno)4d | %(asctime)s | %(levelname)8s | %(name)s |: %(mess
 levelGameConsole = INFO
 levelSystemConsole = INFO
 levelLogFile = INFO
+logFile = "error.log"
 
 exec(config.loadConfiguration("debug.cfg").read())
 
@@ -19,7 +20,7 @@ alog.setLevel(DEBUG)
 
 console = logging.StreamHandler()
 console.setLevel(levelSystemConsole)
-logfile = logging.FileHandler("error.log")
+logfile = logging.FileHandler(logFile)
 logfile.setLevel(levelLogFile)
 
 formatter = logging.Formatter(formatLogging)
