@@ -8,7 +8,7 @@ def main():
     log.info("starting demo 005")
 
     game = arche.engine.Game(width = 1280, height = 800, fullscreen = False,
-                             titleName = "ArcheEngine Demo - Motion")
+                             titleName = "ArcheEngine Demo - Motion",)
     MotionDemo().start()
     
     game.run()

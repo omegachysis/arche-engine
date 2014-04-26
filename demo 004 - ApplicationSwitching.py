@@ -8,7 +8,7 @@ def main():
     log.info("starting demo 004")
 
     game = arche.engine.Game(width = 1280, height = 800, fullscreen = False,
-                             titleName = "ArcheEngine Demo - Application Switching")
+                titleName = "ArcheEngine Demo - Application Switching",)
 
     StartScreen().start()
     

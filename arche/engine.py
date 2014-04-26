@@ -23,7 +23,7 @@ log = logging.getLogger("R.Engine")
 
 class Game(object):
     
-    def __init__(self, width, height, fullscreen=False, titleName="My Game"):
+    def __init__(self, width, height, fullscreen=False, titleName="My Game", frame=True):
         log.info("initializing game engine")
 
         self.limitFramerate = 0
@@ -41,7 +41,10 @@ class Game(object):
         if fullscreen:
             self.canvas = pygame.display.set_mode((width, height), FULLSCREEN)
         else:
-            self.canvas = pygame.display.set_mode((width, height))
+            if frame:
+                self.canvas = pygame.display.set_mode((width, height))
+            else:
+                self.canvas = pygame.display.set_mode((width, height), NOFRAME)
         pygame.display.set_caption(titleName)
         self.clock = pygame.time.Clock()
 

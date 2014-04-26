@@ -14,5 +14,6 @@ class Disappear(Action):
         pass
 
     def update(self, dt):
+        self.sprite.alpha = 0
         self.sprite.hide()
         self.finish()    

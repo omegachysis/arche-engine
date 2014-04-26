@@ -8,7 +8,9 @@ def main():
     log.info("starting demo 003")
 
     game = arche.engine.Game(width = 1280, height = 800, fullscreen = False,
-                             titleName = "ArcheEngine Demo - Interface Example")
+                             titleName = "ArcheEngine Demo - Interface Example",
+                             frame = False, # don't show the os window stuff
+                             )
 
     InterfaceExample().start()
     
