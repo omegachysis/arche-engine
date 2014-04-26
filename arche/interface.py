@@ -56,6 +56,7 @@ class Button(sprite.Sprite):
 
         self.text = None # Changing coordinates in init would
                          # cause problems without defining this.
+        self._enabled = True
         
         super(Button, self).__init__(surface, x, y, pixelAlpha)
 
@@ -97,24 +98,39 @@ class Button(sprite.Sprite):
     x = property(sprite.Sprite.getX, setX)
     y = property(sprite.Sprite.getY, setY)
 
+    def getEnabled(self):
+        return self._enabled
+    def setEnabled(self, enabled):
+        if enabled:
+            self.enable()
+        else:
+            self.disable()
+    enabled = property(getEnabled, setEnabled)
+
+    def enable(self):
+        self._enabled = True
+    def disable(self):
+        self._enabled = False
+
     def update(self, dt):
         pass
 
     def tick(self, dt):
-        mousex, mousey = pygame.mouse.get_pos()
+        if self._enabled:
+            mousex, mousey = pygame.mouse.get_pos()
 
-        if mousex > self.left and mousex < self.right and \
-           mousey > self.top  and mousey < self.bottom:
-            if pygame.mouse.get_pressed()[0]:
-                self._press()
+            if mousex > self.left and mousex < self.right and \
+               mousey > self.top  and mousey < self.bottom:
+                if pygame.mouse.get_pressed()[0]:
+                    self._press()
+                else:
+                    self._hover()
             else:
-                self._hover()
-        else:
-            self._reset()
+                self._reset()
 
-        super(Button, self).tick(dt)
+            super(Button, self).tick(dt)
 
-        self.update(dt)
+            self.update(dt)
 
     def hover(self): pass
     def press(self): pass
@@ -156,6 +172,7 @@ class Button(sprite.Sprite):
 class SolidButton(Button):
     def __init__(self, x=0, y=0, width=50, height=50,
                  colorReset=(0,0,0), colorHover=(0,0,0), colorPress=(0,0,0),
+                 colorDisabled=(0,0,0),
                  command=None, textObject=None):
         """
         Create a solid colored button that runs 'command' when clicked.
@@ -176,6 +193,7 @@ class SolidButton(Button):
         self.colorReset = colorReset
         self.colorHover = colorHover
         self.colorPress = colorPress
+        self.colorDisabled = colorDisabled
 
     def hover(self):
         self.color = self.colorHover
@@ -183,6 +201,10 @@ class SolidButton(Button):
         self.color = self.colorPress
     def reset(self):
         self.color = self.colorReset
+    def disable(self):
+        self.color = self.colorDisabled
+    def enable(self):
+        self.refresh()
 
 class ImageButton(Button):
     STATE_RESET = 0
