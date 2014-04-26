@@ -22,8 +22,10 @@ alog.setLevel(DEBUG)
 
 console = logging.StreamHandler()
 console.setLevel(levelSystemConsole)
-logfile = logging.FileHandler("error.log")
-logfile.setLevel(levelLogFile)
+
+if standardErrorLog:
+    logfile = logging.FileHandler("error.log")
+    logfile.setLevel(levelLogFile)
 
 timestampName = "log/{}.log".format(time.strftime("%y %j %H %M %S %A %b %d"))
 logfileTimestamp = logging.FileHandler(timestampName)
@@ -32,12 +34,14 @@ logfileTimestamp.setLevel(levelLogFile)
 formatter = logging.Formatter(formatLogging)
 
 console.setFormatter(formatter)
-logfile.setFormatter(formatter)
+if standardErrorLog:
+    logfile.setFormatter(formatter)
 
 logfileTimestamp.setFormatter(formatter)
 
 alog.addHandler(console)
-alog.addHandler(logfile)
+if standardErrorLog:
+    alog.addHandler(logfile)
 
 alog.addHandler(logfileTimestamp)
 

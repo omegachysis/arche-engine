@@ -30,7 +30,11 @@ levelLogFile =		 DEBUG
 
 formatLogging = "%(levelname)8s | %(lineno)4d | %(name)-15s |: %(message)s"
 
+# Delete logs in the '/log' folder that are not critical error logs
 purgeNonCriticalLogs = True
+
+# Use the top level 'error.log' file.  Note that this log will not automatically recycle.
+standardErrorLog = False
 """
 
 configDefaultEngine = """
