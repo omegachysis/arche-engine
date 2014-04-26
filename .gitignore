@@ -3,7 +3,7 @@
 desktop.ini
 
 # Error log
-error.log
+*.log
 
 # C extensions
 *.so
