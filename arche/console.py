@@ -115,6 +115,9 @@ class GameConsole(object):
     TEXT_OVERFLOW = 80 # characters at 1280 px width
     LOGSOURCE_SPACING = 25 # characters to space after logging source values
     MESSAGE_BUFFER_LENGTH = 100 # messages to render before deleting
+
+    BACKSPACE_HOLDING_DELAY = 500
+    BACKSPACE_HOLDING_ERASE_DELAY = 40
     
     def __init__(self, game, level=logging.INFO):
         sys.stdout = ConsoleSTDOUT(self)
@@ -126,6 +129,11 @@ class GameConsole(object):
         self.fps = 0
         self._fpsUpdateWait = 0
         self._fpsUpdateDelay = 100
+
+        self._backspaceHolding = False
+        self._backspaceHoldingWait = self.BACKSPACE_HOLDING_DELAY
+        self._backspaceHoldingEraseWait = 0
+        self._backspaceHoldingErasing = False
 
         self.scrollOffset = 1
 
@@ -337,7 +345,8 @@ class GameConsole(object):
     def entryAdd(self, unicode):
         self.entry += unicode
         self._renderEntry()
-    def entryBackspace(self):
+    def entryBackspace(self, keyed=True):
+        if keyed: self._backspaceHolding = True
         self.entry = self.entry[:-1]
         self._renderEntry()
     def scrollUp(self, messages=1):
@@ -348,12 +357,30 @@ class GameConsole(object):
         """ Move one message downwards through the Console buffer. """
         self.scrollOffset += messages
         self._recalculateCoordinates()
+
+    def backspaceHoldingReset(self):
+        self._backspaceHolding = False
+        self._backspaceHoldingWait = self.BACKSPACE_HOLDING_DELAY
+        self._backspaceHoldingErasing = False
+        self._backspaceHoldingEraseWait = self.BACKSPACE_HOLDING_ERASE_DELAY
         
     def update(self, dt):
         self._fpsUpdateWait -= dt
         if self._fpsUpdateWait <= 0.0:
             self._renderFPS(int(self.game.clock.get_fps()))
             self._fpsUpdateWait = self._fpsUpdateDelay
+        if self._backspaceHolding:
+            if not self._backspaceHoldingErasing:
+                self._backspaceHoldingWait -= dt
+                if self._backspaceHoldingWait <= 0.0:
+                    self._backspaceHoldingWait = self.BACKSPACE_HOLDING_DELAY
+                    self._backspaceHoldingErasing = True
+            else:
+                self._backspaceHoldingEraseWait -= dt
+                if self._backspaceHoldingEraseWait <= 0.0:
+                    self.entryBackspace(keyed = False)
+                    self._backspaceHoldingEraseWait = self.BACKSPACE_HOLDING_ERASE_DELAY
+            
 
     def write(self, data):
         try:

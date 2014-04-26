@@ -33,3 +33,6 @@ class GameEngineHandler(Handler):
                     engine.gameConsole.scrollUp()
                 elif event.button == 5:
                     engine.gameConsole.scrollDown()
+        elif event.type == KEYUP:
+            if event.key == K_BACKSPACE:
+                engine.gameConsole.backspaceHoldingReset()
