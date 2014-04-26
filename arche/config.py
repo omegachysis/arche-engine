@@ -34,7 +34,7 @@ formatLogging = "%(levelname)8s | %(lineno)4d | %(name)-15s |: %(message)s"
 purgeNonCriticalLogs = True
 
 # Use the top level 'error.log' file.  Note that this log will not automatically recycle.
-standardErrorLog = False
+standardErrorLog = True
 """
 
 configDefaultEngine = """
