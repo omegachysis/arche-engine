@@ -85,7 +85,7 @@ class Sprite(object):
         return (self.app != None)
 
     def addMotion(self, motion):
-        self.log.info("adding motion %s to sprite"%(motion))
+        self.log.debug("adding motion %s to sprite"%(motion))
         self.motions.append(motion)
         motion.begin()
 
