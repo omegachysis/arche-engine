@@ -6,7 +6,7 @@ import arche
 log = arche.debug.log("main")
 
 # Log the successful loading of this file
-log.info("starting demo")
+log.info("starting demo 001")
 
 def main():
     # Start a default game engine
