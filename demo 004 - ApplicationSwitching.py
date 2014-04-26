@@ -35,6 +35,7 @@ class StartScreen(arche.engine.Application):
             )
         self.quitButton.right = self.game.width + 1
         self.quitButton.top = -1
+        self.quitButton.name = "quit button"
         self.addSprite(self.quitButton)
 
         self.nextButton = arche.interface.SolidButton(
@@ -49,6 +50,7 @@ class StartScreen(arche.engine.Application):
             )
         self.nextButton.x = self.game.xprop(.50)
         self.nextButton.y = self.game.yprop(.50)
+        self.nextButton.name = "next button"
         self.addSprite(self.nextButton)
 
         # Set up the next application but
@@ -84,6 +86,7 @@ class NextScreen(arche.engine.Application):
             )
         self.prevButton.x = self.game.xprop(.50)
         self.prevButton.y = self.game.yprop(.50)
+        self.prevButton.name = "previous button"
         self.addSprite(self.prevButton)
 
         self.firstApp = firstApp

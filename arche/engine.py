@@ -71,6 +71,11 @@ class Game(object):
     def postEvent(self, event):
         log.info("posted event - " + repr(event))
         pygame.event.post(pygame.event.Event(event))
+
+    def hideMouse(self):
+        pygame.mouse.set_visible(False)
+    def showMouse(self):
+        pygame.mouse.set_visible(True)
         
     def run(self):
         log.info("starting main loop")
@@ -227,6 +232,16 @@ class Application(object):
         while i > 0:
             i -= 1
             self._layers[i].draw(Application.canvas)
+
+    def getSprite(self, name):
+        return self.reg(name)
+    def getSprites(self):
+        sprites = []
+        for layer in self._layers:
+            for sprite in layer.sprites:
+                sprites.append(sprite)
+        return sprites
+    sprites = property(getSprites)
 
 class Layer(object):
     def __init__(self, name):

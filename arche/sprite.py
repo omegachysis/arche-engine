@@ -21,6 +21,8 @@ class Sprite(object):
         # set up any private class variables.
         self._name = None
 
+        self.pickable = True
+
         self._pixelAlpha = pixelAlpha
         self.surface = surf.ImageSurface(surface, pixelAlpha)
 

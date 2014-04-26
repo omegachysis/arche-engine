@@ -34,6 +34,7 @@ class MotionDemo(arche.engine.Application):
             )
         self.quitButton.right = self.game.width + 1
         self.quitButton.top = -1
+        self.quitButton.name = "quit button"
         self.addSprite(self.quitButton)
 
         self.fadingText = arche.sprite.Text("Hello World!",
@@ -47,6 +48,7 @@ class MotionDemo(arche.engine.Application):
         #  it will continue to update in the background process
         self.fadingText.hide()
 
+        self.fadingText.name = "fading text"
         self.addSprite(self.fadingText)
 
         self.appearButton = arche.interface.SolidButton(
@@ -66,6 +68,7 @@ class MotionDemo(arche.engine.Application):
             )
         self.appearButton.x = self.game.xprop(.30)
         self.appearButton.y = self.game.yprop(.70)
+        self.appearButton.name = "appear button"
         self.addSprite(self.appearButton)
         
         self.disappearButton = arche.interface.SolidButton(
@@ -86,8 +89,9 @@ class MotionDemo(arche.engine.Application):
         self.disappearButton.x = self.game.xprop(.70)
         self.disappearButton.y = self.game.yprop(.70)
 
-        self.disappearButton.disable()
-        
+        self.disappearButton.disable() # grey it out and make it useless
+
+        self.disappearButton.name = "disappear button"
         self.addSprite(self.disappearButton)
 
     def textAppear(self):

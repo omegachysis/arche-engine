@@ -13,5 +13,6 @@ from . import event
 from . import interface
 from . import sprite
 from . import surf
+from . import control
 
 from . import motion

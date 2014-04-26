@@ -29,7 +29,9 @@ class GameEngineHandler(Handler):
                     engine.gameConsole.entryAdd(event.unicode)
         elif event.type == MOUSEBUTTONDOWN:
             if not engine.gameConsole.hidden:
-                if event.button == 4:
+                if event.button == 2:
+                    engine.gameConsole.pickSprite()
+                elif event.button == 4:
                     engine.gameConsole.scrollUp()
                 elif event.button == 5:
                     engine.gameConsole.scrollDown()

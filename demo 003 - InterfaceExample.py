@@ -61,6 +61,9 @@ class InterfaceExample(arche.engine.Application):
         self.quitButton.right = self.game.width + 1
         self.quitButton.top = -1
 
+        # You never have to name sprites like this, but it's a good idea
+        self.quitButton.name = "quit button"
+
         # you must add sprites to the applications
         # with the 'addSprite' command before they appear!
         self.addSprite(self.quitButton)

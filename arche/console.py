@@ -126,6 +126,8 @@ class GameConsole(object):
 
         self.shell = Shell()
 
+        self.sprite = None
+
         self.fps = 0
         self._fpsUpdateWait = 0
         self._fpsUpdateDelay = 100
@@ -225,13 +227,22 @@ class GameConsole(object):
         See console command guide for shortcut ($)
         """
         c = self
+        game = self.game
+        app = self.game.app
+        shell = self.shell
+        s = shell
         self = self.env
         exec(open("script/" + script).read())
 
     def execute(self, c, command):
         """ Execute a console command with 'c' as the GameConsole instance. """
         c = self # we only use 'c' in the execute function for compatibility with other environments!
+        game = self.game
+        app = self.game.app
+        shell = self.shell
+        s = shell
         self = self.env
+        
         log.info("(execute) " + command)
         try:
             if command[0] == "$":
@@ -243,6 +254,11 @@ class GameConsole(object):
                         exec("print(" + command[2:] + ")")
                     else:
                         exec(command[1:])
+                elif command[0] == ">":
+                    if command[1] == "?":
+                        exec("print(c.shell." + command[2:] + ")")
+                    else:
+                        exec("c.shell." + command[1:])
                 else:
                     if command[0] == "?":
                         exec("print(" + command[1:] + ")")
@@ -381,7 +397,15 @@ class GameConsole(object):
                 if self._backspaceHoldingEraseWait <= 0.0:
                     self.entryBackspace(keyed = False)
                     self._backspaceHoldingEraseWait = self.BACKSPACE_HOLDING_ERASE_DELAY
-            
+
+    def pickSprite(self):
+        mousex, mousey = pygame.mouse.get_pos()
+        for sprite in self.game.app.sprites:
+            if sprite.left < mousex < sprite.right and \
+               sprite.top  < mousey < sprite.bottom and \
+               sprite.pickable:
+                self.sprite = sprite
+                log.info("-> \"{}\" {}".format(sprite.name, repr(sprite)))
 
     def write(self, data):
         try:
