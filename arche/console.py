@@ -355,8 +355,9 @@ class GameConsole(object):
         self._recalculateCoordinates()
     def scrollDown(self, messages=1):
         """ Move one message downwards through the Console buffer. """
-        self.scrollOffset += messages
-        self._recalculateCoordinates()
+        if self.scrollOffset < 1:
+            self.scrollOffset += messages
+            self._recalculateCoordinates()
 
     def backspaceHoldingReset(self):
         self._backspaceHolding = False
