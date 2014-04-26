@@ -102,15 +102,19 @@ class Button(sprite.Sprite):
         return self._enabled
     def setEnabled(self, enabled):
         if enabled:
-            self.enable()
+            self._enable()
         else:
-            self.disable()
+            self._disable()
     enabled = property(getEnabled, setEnabled)
 
     def enable(self):
+        self._enable()
         self._enabled = True
     def disable(self):
+        self._disable()
         self._enabled = False
+    def _enable(self): pass
+    def _disable(self): pass
 
     def update(self, dt):
         pass
@@ -201,9 +205,10 @@ class SolidButton(Button):
         self.color = self.colorPress
     def reset(self):
         self.color = self.colorReset
-    def disable(self):
+        
+    def _disable(self):
         self.color = self.colorDisabled
-    def enable(self):
+    def _enable(self):
         self.refresh()
 
 class ImageButton(Button):

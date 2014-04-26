@@ -55,6 +55,7 @@ class MotionDemo(arche.engine.Application):
             colorReset = (0,180,0),
             colorHover = (0,255,0),
             colorPress = (150,255,150),
+            colorDisabled = (120,120,120),
             command = self.textAppear,
             textObject = arche.sprite.Text(
                 value = "Appear",
@@ -73,6 +74,7 @@ class MotionDemo(arche.engine.Application):
             colorReset = (180,0,0),
             colorHover = (255,0,0),
             colorPress = (255,150,150),
+            colorDisabled = (120,120,120),
             command = self.textDisappear,
             textObject = arche.sprite.Text(
                 value = "Disappear",
@@ -83,6 +85,9 @@ class MotionDemo(arche.engine.Application):
             )
         self.disappearButton.x = self.game.xprop(.70)
         self.disappearButton.y = self.game.yprop(.70)
+
+        self.disappearButton.disable()
+        
         self.addSprite(self.disappearButton)
 
     def textAppear(self):
@@ -99,10 +104,16 @@ class MotionDemo(arche.engine.Application):
                                 
                                 time = 1.0,     # measured in seconds to fade in
                                 alpha = 255)    # fade to complete opacity
+
+        self.appearButton.disable()
+        self.disappearButton.enable()
         
     def textDisappear(self):
         # simply use a motion class to make the text disappear
         arche.motion.actout.Disappear(self.fadingText)
+
+        self.disappearButton.disable()
+        self.appearButton.enable()
         
 
 if __name__ == "__main__":

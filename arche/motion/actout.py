@@ -11,7 +11,7 @@ class Disappear(Action):
         super(Disappear, self).__init__(sprite)
 
     def begin(self):
-        self.sprite.unhide()
+        pass
 
     def update(self, dt):
         self.sprite.hide()
