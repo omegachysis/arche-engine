@@ -17,6 +17,7 @@ from . import console
 from . import sprite
 from . import config
 from . import surf
+from . import event
 
 log = logging.getLogger("R.Engine")
 
@@ -52,6 +53,8 @@ class Game(object):
         Application.game = self
         sprite.Sprite.game = self
 
+        self._handler = event.GameEngineHandler()
+
         self.app = None
 
     def xprop(self, proportion):
@@ -79,28 +82,7 @@ class Game(object):
                 self.gameConsole.draw(self.canvas)
 
             for event in pygame.event.get():
-                if event.type == QUIT:
-                    self.quit()
-                elif event.type == KEYDOWN:
-                    if event.key == K_ESCAPE:
-                        self.postEvent(QUIT)
-                    elif event.key == K_BACKQUOTE:
-                        self.gameConsole.toggleHidden()
-                    elif event.key == K_RETURN:
-                        if not self.gameConsole.hidden:
-                            self.gameConsole.executeEntry()
-                    elif event.key == K_BACKSPACE:
-                        if not self.gameConsole.hidden:
-                            self.gameConsole.entryBackspace()
-                    else:
-                        if not self.gameConsole.hidden:
-                            self.gameConsole.entryAdd(event.unicode)
-                elif event.type == MOUSEBUTTONDOWN:
-                    if not self.gameConsole.hidden:
-                        if event.button == 4:
-                            self.gameConsole.scrollUp()
-                        elif event.button == 5:
-                            self.gameConsole.scrollDown()
+                self._handler.run(event, self)
 
             pygame.display.update()
             self.clock.tick(self.limitFramerate)
