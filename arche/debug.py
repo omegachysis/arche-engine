@@ -15,6 +15,11 @@ from . import config
 ##levelSystemConsole = INFO
 ##levelLogFile = DEBUG
 
+if not os.path.exists("log"):
+    os.makedirs("log")
+if not os.path.exists("config"):
+    os.makedirs("config")
+
 exec(config.loadConfiguration("debug.cfg").read())
 
 alog = logging.getLogger("R")

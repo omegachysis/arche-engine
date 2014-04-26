@@ -57,7 +57,6 @@ configDefaults = {
 
 def createConfigurationDefault(filename):
     log.info("Creating configuration default: {}".format(filename))
-    
     try:
         file = open("config/{}".format(filename), "w")
     except:
