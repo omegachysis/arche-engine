@@ -66,8 +66,17 @@ class Game(object):
         sprite.Sprite.game = self
 
         self._handler = event.GameEngineHandler()
+        self.handlers = []
 
         self.app = None
+
+    def addHandler(self, eventHandler):
+        log.debug("ADDING HANDLER" + repr(eventHandler))
+        self.handlers.append(eventHandler)
+        log.debug("handlers: " + repr(self.handlers))
+    def removeHandler(self, eventHandler):
+        if eventHandler in self.handlers:
+            self.handlers.remove(eventHandler)
 
     def xprop(self, proportion):
         return int(self.width * proportion)
@@ -100,6 +109,8 @@ class Game(object):
 
             for event in pygame.event.get():
                 self._handler.run(event, self)
+                for handler in self.handlers:
+                    handler.run(event, self)
 
             pygame.display.update()
             self.clock.tick(self.limitFramerate)
@@ -130,6 +141,10 @@ class Application(object):
 
     def start(self):
         self.game.startApp(self)
+
+    def isActive(self):
+        return (self.game.app == self)
+    active = property(isActive)
 
     def getLayerlevel(self, layer):
         return self._layers.index(layer)
