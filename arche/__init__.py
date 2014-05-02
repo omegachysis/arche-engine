@@ -4,6 +4,8 @@ __all__ = [
     "sprite", "motion",
     ]
 
+from pygame import locals
+
 from . import compat
 from . import config
 from . import console

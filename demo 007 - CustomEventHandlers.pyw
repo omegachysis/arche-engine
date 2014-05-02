@@ -78,7 +78,7 @@ class SwitcherHandler(arche.event.Handler):
         self.screen2 = screen2
         
     def run(self, event, game):
-        if event.type == arche.locals.KEYDOWN:
+        if arche.control.isEventKeydown(event):
             if event.key == arche.locals.K_RIGHT:
                 if self.screen1.active:
                     self.screen1.nextScreen()
