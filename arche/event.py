@@ -1,15 +1,23 @@
 from pygame.locals import *
 
+import logging
+
+log = logging.getLogger("R.Event")
+
 class Handler(object):
     def __init__(self, command=None):
-        self.run = command
-        self._commands = [command]
+        if command:
+            self.run = command
+            self._commands = [command]
 
     def run(self, event, engine):
         pass
 
 class GameEngineHandler(Handler):
     def __init__(self): pass
+        super().__init__()
+        log.debug("game engine handler initialized")
+        
     def run(self, event, engine):
         if event.type == QUIT:
             engine.quit()
