@@ -71,6 +71,7 @@ class StartScreen(arche.engine.Application):
     def nextScreen(self):
         self.nextApp.start()
 
+# Create an event handler to allow us to switch with the arrow keys
 class SwitcherHandler(arche.event.Handler):
     def __init__(self, screen1, screen2):
         super().__init__()
@@ -78,6 +79,7 @@ class SwitcherHandler(arche.event.Handler):
         self.screen2 = screen2
         
     def run(self, event, game):
+        # Check that the event is a keydown event before checking keys
         if arche.control.isEventKeydown(event):
             if event.key == arche.locals.K_RIGHT:
                 if self.screen1.active:
