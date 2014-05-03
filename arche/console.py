@@ -86,6 +86,7 @@ class ConsoleSTDOUT(object):
     these calls to the GameConsole.
     """
     def __init__(self, gameConsole):
+        self.val = None
         self.gameConsole = gameConsole
     def write(self, data):
         stream = "INFO ; STDOUT ; " + data + "\n"
@@ -132,7 +133,7 @@ class GameConsole(object):
         self.fps = 0
         
         self._monitorUpdateWait = 0
-        self.monitorUpdateDelay = 100
+        self.trackerUpdateDelay = 100
 
         self.monitors = [("fps", "self.fps")]
         self._monitorBlits = []
@@ -182,8 +183,12 @@ class GameConsole(object):
         for blacklistedSource in GameConsole.blacklistedSources:
             self.blacklistSource(blacklistedSource)
 
-    def addTracker(self, name, source):
-        self.monitors.append((name, source))
+    def addTracker(self, name, source=None):
+        if source:
+            self.monitors.append((name, source))
+        else:
+            if name[0] == "@":
+                self.monitors.append((name, "self.sprite." + name[1:]))
     def removeTracker(self, name):
         for monitorBit in self.monitors:
             if name.lower() == monitorBit[0].lower():
@@ -244,6 +249,7 @@ class GameConsole(object):
         game = self.game
         app = self.game.app
         shell = self.shell
+        sprite = self.sprite
         s = shell
         self = self.env
         exec(open("script/" + script).read())
@@ -254,6 +260,7 @@ class GameConsole(object):
         game = self.game
         app = self.game.app
         shell = self.shell
+        sprite = self.sprite
         s = shell
         self = self.env
         
@@ -268,7 +275,7 @@ class GameConsole(object):
                         exec("print(" + command[1:-1] + ")")
                     else:
                         exec(command[1:])
-                elif command[0] == ">":
+                elif command[0] == ".":
                     if command[-1] == "?":
                         exec("print(c.shell." + command[1:-1] + ")")
                     else:
@@ -312,8 +319,21 @@ class GameConsole(object):
             self._monitorBlits.append((surface, rect))
 
     def _renderMonitor(self, name, source):
+        c = self
+        game = self.game
+        app = self.game.app
+        shell = self.shell
+        sprite = self.sprite
+        s = shell
+        self = self.env
         try:
-            surface, rect = self.font.render(name + " = " + repr(eval(source)), (255,255,255,255))
+            if name[0] != "@":
+                surface, rect = self.font.render(name + " = " + repr(eval(source)), (255,255,255,255))
+            else:
+                if self.sprite.app.active:
+                    surface, rect = self.font.render(name + " = " + repr(eval(source)), (150,255,150,255))
+                else:
+                    surface, rect = self.font.render(name + " = " + repr(eval(source)), (80,120,80,255))
         except:
             surface, rect = self.font.render(name + " = INVALID", (255,255,100,255))
         return surface, rect
@@ -410,7 +430,7 @@ class GameConsole(object):
         if self._monitorUpdateWait <= 0.0:
             self.fps = int(self.game.clock.get_fps())
             self._renderMonitors()
-            self._monitorUpdateWait = self.monitorUpdateDelay
+            self._monitorUpdateWait = self.trackerUpdateDelay
             
         if self._backspaceHolding:
             if not self._backspaceHoldingErasing:
