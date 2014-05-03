@@ -5,10 +5,10 @@ import arche
 log = arche.debug.log("main")
 
 def main():
-    log.info("starting demo 007")
+    log.info("starting demo 008")
 
     game = arche.engine.Game(width = 1280, height = 800, fullscreen = False,
-                titleName = "ArcheEngine Demo - Custom Event Handlers",)
+                titleName = "ArcheEngine Demo - Key Handler",)
 
     StartScreen().start()
     
@@ -65,28 +65,14 @@ class StartScreen(arche.engine.Application):
         
         self.nextApp = NextScreen(self, self.quitButton)
 
-        switcher = SwitcherHandler(self, self.nextApp)
-        self.game.addHandler(switcher)
+        # Add key reading events to the game key handler
+        #  The game key handler is built in and automatically enabled
+        self.game.keyHandler.addCommand(arche.locals.K_RIGHT, self.nextScreen)
+        self.game.keyHandler.addCommand(arche.locals.K_LEFT,  self.nextApp.prevScreen)
 
     def nextScreen(self):
-        self.nextApp.start()
-
-# Create an event handler to allow us to switch with the arrow keys
-class SwitcherHandler(arche.event.Handler):
-    def __init__(self, screen1, screen2):
-        super().__init__()
-        self.screen1 = screen1
-        self.screen2 = screen2
-        
-    def run(self, event, game):
-        # Check that the event is a keydown event before checking keys
-        if arche.control.isEventKeydown(event):
-            if event.key == arche.locals.K_RIGHT:
-                if self.screen1.active:
-                    self.screen1.nextScreen()
-            elif event.key == arche.locals.K_LEFT:
-                if self.screen2.active:
-                    self.screen2.prevScreen()
+        if self.active:
+            self.nextApp.start()
 
 class NextScreen(arche.engine.Application):
     def __init__(self, firstApp, quitButton):
@@ -125,7 +111,8 @@ class NextScreen(arche.engine.Application):
         self.firstApp = firstApp
 
     def prevScreen(self):
-        self.firstApp.start()
+        if self.active:
+            self.firstApp.start()
 
 if __name__ == "__main__":
     arche.debug.test(main)

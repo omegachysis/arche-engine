@@ -67,6 +67,7 @@ class Game(object):
 
         self._handler = event.GameEngineHandler()
         self.handlers = []
+        self.keyHandler = event.KeyHandler()
 
         self.app = None
 
@@ -109,6 +110,7 @@ class Game(object):
 
             for event in pygame.event.get():
                 self._handler.run(event, self)
+                self.keyHandler.run(event, self)
                 for handler in self.handlers:
                     handler.run(event, self)
 
