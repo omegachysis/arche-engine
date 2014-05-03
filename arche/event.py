@@ -13,36 +13,63 @@ class Handler(object):
     def run(self, event, engine):
         pass
 
+class KeyHandler(Handler):
+    def __init__(self):
+        super().__init__()
+
+        self.commands = {}
+
+    def addCommand(self, key, command, args=[]):
+        if key in self.commands:
+            if command in self.commands[key]:
+                pass # already added this command
+            else:
+                self.commands[key].append((command, args))
+        else:
+            self.commands[key] = [(command, args)]
+
+    def getCommands(self, key):
+        if key in self.commands:
+            return self.commands[key]
+        else:
+            return []
+
+    def run(self, event, game):
+        if event.type == KEYDOWN:
+            if event.key in self.commands:
+                for commandargs in self.commands[event.key]:
+                    commandargs[0](*commandargs[1])
+
 class GameEngineHandler(Handler):
-    def __init__(self): pass
+    def __init__(self):
         super().__init__()
         log.debug("game engine handler initialized")
         
-    def run(self, event, engine):
+    def run(self, event, game):
         if event.type == QUIT:
-            engine.quit()
+            game.quit()
         elif event.type == KEYDOWN:
             if event.key == K_ESCAPE:
-                engine.postEvent(QUIT)
+                game.postEvent(QUIT)
             elif event.key == K_BACKQUOTE:
-                engine.gameConsole.toggleHidden()
+                game.gameConsole.toggleHidden()
             elif event.key == K_RETURN:
                 if not engine.gameConsole.hidden:
-                    engine.gameConsole.executeEntry()
+                    game.gameConsole.executeEntry()
             elif event.key == K_BACKSPACE:
-                if not engine.gameConsole.hidden:
-                    engine.gameConsole.entryBackspace()
+                if not game.gameConsole.hidden:
+                    game.gameConsole.entryBackspace()
             else:
-                if not engine.gameConsole.hidden:
-                    engine.gameConsole.entryAdd(event.unicode)
+                if not game.gameConsole.hidden:
+                    game.gameConsole.entryAdd(event.unicode)
         elif event.type == MOUSEBUTTONDOWN:
-            if not engine.gameConsole.hidden:
+            if not game.gameConsole.hidden:
                 if event.button == 2:
-                    engine.gameConsole.pickSprite()
+                    game.gameConsole.pickSprite()
                 elif event.button == 4:
-                    engine.gameConsole.scrollUp()
+                    game.gameConsole.scrollUp()
                 elif event.button == 5:
-                    engine.gameConsole.scrollDown()
+                    game.gameConsole.scrollDown()
         elif event.type == KEYUP:
             if event.key == K_BACKSPACE:
-                engine.gameConsole.backspaceHoldingReset()
+                game.gameConsole.backspaceHoldingReset()
