@@ -54,7 +54,7 @@ class GameEngineHandler(Handler):
             elif event.key == K_BACKQUOTE:
                 game.gameConsole.toggleHidden()
             elif event.key == K_RETURN:
-                if not engine.gameConsole.hidden:
+                if not game.gameConsole.hidden:
                     game.gameConsole.executeEntry()
             elif event.key == K_BACKSPACE:
                 if not game.gameConsole.hidden:

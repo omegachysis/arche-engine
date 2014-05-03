@@ -111,6 +111,7 @@ class GameConsole(object):
     CONSOLE_PADDING = 50 # space in pixels from the bottom of the screen where messages start
     ENTRY_PADDING = 15 # space in pixels from the bottom of the screen where the entry box starts
     PADDING_LEFT = 15 # padding in pixels from the left of the screen to text.
+    LINE_LENGTH_MONITOR = 15 # pixels between each monitor in vertical position
     DARKEN_WIDTH = .80 # percent of screen width to darken from console background
     TEXT_OVERFLOW = 80 # characters at 1280 px width
     LOGSOURCE_SPACING = 25 # characters to space after logging source values
@@ -129,8 +130,12 @@ class GameConsole(object):
         self.sprite = None
 
         self.fps = 0
-        self._fpsUpdateWait = 0
-        self._fpsUpdateDelay = 100
+        
+        self._monitorUpdateWait = 0
+        self.monitorUpdateDelay = 100
+
+        self.monitors = [("fps", "self.fps")]
+        self._monitorBlits = []
 
         self._backspaceHolding = False
         self._backspaceHoldingWait = self.BACKSPACE_HOLDING_DELAY
@@ -176,6 +181,15 @@ class GameConsole(object):
 
         for blacklistedSource in GameConsole.blacklistedSources:
             self.blacklistSource(blacklistedSource)
+
+    def addTracker(self, name, source):
+        self.monitors.append((name, source))
+    def removeTracker(self, name):
+        for monitorBit in self.monitors:
+            if name.lower() == monitorBit[0].lower():
+                self.monitors.remove(monitorBit)
+    def resetTrackers(self):
+        self.monitors = [("fps", "self.fps")]
 
     def sprite(self, spriteName):
         """ Return sprite from application registry """
@@ -287,13 +301,22 @@ class GameConsole(object):
         self._entrySurface = surface
         self._entryRect = rect
 
-    def _renderFPS(self, fps):
-        surface, rect = self.font.render(str(fps), (255,255,255,255))
-        rect.left = GameConsole.PADDING_LEFT
-        rect.top = GameConsole.PADDING_LEFT
+    def _renderMonitors(self):
+        self._monitorBlits = []
+        i = -1
+        for monitor in self.monitors:
+            i += 1
+            surface, rect = self._renderMonitor(monitor[0], monitor[1])
+            rect.left = self.PADDING_LEFT
+            rect.top = self.PADDING_LEFT + self.LINE_LENGTH_MONITOR * i
+            self._monitorBlits.append((surface, rect))
 
-        self._fpsSurface = surface
-        self._fpsRect = rect
+    def _renderMonitor(self, name, source):
+        try:
+            surface, rect = self.font.render(name + " = " + repr(eval(source)), (255,255,255,255))
+        except:
+            surface, rect = self.font.render(name + " = INVALID", (255,255,100,255))
+        return surface, rect
 
     def renderMessage(self, stream):
         #log.debug("!@ rendering message stream: " + stream)
@@ -352,11 +375,12 @@ class GameConsole(object):
         canvas.blit(self._consoleSurface, (0,0))
         canvas.blit(self._entrySurface, self._entryRect)
         for message in self.messages:
-            if message[1].top > GameConsole.CONSOLE_PADDING and\
+            if message[1].top > GameConsole.CONSOLE_PADDING + self.LINE_LENGTH_MONITOR*len(self.monitors) and\
                message[1].bottom < self.game.height - GameConsole.CONSOLE_PADDING:
                 canvas.blit(message[0], message[1])
-        canvas.blit(self._fpsSurface, self._fpsRect)
-            
+                
+        for monitorBlit in self._monitorBlits:
+            canvas.blit(monitorBlit[0], monitorBlit[1])
 
     def entryAdd(self, unicode):
         self.entry += unicode
@@ -382,10 +406,12 @@ class GameConsole(object):
         self._backspaceHoldingEraseWait = self.BACKSPACE_HOLDING_ERASE_DELAY
         
     def update(self, dt):
-        self._fpsUpdateWait -= dt
-        if self._fpsUpdateWait <= 0.0:
-            self._renderFPS(int(self.game.clock.get_fps()))
-            self._fpsUpdateWait = self._fpsUpdateDelay
+        self._monitorUpdateWait -= dt
+        if self._monitorUpdateWait <= 0.0:
+            self.fps = int(self.game.clock.get_fps())
+            self._renderMonitors()
+            self._monitorUpdateWait = self.monitorUpdateDelay
+            
         if self._backspaceHolding:
             if not self._backspaceHoldingErasing:
                 self._backspaceHoldingWait -= dt
