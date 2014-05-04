@@ -135,7 +135,8 @@ class GameConsole(object):
         self._monitorUpdateWait = 0
         self.trackerUpdateDelay = 100
 
-        self.monitors = [("fps", "self.fps")]
+        self.monitors = [("fps", "self.fps"),
+                         ("sprite", "self.sprite")]
         self._monitorBlits = []
 
         self._backspaceHolding = False
@@ -189,6 +190,8 @@ class GameConsole(object):
         else:
             if name[0] == "@":
                 self.monitors.append((name, "self.sprite." + name[1:]))
+            else:
+                self.monitors.append((name, name))
     def removeTracker(self, name):
         for monitorBit in self.monitors:
             if name.lower() == monitorBit[0].lower():
@@ -451,7 +454,7 @@ class GameConsole(object):
                sprite.top  < mousey < sprite.bottom and \
                sprite.pickable:
                 self.sprite = sprite
-                log.info("-> \"{}\" {}".format(sprite.name, repr(sprite)))
+                log.info("-> {}".format(repr(sprite)))
 
     def write(self, data):
         try:

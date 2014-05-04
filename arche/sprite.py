@@ -37,12 +37,19 @@ class Sprite(object):
         self.dx = 0
         self.dy = 0
 
-        # App is a variable tracking the game application.
-        # It is assigned when the sprite is added to the draw list.
         self.app = None
         self.layer = None
 
         self.motions = []
+
+    def getActive(self):
+        return  (self in self.layer.sprites)
+    def setActive(self, active):
+        if not active:
+            self.destroy()
+        else:
+            self.layer.addSprite(self)
+    active = property(getActive, setActive)
 
     def getParent(self):
         return self._parent
@@ -50,6 +57,24 @@ class Sprite(object):
         self._parent = parent
         self._parent.addChild(self)
     parent = property(getParent, setParent)
+
+    def getChild(self, id=None):
+        if isinstance(id, str):
+            for child in self._children:
+                if child.name.lower() == name.lower():
+                    return child
+        elif isinstance(id, int):
+            return self._children[name]
+        else:
+            return None
+    def getChildren(self):
+        return self._children
+    children = property(getChildren)
+        
+    def __repr__(self):
+        return "sprite '{}' {}".format(self.name, super().__repr__())
+    def __contains__(self, item):
+        return (item in self._children)
 
     def _pprop(self, prop, default):
         if self._parent:
