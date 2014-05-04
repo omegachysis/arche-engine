@@ -73,8 +73,6 @@ class Sprite(object):
         
     def __repr__(self):
         return "sprite '{}' {}".format(self.name, super().__repr__())
-    def __contains__(self, item):
-        return (item in self._children)
 
     def _pprop(self, prop, default):
         if self._parent:
