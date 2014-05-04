@@ -21,6 +21,9 @@ class Sprite(object):
         # set up any private class variables.
         self._name = None
 
+        self._parent = None
+        self._children = []
+
         self.pickable = True
 
         self._pixelAlpha = pixelAlpha
@@ -40,6 +43,27 @@ class Sprite(object):
         self.layer = None
 
         self.motions = []
+
+    def getParent(self):
+        return self._parent
+    def setParent(self, parent):
+        self._parent = parent
+        self._parent.addChild(self)
+    parent = property(getParent, setParent)
+
+    def _pprop(self, prop, default):
+        if self._parent:
+            return getattr(self._parent, prop)
+        else:
+            return default
+
+    def addChild(self, child):
+        if child not in self._children:
+            self._children.append(child)
+            child._parent = self
+            child.x = child.x - self.x
+            child.y = child.y - self.y
+            child.alpha = child.alpha - self.alpha
 
     def getSurface(self):
         return self._surface
@@ -125,12 +149,12 @@ class Sprite(object):
     def getX(self):
         return self._x
     def setX(self, x):
-        self.rect.centerx = x
+        self.rect.centerx = x + self._pprop('x', 0)
         self._x = x
     def getY(self):
         return self._y
     def setY(self, y):
-        self.rect.centery = y
+        self.rect.centery = y + self._pprop('y', 0)
         self._y = y
         
     x = property(getX, setX)
@@ -139,19 +163,19 @@ class Sprite(object):
     def getLeft(self):
         return self._x - self.rect.width / 2
     def setLeft(self, left):
-        self._x = left + self.rect.width / 2
+        self.x = left + self.rect.width / 2
     def getRight(self):
         return self._x + self.rect.width / 2
     def setRight(self, right):
-        self._x = right - self.rect.width / 2
+        self.x = right - self.rect.width / 2
     def getTop(self):
         return self._y - self.rect.height / 2
     def setTop(self, top):
-        self._y = top + self.rect.height / 2
+        self.y = top + self.rect.height / 2
     def getBottom(self):
         return self._y + self.rect.height / 2
     def setBottom(self, bottom):
-        self._y = bottom - self.rect.height / 2
+        self.y = bottom - self.rect.height / 2
         
     left = property(getLeft, setLeft)
     right = property(getRight, setRight)
