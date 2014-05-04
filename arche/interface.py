@@ -58,7 +58,7 @@ class Button(sprite.Sprite):
                          # cause problems without defining this.
         self._enabled = True
         
-        super(Button, self).__init__(surface, x, y, pixelAlpha)
+        super(Button, self).__init__(surface, 0, 0, pixelAlpha)
 
         self.surface = surface
 
@@ -66,39 +66,11 @@ class Button(sprite.Sprite):
 
         self.text = textObject
         self.text.parent = self
-        
-##        if textObject:
-##            self.text._parentedX = self.text.x
-##            self.text._parentedY = self.text.y
-##            self.text._parentedAlpha = self.text.alpha
-##            self.text.x = self.x + self.text._parentedX
-##            self.text.y = self.y + self.text._parentedY
+
+        self.x = x
+        self.y = y
 
         self.command = command
-
-    def draw(self, canvas):
-        super(Button, self).draw(canvas)
-##        if self.text:
-##            self.text.draw(canvas)
-
-    def setAlpha(self, alpha):
-        super(Button, self).setAlpha(alpha)
-##        if self.text:
-##            self.text.alpha = alpha
-    def getAlpha(self):
-        return super(Button, self).getAlpha()
-    alpha  = property(getAlpha, setAlpha)
-        
-    def setX(self, x):
-        super(Button, self).setX(x)
-##        if self.text:
-##            self.text.x = self.x + self.text._parentedX
-    def setY(self, y):
-        super(Button, self).setY(y)
-##        if self.text:
-##            self.text.y = self.y + self.text._parentedY
-    x = property(sprite.Sprite.getX, setX)
-    y = property(sprite.Sprite.getY, setY)
 
     def getEnabled(self):
         return self._enabled

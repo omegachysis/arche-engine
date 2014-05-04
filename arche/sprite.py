@@ -11,7 +11,7 @@ from pygame import transform
 from . import compat
 from . import surf
 
-log = logging.getLogger("R.Engine.Sprite")
+log = logging.getLogger("R.Sprite")
 
 class Sprite(object):
     game = None
@@ -58,12 +58,18 @@ class Sprite(object):
             return default
 
     def addChild(self, child):
+        log.debug("Added child '%s' to parent '%s'" % (child, self))
         if child not in self._children:
+            log.debug(" ^--> Not in children, will add")
             self._children.append(child)
             child._parent = self
-            child.x = child.x - self.x
-            child.y = child.y - self.y
-            child.alpha = child.alpha
+            log.debug(" * child.x = {}".format(child.x))
+            log.debug(" * child.y = {}".format(child.y))
+            log.debug(" * parent.x = {}".format(self.x))
+            log.debug(" * parent.y = {}".format(self.y))
+##            child.x = child.x - self.x
+##            child.y = child.y - self.y
+##            child.alpha = child.alpha
 
     def getSurface(self):
         return self._surface

@@ -54,6 +54,8 @@ class MotionDemo(arche.engine.Application):
         self.appearButton = arche.interface.SolidButton(
             width = self.game.xprop(.30),
             height= self.game.yprop(.30),
+            x = self.game.xprop(.30),
+            y = self.game.yprop(.70),
             colorReset = (0,180,0),
             colorHover = (0,255,0),
             colorPress = (150,255,150),
@@ -66,14 +68,14 @@ class MotionDemo(arche.engine.Application):
                 size = self.game.xprop(.04),
                 font = "font/consola.ttf"),
             )
-        self.appearButton.x = self.game.xprop(.30)
-        self.appearButton.y = self.game.yprop(.70)
         self.appearButton.name = "appear button"
         self.addSprite(self.appearButton)
         
         self.disappearButton = arche.interface.SolidButton(
             width = self.game.xprop(.30),
             height= self.game.yprop(.30),
+            x = self.game.xprop(.70),
+            y = self.game.yprop(.70),
             colorReset = (180,0,0),
             colorHover = (255,0,0),
             colorPress = (255,150,150),
@@ -86,9 +88,7 @@ class MotionDemo(arche.engine.Application):
                 size = self.game.xprop(.04),
                 font = "font/consola.ttf"),
             )
-        self.disappearButton.x = self.game.xprop(.70)
-        self.disappearButton.y = self.game.yprop(.70)
-
+        
         self.disappearButton.disable() # grey it out and make it useless
 
         self.disappearButton.name = "disappear button"
