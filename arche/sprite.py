@@ -15,7 +15,7 @@ log = logging.getLogger("R.Sprite")
 
 class Sprite(object):
     game = None
-    def __init__(self, surface, x, y, pixelAlpha=True):
+    def __init__(self, surface, x=0, y=0, pixelAlpha=True, imageInstance=False):
         self.log = log # Compatibility reasons - refactoring
 
         # set up any private class variables.
@@ -27,7 +27,12 @@ class Sprite(object):
         self.pickable = True
 
         self._pixelAlpha = pixelAlpha
-        self.surface = surf.ImageSurface(surface, pixelAlpha)
+        
+        if imageInstance:
+            self._surface = surface
+            self.rect = self._surface.rect()
+        else:
+            self.surface = surf.ImageSurface(surface, pixelAlpha)
 
         self.x = x
         self.y = y
@@ -141,12 +146,12 @@ class Sprite(object):
         return (self.app != None)
 
     def addMotion(self, motion):
-        self.log.debug("adding motion %s to sprite"%(motion))
+        #self.log.debug("adding motion %s to sprite"%(motion))
         self.motions.append(motion)
         motion.begin()
 
     def removeMotion(self, motion):
-        self.log.debug("removing motion %s from sprite"%(motion))
+        #self.log.debug("removing motion %s from sprite"%(motion))
         if isinstance(motion, Action):
             motion.cancel()
             self.motions.remove(motion)
@@ -237,6 +242,44 @@ class Sprite(object):
         self._surface.height = height
     width = property(getWidth, setWidth)
     height= property(getHeight, setHeight)
+
+    def getSize(self):
+        return (self.rect.width, self.rect.height)
+    def setSize(self, size):
+        self.setWidth(size[0])
+        self.setHeight(size[1])
+    size = property(getSize, setSize)
+
+class Batch(object):
+    game = None
+    def __init__(self, sprites=[]):
+        self.sprites = sprites
+        self._process()
+    def _process(self):
+        self.rects = []
+        for sprite in self.sprites:
+            self.rects.append(sprite.rect)
+            
+    def addSprite(self, app, sprite, layer=0):
+        app.addSprite(sprite, layer)
+        self.sprites.append(sprite)
+        self.rects.append(sprite.rect)
+    def removeSprite(self, sprite):
+        if sprite in self.sprites:
+            self.sprites.remove(sprite)
+            self.rects.remove(sprite.rect)
+            
+    def refresh(self):
+        for sprite in self.sprites:
+            if sprite._destroyed:
+                self.removeSprite(sprite)
+                
+    def getCollisions(self, sprite):
+        indices = sprite.rect.collidelistall(self.rects)
+        sprites = []
+        for index in indices:
+            sprites.append(self.sprites[index])
+        return sprites
 
 class Text(Sprite):
     game = None

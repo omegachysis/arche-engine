@@ -60,6 +60,7 @@ class Game(object):
         log.debug("DEBUG.LEVELGAMECONSOLE = {}".format(debug.levelGameConsole))
 
         self.gameConsole = console.GameConsole(self, debug.levelGameConsole)
+        self.console = self.gameConsole
 
         Application.canvas = self.canvas
         Application.game = self
@@ -102,7 +103,7 @@ class Game(object):
             dt = self.clock.get_time()
             
             if self.app:
-                self.app.update(dt)
+                self.app.tick(dt)
                 self.app.draw()
             if not self.gameConsole.hidden:
                 self.gameConsole.update(dt)
@@ -158,8 +159,6 @@ class Application(object):
         self.layers[name] = layer
         self._layers.append(layer)
         layer.level = len(self.layers) - 1
-        # by default, new layers are created on top.
-        # smaller level values mean higher up (cannot be negative)
         layer.setLevel(level)
         
     def removeLayer(self, layer):
@@ -199,15 +198,16 @@ class Application(object):
 
     def registerSprite(self, sprite, name):
         sprite._name = name
-        log.debug("registering sprite '%s'"%(sprite.name))
+        #log.debug("registering sprite '%s'"%(sprite.name))
         self.registrar[name.lower()] = sprite
     def unregisterSprite(self, sprite):
-        log.debug("unregistering sprite '%s'"%(sprite.name))
-        if sprite.name.lower() in self.registrar:
-            log.debug("sprite of name '%s' unregistered successfully"%(sprite.name))
-            del self.registrar[sprite.name.lower()]
-        else:
-            log.warning("sprite of name '%s' is not in application"%(sprite.name))
+        #log.debug("unregistering sprite '%s'"%(sprite.name))
+        if sprite.name:
+            if sprite.name.lower() in self.registrar:
+                log.debug("sprite of name '%s' unregistered successfully"%(sprite.name))
+                del self.registrar[sprite.name.lower()]
+            else:
+                log.warning("sprite of name '%s' is not in application"%(sprite.name))
     def renameSprite(self, sprite, newName):
         sprite._name = newName
         log.debug("renaming sprite '%s' to new name '%s'"%(sprite.name, newName))
@@ -224,7 +224,7 @@ class Application(object):
             log.warning("sprite of name '%s' is not in application"%(name))
 
     def addSprite(self, sprite, layer=0):
-        log.debug("adding sprite to layer %s"%(layer))
+        #log.debug("adding sprite to layer %s"%(layer))
         if sprite.name != None:
             self.registerSprite(sprite, sprite.name)
         if isinstance(layer, Layer):
@@ -237,16 +237,20 @@ class Application(object):
             pass
         
     def removeSprite(self, sprite):
-        log.debug("removing sprite on level %d"%(sprite.layer.level))
+        #log.debug("removing sprite on level %d"%(sprite.layer.level))
         self._layers[sprite.layer.level].removeSprite(sprite)
         self.unregisterSprite(sprite)
     
-    def update(self, dt):
-        dt /= 1000.0
+    def tick(self, dt):
+        #dt /= 1000.0
         i = len(self._layers)
         while i > 0:
             i -= 1
             self._layers[i].update(dt)
+        self.update(dt)
+
+    def update(self, dt):
+        pass
                 
     def draw(self):
         if self.backgroundsurface:
