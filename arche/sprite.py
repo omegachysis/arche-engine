@@ -63,7 +63,7 @@ class Sprite(object):
             child._parent = self
             child.x = child.x - self.x
             child.y = child.y - self.y
-            child.alpha = child.alpha - self.alpha
+            child.alpha = child.alpha
 
     def getSurface(self):
         return self._surface
@@ -75,7 +75,8 @@ class Sprite(object):
     def getAlpha(self):
         return self._surface.alpha
     def setAlpha(self, alpha):
-        self._surface.alpha = alpha
+        self._surface.alpha = alpha * (self._pprop("alpha", 255)/255)
+        self._refreshChildren()
     alpha = property(getAlpha, setAlpha)
 
     def getColor(self):
@@ -136,26 +137,39 @@ class Sprite(object):
 
         self.update(dt)
 
+        for child in self._children:
+            child.update(dt)
+
     def update(self, dt):
         pass
     
     def draw(self, canvas):
         if not self.hidden:
             canvas.blit(self._surface.get(), self.rect)
+        for child in self._children:
+            child.draw(canvas)
             
     def destroy(self):
         self.app.removeSprite(self)
+
+    def _refreshChildren(self):
+        for child in self._children:
+            child.x = child.x
+            child.y = child.y
+            child.alpha = child.alpha
     
     def getX(self):
         return self._x
     def setX(self, x):
         self.rect.centerx = x + self._pprop('x', 0)
         self._x = x
+        self._refreshChildren()
     def getY(self):
         return self._y
     def setY(self, y):
         self.rect.centery = y + self._pprop('y', 0)
         self._y = y
+        self._refreshChildren()
         
     x = property(getX, setX)
     y = property(getY, setY)
