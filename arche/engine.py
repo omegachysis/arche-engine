@@ -44,6 +44,10 @@ class Game(object):
         self.height = height
 
         self.quitting = False
+
+        self._autoPause = False
+
+        self.paused = False
         
         pygame.init()
         
@@ -72,6 +76,14 @@ class Game(object):
 
         self.app = None
 
+    def getAutoPause(self):
+        return self._autoPause
+    def setAutoPause(self, autoPause):
+        self._autoPause = autoPause
+        if not autoPause:
+            self.paused = False
+    autoPause = property(getAutoPause, setAutoPause)
+
     def addHandler(self, eventHandler):
         log.debug("ADDING HANDLER" + repr(eventHandler))
         self.handlers.append(eventHandler)
@@ -96,14 +108,37 @@ class Game(object):
         pygame.mouse.set_visible(False)
     def showMouse(self):
         pygame.mouse.set_visible(True)
-        
+
+##    def pause(self):
+##        self.paused = True
+##        self.runPaused()
+##
+##    def runPaused(self):
+##        while self.paused:
+##            dt = self.clock.get_time()
+##
+##            self.canvas.fill((0,0,0,255))
+##
+##            if not self.gameConsole.hidden:
+##                self.gameConsole.update(dt)
+##                self.gameConsole.draw(self.canvas)
+##            for event in pygame.event.get():
+##                self._handler.run(event, self)
+##                self.keyHandler.run(event, self)
+##                for handler in self.handlers:
+##                    handler.run(event, self)
+##
+##            pygame.display.update()
+##            self.clock.tick(self.limitFramerate)
+
     def run(self):
         log.info("starting main loop")
         while True:
             dt = self.clock.get_time()
             
             if self.app:
-                self.app.tick(dt)
+                if not self.paused:
+                    self.app.tick(dt)
                 self.app.draw()
             if not self.gameConsole.hidden:
                 self.gameConsole.update(dt)
@@ -141,6 +176,9 @@ class Application(object):
         self.canvas = Application.canvas
 
         self.addLayer("default")
+
+    def getCanvas(self):
+        return pygame.display.get_surface()
 
     def start(self):
         self.game.startApp(self)

@@ -136,7 +136,8 @@ class GameConsole(object):
         self.trackerUpdateDelay = 100
 
         self.monitors = [("fps", "self.fps"),
-                         ("sprite", "self.sprite")]
+                         ("sprite", "self.sprite"),
+                         ("game.autoPause", "self.game.autoPause")]
         self._monitorBlits = []
 
         self._backspaceHolding = False

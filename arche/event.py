@@ -52,6 +52,11 @@ class GameEngineHandler(Handler):
             if event.key == K_ESCAPE:
                 game.postEvent(QUIT)
             elif event.key == K_BACKQUOTE:
+                if game.autoPause:
+                    if game.paused == False:
+                        game.paused = True
+                    else:
+                        game.paused = False
                 game.gameConsole.toggleHidden()
             elif event.key == K_RETURN:
                 if not game.gameConsole.hidden:
