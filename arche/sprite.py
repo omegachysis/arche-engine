@@ -47,6 +47,13 @@ class Sprite(object):
 
         self.motions = []
 
+    def isOnScreen(self):
+        return (self.left >= 0 and \
+                self.right < self.game.width and \
+                self.top >= 0 and \
+                self.bottom < self.game.height)
+    onScreen = property(isOnScreen)
+
     def getActive(self):
         return  (self in self.layer.sprites)
     def setActive(self, active):

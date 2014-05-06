@@ -45,7 +45,7 @@ class Bullet(arche.sprite.Sprite):
         self.dy = random.random() / 5
 
     def update(self, dt):
-        if self.x > self.game.width or self.y > self.game.height:
+        if not self.onScreen:
             self.destroy()
 
 class Demo(arche.engine.Application):
