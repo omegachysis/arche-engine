@@ -47,6 +47,8 @@ class Sprite(object):
 
         self.motions = []
 
+        self.batches = []
+
     def isOnScreen(self):
         return (self.right > 0 and \
                 self.left < self.game.width and \
@@ -192,6 +194,8 @@ class Sprite(object):
             
     def destroy(self):
         self.app.removeSprite(self)
+        for batch in self.batches:
+            batch.removeSprite(self)
 
     def _refreshChildren(self):
         for child in self._children:
@@ -271,10 +275,13 @@ class Batch(object):
         app.addSprite(sprite, layer)
         self.sprites.append(sprite)
         self.rects.append(sprite.rect)
+        sprite.batches.append(self)
     def removeSprite(self, sprite):
         if sprite in self.sprites:
             self.sprites.remove(sprite)
             self.rects.remove(sprite.rect)
+            if self in sprite.batches:
+                sprite.batches.remove(self)
             
     def refresh(self):
         for sprite in self.sprites:
