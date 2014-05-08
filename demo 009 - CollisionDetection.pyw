@@ -29,23 +29,34 @@ class Cursor(arche.sprite.Sprite):
     def update(self, dt):
         self.x, self.y = arche.control.getMouse()
 
+        # cycle through all the bullets and check for a collision.
         for bullet in self.app.bulletBatch.getCollisions(self):
+            # if there was, turn the bullet a reddish color.
             bullet.color = (255,50,50)
 
 class Bullet(arche.sprite.Sprite):
     def __init__(self):
-        super().__init__(
-            surface = Bullet.img, imageInstance=False)
+        super().__init__( # save precious loading time by loading the image once elsewhere.
+            surface = Bullet.img)
+        
         self.x = self.game.xprop(random.random()-.5)
         self.y = self.game.yprop(random.random()-.5)
 
+        # tint the bullet a pale blue color
         self.color = (50,255,255)
 
+        # dx and dy refer to a change in the cooresponding
+        #  coordinate per millisecond.
+        #  'dx = 1' will make the sprite's 'x' value
+        #  move 1 pixel per millisecond, or 1000 pixels per second.
         self.dx = random.random() / 5
         self.dy = random.random() / 5
 
     def update(self, dt):
         if not self.onScreen:
+            # If the bullet goes off screen, get rid of it from memory.
+            #  This will automatically destroy it from the batch
+            #  as well.
             self.destroy()
 
 class Demo(arche.engine.Application):
@@ -54,11 +65,20 @@ class Demo(arche.engine.Application):
 
         self.backgroundColor = (50,0,0)
 
+        # create a layer to draw all the bullets on.
+        # '1' means it will be above the default layer,
+        # which is created on '0'.  The cursor is on that layer.
         self.addLayer("bullets", 1)
 
+        # A batch is a collection of sprites optimized
+        # for collision detection that is faster
+        # than wasting precious time checking all collisions twice.
         self.bulletBatch = arche.sprite.Batch()
 
-        Bullet.img = arche.surf.ImageSurface("image/test.png", False)
+        # If your image does not have per pixel alpha values,
+        # always state 'pixelAlpha = False'.  Drawing will be
+        # considerably faster with no per pixel alpha values.
+        Bullet.img = arche.surf.ImageSurface("image/test.png", pixelAlpha = False)
         Bullet.img.setSize((30, 30))
         Bullet.img.source = Bullet.img.composite
 
@@ -66,17 +86,27 @@ class Demo(arche.engine.Application):
         self.addSprite(self.mouseCursor)
 
         self.addBulletWait = 0
-        self.addBulletDelay = 50
+        self.addBulletDelay = 50 # in milliseconds
 
+        # track the total number of sprites on the screen
+        # in the game console to make sure they are
+        # destroying properly
         self.game.console.addTracker("len(app.sprites)")
 
     def update(self, dt):
+        # dt stands for delta time
+        # it represetns the milliseconds between this frame and the last one
+        # use it for all changes you do over time or else
+        # time dependent dynamics will change per computer based on
+        # performance.
+        
         self.addBulletWait -= dt
         if self.addBulletWait <= 0.0:
             self.addBulletWait = self.addBulletDelay
             self.addBullet()
 
     def addBullet(self):
+        # "bullets" means to add the bullet on the "bullet" layer we created earlier.
         self.bulletBatch.addSprite(self, Bullet(), "bullets")
 
 if __name__ == "__main__":
