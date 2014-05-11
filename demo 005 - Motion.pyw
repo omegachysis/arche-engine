@@ -106,7 +106,7 @@ class MotionDemo(arche.engine.Application):
         
         arche.motion.actin.Fade(sprite = self.fadingText,
                                 
-                                time = 1.0,     # measured in seconds to fade in
+                                time = 1.000e3,     # milliseconds it takes to fade in (one second)
                                 alpha = 255)    # fade to complete opacity
 
         self.appearButton.disable()
