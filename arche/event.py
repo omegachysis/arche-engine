@@ -2,6 +2,8 @@ from pygame.locals import *
 
 import logging
 
+from . import control
+
 log = logging.getLogger("R.Event")
 
 class Handler(object):
@@ -35,7 +37,9 @@ class KeyHandler(Handler):
             return []
 
     def run(self, event, game):
+        control.clearKeyboardEvents()
         if event.type == KEYDOWN:
+            control.events.keydown.append(event.key)
             if event.key in self.commands:
                 for commandargs in self.commands[event.key]:
                     commandargs[0](*commandargs[1])
