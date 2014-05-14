@@ -16,7 +16,7 @@ from . import debug
 from . import console
 from . import sprite
 from . import config
-from . import surf
+from . import image
 from . import event
 
 log = logging.getLogger("R.Engine")

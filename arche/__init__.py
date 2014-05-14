@@ -1,7 +1,7 @@
 
 __all__ = [
     "console", "debug", "engine", "interface",
-    "sprite", "motion",
+    "sprite", "motion", "image", "control",
     ]
 
 from pygame import locals
@@ -14,7 +14,7 @@ from . import engine
 from . import event
 from . import interface
 from . import sprite
-from . import surf
+from . import image
 from . import control
 
 from . import motion

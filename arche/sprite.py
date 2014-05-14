@@ -9,7 +9,7 @@ from .motion.action import Action
 from pygame import transform
 
 from . import compat
-from . import surf
+from . import image
 
 log = logging.getLogger("R.Sprite")
 
@@ -32,7 +32,7 @@ class Sprite(object):
             self._surface = surface
             self.rect = self._surface.rect()
         else:
-            self.surface = surf.ImageSurface(surface, pixelAlpha)
+            self.surface = image.ImageSurface(surface, pixelAlpha)
 
         self.x = x
         self.y = y
@@ -111,7 +111,7 @@ class Sprite(object):
     def getSurface(self):
         return self._surface
     def setSurface(self, surface):
-        self._surface = surf.ImageSurface(surface, self._pixelAlpha)
+        self._surface = image.ImageSurface(surface, self._pixelAlpha)
         self.rect = self._surface.rect()
     surface = property(getSurface, setSurface)
 

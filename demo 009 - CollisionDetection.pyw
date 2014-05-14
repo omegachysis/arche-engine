@@ -88,7 +88,7 @@ class Demo(arche.engine.Application):
         # If your image does not have per pixel alpha values,
         # always state 'pixelAlpha = False'.  Drawing will be
         # considerably faster with no per pixel alpha values.
-        Bullet.img = arche.surf.ImageSurface("image/test.png", pixelAlpha = False)
+        Bullet.img = arche.image.ImageSurface("image/test.png", pixelAlpha = False)
         Bullet.img.setSize((30, 30))
         Bullet.img.source = Bullet.img.composite
 
