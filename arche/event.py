@@ -19,30 +19,35 @@ class KeyHandler(Handler):
     def __init__(self):
         super().__init__()
 
+        # NAME : [KEY, COMMAND, ARGS]
         self.commands = {}
+        # KEY : [NAME, NAME, ..]
+        self._commandKeys = {}
 
-    def addCommand(self, key, command, args=[]):
-        if key in self.commands:
-            if command in self.commands[key]:
-                pass # already added this command
+    def addCommand(self, name, key, command, args=[]):
+        if name in self.commands:
+            # already added this command
+            pass
+        else:
+            self.commands[name] = [key, command, args]
+            if key not in self._commandKeys:
+                self._commandKeys[key] = [name]
             else:
-                self.commands[key].append((command, args))
-        else:
-            self.commands[key] = [(command, args)]
+                self._commandKeys[key].append(name)
 
-    def getCommands(self, key):
-        if key in self.commands:
-            return self.commands[key]
-        else:
-            return []
+    def removeCommand(self, name):
+        if name in self.commands:
+            key, command, args = self.commands[name]
+            if name in self._commandKeys[key]:
+                self._commandKeys[key].remove(name)
+            del self.commands[name]
 
     def run(self, event, game):
-        control.clearKeyboardEvents()
         if event.type == KEYDOWN:
-            control.events.keydown.append(event.key)
-            if event.key in self.commands:
-                for commandargs in self.commands[event.key]:
-                    commandargs[0](*commandargs[1])
+            if event.key in self._commandKeys:
+                for name in self._commandKeys[event.key]:
+                    key, command, args = self.commands[name]
+                    command(*args)
 
 class GameEngineHandler(Handler):
     def __init__(self):

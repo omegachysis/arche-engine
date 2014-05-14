@@ -67,8 +67,8 @@ class StartScreen(arche.engine.Application):
 
         # Add key reading events to the game key handler
         #  The game key handler is built in and automatically enabled
-        self.game.keyHandler.addCommand(arche.locals.K_RIGHT, self.nextScreen)
-        self.game.keyHandler.addCommand(arche.locals.K_LEFT,  self.nextApp.prevScreen)
+        self.game.keyHandler.addCommand("StartScreen.nextScreen", arche.locals.K_RIGHT, self.nextScreen)
+        self.game.keyHandler.addCommand("NextScreen.prevScreen", arche.locals.K_LEFT,  self.nextApp.prevScreen)
 
     def nextScreen(self):
         if self.active:
