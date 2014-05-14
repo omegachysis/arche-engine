@@ -1,5 +1,6 @@
 
 import pygame
+from pygame.locals import *
 
 def getMouse():
     return pygame.mouse.get_pos()

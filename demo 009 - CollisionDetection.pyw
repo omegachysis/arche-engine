@@ -34,6 +34,12 @@ class Cursor(arche.sprite.Sprite):
             # if there was, turn the bullet a reddish color.
             bullet.color = (255,50,50)
 
+        # consistently results in 'true' when the spacebar is being pressed
+        if arche.control.key(arche.control.K_SPACE):
+            # reset the colors of all the bullets in the bulletBatch
+            for bullet in self.app.bulletBatch.sprites:
+                bullet.resetColor()
+
 class Bullet(arche.sprite.Sprite):
     def __init__(self):
         super().__init__( # save precious loading time by loading the image once elsewhere.
@@ -42,8 +48,7 @@ class Bullet(arche.sprite.Sprite):
         self.x = self.game.xprop(random.random()-.5)
         self.y = self.game.yprop(random.random()-.5)
 
-        # tint the bullet a pale blue color
-        self.color = (50,255,255)
+        self.resetColor()
 
         # dx and dy refer to a change in the cooresponding
         #  coordinate per millisecond.
@@ -51,6 +56,11 @@ class Bullet(arche.sprite.Sprite):
         #  move 1 pixel per millisecond, or 1000 pixels per second.
         self.dx = random.random() / 5
         self.dy = random.random() / 5
+
+    # Create a method to be used later
+    def resetColor(self):
+        # tint the bullet a pale blue color
+        self.color = (50,255,255)
 
     def update(self, dt):
         if not self.onScreen:
