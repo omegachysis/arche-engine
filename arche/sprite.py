@@ -314,7 +314,7 @@ class Text(Sprite):
         self.color = color
         self.size = size
 
-        self.surface = surf.createDefaultSurface()
+        self.surface = image.createDefaultSurface()
         
         self.render()
 

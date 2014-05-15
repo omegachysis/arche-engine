@@ -20,3 +20,6 @@ from . import control
 from . import motion
 
 from .sprite import Sprite
+from .engine import Game
+from .engine import Application
+from .sprite import Text

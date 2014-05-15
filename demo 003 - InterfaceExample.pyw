@@ -7,10 +7,10 @@ log = arche.debug.log("main")
 def main():
     log.info("starting demo 003")
 
-    game = arche.engine.Game(width = 1280, height = 800, fullscreen = False,
-                             titleName = "ArcheEngine Demo - Interface Example",
-                             frame = False, # don't show the os window stuff
-                             )
+    game = arche.Game(width = 1280, height = 800, fullscreen = False,
+                         titleName = "ArcheEngine Demo - Interface Example",
+                         frame = False, # don't show the os window stuff
+                         )
 
     InterfaceExample().start()
     
@@ -19,7 +19,7 @@ def main():
 # Applications are used to organize various parts of your game.
 # They are analogous to PowerPoint slides or separate slides
 #  in a slide show.
-class InterfaceExample(arche.engine.Application):
+class InterfaceExample(arche.Application):
     def __init__(self):
         super().__init__() # run this at the beginning of every class derivation
 
@@ -44,7 +44,7 @@ class InterfaceExample(arche.engine.Application):
             command = self.game.quit,
 
             # create a caption
-            textObject = arche.sprite.Text(
+            textObject = arche.Text(
                 value = "X",
                 
                 # x and y values are parented attributes relative to the button center
@@ -69,7 +69,7 @@ class InterfaceExample(arche.engine.Application):
         self.addSprite(self.quitButton)
 
         # Create a greeting text sprite
-        self.greetingText = arche.sprite.Text(
+        self.greetingText = arche.Text(
             value = "Hello World!  Press the X button in the upper right corner " + \
             "of the screen to quit.",
 

@@ -7,13 +7,13 @@ log = arche.debug.log("main")
 def main():
     log.info("starting demo 005")
 
-    game = arche.engine.Game(width = 1280, height = 800, fullscreen = False,
+    game = arche.Game(width = 1280, height = 800, fullscreen = False,
                              titleName = "ArcheEngine Demo - Motion",)
     MotionDemo().start()
     
     game.run()
 
-class MotionDemo(arche.engine.Application):
+class MotionDemo(arche.Application):
     def __init__(self):
         super().__init__()
 
@@ -25,7 +25,7 @@ class MotionDemo(arche.engine.Application):
             colorHover = (255,50,50),
             colorPress = (255,150,150),
             command = self.game.quit,
-            textObject = arche.sprite.Text(
+            textObject = arche.Text(
                 value = "X",
                 x = 0, y = 0,
                 color = (255,255,255),
@@ -37,7 +37,7 @@ class MotionDemo(arche.engine.Application):
         self.quitButton.name = "quit button"
         self.addSprite(self.quitButton)
 
-        self.fadingText = arche.sprite.Text("Hello World!",
+        self.fadingText = arche.Text("Hello World!",
                                           x = self.game.xprop(.50),
                                           y = self.game.yprop(.20),
                                           color = (255,255,255),
@@ -61,7 +61,7 @@ class MotionDemo(arche.engine.Application):
             colorPress = (150,255,150),
             colorDisabled = (120,120,120),
             command = self.textAppear,
-            textObject = arche.sprite.Text(
+            textObject = arche.Text(
                 value = "Appear",
                 x = 0, y = 0,
                 color = (255,255,255),
@@ -81,7 +81,7 @@ class MotionDemo(arche.engine.Application):
             colorPress = (255,150,150),
             colorDisabled = (120,120,120),
             command = self.textDisappear,
-            textObject = arche.sprite.Text(
+            textObject = arche.Text(
                 value = "Disappear",
                 x = 0, y = 0,
                 color = (255,255,255),

@@ -8,14 +8,14 @@ log = arche.debug.log("main")
 def main():
     log.info("starting demo 009")
 
-    game = arche.engine.Game(width = 1280, height = 800, fullscreen = False,
+    game = arche.Game(width = 1280, height = 800, fullscreen = False,
                 titleName = "ArcheEngine Demo - Collision Detection",)
 
     Demo().start()
     
     game.run()
 
-class Cursor(arche.sprite.Sprite):
+class Cursor(arche.Sprite):
     def __init__(self):
         super().__init__(
             surface = "image/test.png",

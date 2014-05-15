@@ -7,8 +7,8 @@ log = arche.debug.log("main")
 def main():
     log.info("starting demo 006")
 
-    game = arche.engine.Game(width = 1280, height = 800, fullscreen = False,
-                             titleName = "ArcheEngine Demo - Mouse Reading",)
+    game = arche.Game(width = 1280, height = 800, fullscreen = False,
+                    titleName = "ArcheEngine Demo - Mouse Reading",)
     
     game.hideMouse() # Hide the default mouse cursor
     
@@ -16,7 +16,7 @@ def main():
     
     game.run()
 
-class MouseReading(arche.engine.Application):
+class MouseReading(arche.Application):
     def __init__(self):
         super().__init__()
 
@@ -25,7 +25,7 @@ class MouseReading(arche.engine.Application):
         self.cursor = Cursor()
         self.addSprite(self.cursor)
 
-class Cursor(arche.sprite.Sprite):
+class Cursor(arche.Sprite):
     def __init__(self):
         super().__init__(
             #Create the sprite here.
