@@ -18,3 +18,5 @@ from . import image
 from . import control
 
 from . import motion
+
+from .sprite import Sprite
