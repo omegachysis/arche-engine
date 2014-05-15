@@ -10,11 +10,6 @@ def scaleImage(surface, width, height):
     #log.debug("scaled image %s" % repr(surface))
     return pygame.transform.smoothscale(surface, (width, height))
 
-def createDefaultSurface():
-    surface = pygame.Surface((1,1))
-    surface.fill((255,255,255,255))
-    return surface
-
 def profilerRecordImageSurfaces():
     log.info("PERFORMANCE PROFILER ENGAGED: RecordImageSurfaces")
     ImageSurface.debugRecordSurfaces = True
@@ -27,6 +22,18 @@ def profilerRevealPixelAlpha():
         log.warning("PERFORMANCE PROFILER FAILED: Not recording surfaces; "+\
                     "inconsistancies may occur.")
 
+def createDefaultSurface():
+    surface = pygame.Surface((1,1))
+    surface.fill((255,255,255,255))
+    return surface
+
+newDefaultSurface = createDefaultSurface
+
+def newRectangle(width, height, color = (255,255,255)):
+    surface = pygame.Surface((width, height))
+    surface.fill(color)
+    return surface
+    
 class ImageSurface(object):
     imageSurfaces = []
     debugRecordSurfaces = False
@@ -96,6 +103,10 @@ class ImageSurface(object):
         self.refresh()
         if normalize:
             self.normalize()
+
+    def permeate(self):
+        """ Set the source image surface to the current composite surface. """
+        self.source = self.composite
 
     def normalize(self):
         """ Reset scaling parameters to fit source surface. """
