@@ -118,8 +118,8 @@ class GameConsole(object):
     LOGSOURCE_SPACING = 25 # characters to space after logging source values
     MESSAGE_BUFFER_LENGTH = 100 # messages to render before deleting
 
-    BACKSPACE_HOLDING_DELAY = 500
-    BACKSPACE_HOLDING_ERASE_DELAY = 40
+    BACKSPACE_HOLDING_DELAY = 500.0e-3
+    BACKSPACE_HOLDING_ERASE_DELAY = 40.0e-3
     
     def __init__(self, game, level=logging.INFO):
         sys.stdout = ConsoleSTDOUT(self)
@@ -133,7 +133,7 @@ class GameConsole(object):
         self.fps = 0
         
         self._monitorUpdateWait = 0
-        self.trackerUpdateDelay = 100
+        self.trackerUpdateDelay = 100.0e-3
 
         self.monitors = [("fps", "self.fps"),
                          ("sprite", "self.sprite"),

@@ -17,7 +17,7 @@ def main():
 
 class WalkingRectangle(arche.Sprite):
     
-    WALKING_SPEED = 300.00e-3
+    WALKING_SPEED = 300.00 # pixels per second
     
     def __init__(self):
         super().__init__(

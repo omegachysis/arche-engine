@@ -134,7 +134,7 @@ class Game(object):
     def run(self):
         log.info("starting main loop")
         while True:
-            dt = self.clock.get_time()
+            dt = self.clock.get_time() / 1000
             
             if self.app:
                 if not self.paused:

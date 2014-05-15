@@ -53,9 +53,9 @@ class Bullet(arche.sprite.Sprite):
         # dx and dy refer to a change in the cooresponding
         #  coordinate per millisecond.
         #  'dx = 1' will make the sprite's 'x' value
-        #  move 1 pixel per millisecond, or 1000 pixels per second.
-        self.dx = random.random() / 5
-        self.dy = random.random() / 5
+        #  move 1 pixel per second
+        self.dx = random.random() / 5 * 1000
+        self.dy = random.random() / 5 * 1000
 
     # Create a method to be used later
     def resetColor(self):
@@ -97,7 +97,7 @@ class Demo(arche.engine.Application):
         self.addSprite(self.mouseCursor)
 
         self.addBulletWait = 0
-        self.addBulletDelay = 50 # in milliseconds
+        self.addBulletDelay = 50.0e-3 # in seconds
 
         # track the total number of sprites on the screen
         # in the game console to make sure they are
