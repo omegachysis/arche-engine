@@ -90,7 +90,8 @@ class Demo(arche.engine.Application):
         # considerably faster with no per pixel alpha values.
         Bullet.img = arche.image.ImageSurface("image/test.png", pixelAlpha = False)
         Bullet.img.setSize((30, 30))
-        Bullet.img.source = Bullet.img.composite
+
+        Bullet.img.permeate()
 
         self.mouseCursor = Cursor()
         self.addSprite(self.mouseCursor)
@@ -117,7 +118,9 @@ class Demo(arche.engine.Application):
 
     def addBullet(self):
         # "bullets" means to add the bullet on the "bullet" layer we created earlier.
-        self.bulletBatch.addSprite(self, Bullet(), "bullets")
+        newBullet = Bullet()
+        self.addSprite(newBullet, "bullets")
+        self.bulletBatch.addSprite(newBullet)
 
 if __name__ == "__main__":
     arche.debug.test(main)

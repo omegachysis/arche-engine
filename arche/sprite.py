@@ -271,8 +271,7 @@ class Batch(object):
         for sprite in self.sprites:
             self.rects.append(sprite.rect)
             
-    def addSprite(self, app, sprite, layer=0):
-        app.addSprite(sprite, layer)
+    def addSprite(self, sprite):
         self.sprites.append(sprite)
         self.rects.append(sprite.rect)
         sprite.batches.append(self)
