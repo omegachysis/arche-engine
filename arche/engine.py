@@ -268,6 +268,12 @@ class Application(object):
         if isinstance(layer, Layer):
             layer.addSprite(sprite)
         elif isinstance(layer, str):
+            if layer not in self.layers:
+                log.warning(
+                ("trying to add sprite '%s' to layer '%s' when that layer " + \
+                "does not exist.  Creating layer and adding sprite")%(
+                    repr(sprite),layer))
+                self.addLayer(layer)
             self.layers[layer].addSprite(sprite)
         elif isinstance(layer, int):
             self._layers[layer].addSprite(sprite)
