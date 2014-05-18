@@ -10,6 +10,7 @@ from pygame import transform
 
 from . import compat
 from . import image
+from . import control
 
 log = logging.getLogger("R.Sprite")
 
@@ -359,3 +360,44 @@ def scaleImage(surface, width, height):
     """ Return surface scaled to fit width and height. """
     log.debug("scaled image %s" % repr(surface))
     return transform.smoothscale(surface, (width, height))
+
+class MovingSprite(Sprite):
+    def __init__(self, speed=100, keyMoveLeft="left", keyMoveRight="right",
+                 keyMoveDown="down", keyMoveUp="up", obstacleBatch=None):
+
+        self.speed = speed
+
+        self.keyMoveLeft = keyMoveLeft
+        self.keyMoveRight = keyMoveRight
+        self.keyMoveDown = keyMoveDown
+        self.keyMoveUp = keyMoveUp
+
+        self.obstacleBatch = obstacleBatch
+
+    def tick(self, dt):
+        super().tick(dt)
+        if control.key(self.keyMoveLeft):
+            self.move(dt * -self.WALKING_SPEED, 0)
+        elif control.key(self.keyMoveRight):
+            self.move(dt * self.WALKING_SPEED, 0)
+        if control.key(self.keyMoveUp):
+            self.move(0, dt * -self.WALKING_SPEED)
+        elif control.key(self.keyMoveDown):
+            self.move(0, dt * self.WALKING_SPEED)
+
+    def move(self, dx, dy):
+        self.x += dx
+        self.y += dy
+
+        if self.right > self.game.width:
+            self.right = self.game.width
+        if self.left < 0:
+            self.left = 0
+        if self.bottom > self.game.height:
+            self.bottom = self.game.height
+        if self.top < 0:
+            self.top = 0
+
+        if self.obstacleBatch and self.obstacleBatch.getCollisions(self):
+            self.x -= dx
+            self.y -= dy

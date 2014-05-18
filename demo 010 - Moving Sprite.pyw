@@ -62,6 +62,7 @@ class WalkingRectangle(arche.Sprite):
 class Obstacle(arche.Sprite):
 
     def __init__(self, app, width, height, x, y):
+        
         super().__init__(
             surface = arche.image.newRectangle(width = width, height = height, color = (80,150,255)),
             )
