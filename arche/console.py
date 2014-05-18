@@ -13,72 +13,72 @@ from pygame.locals import *
 
 log = logging.getLogger("R.Console")
 
-class DialogEntry(object):
-    def __init__(self, game, prompt):
-        log.info("intializing DialogEntry for prompt '{}'".format(prompt))
-        self._dialogSurface = pygame.Surface(
-            (int(game.width / 2), int(game.height / 2)))
-        self._dialogSurface.fill((255,255,255))
-        self._dialogSurface = self._dialogSurface.convert()
-        self._dialogRect = self._dialogSurface.get_rect()
-        self._dialogRect.centerx = game.width / 2
-        self._dialogRect.centery = game.height / 2
-
-        self.font = compat.freetypeFont("font/consola.ttf", 12)
-
-        self._promptSurface, self._promptRect = \
-                             self.font.render(prompt, (0,0,0,255))
-        self._promptRect.centerx = game.width // 2
-        self._promptRect.centery = game.width // 3
-
-        self.entry = ""
-        self.game = game
-
-        self.value = None
-
-        self._renderEntry()
-
-    def get(self):
-        while self.value == None:
-            for event in pygame.event.get():
-                if event.type == QUIT:
-                    game.quit()
-                elif event.type == KEYDOWN:
-                    if event.key == K_ESCAPE:
-                        self.postEvent(QUIT)
-                    elif event.key == K_RETURN:
-                        self.value = str(self.entry)
-                    elif event.key == K_BACKSPACE:
-                        self.entryBackspace()
-                    else:
-                        self.entryAdd(event.unicode)
-
-            self.draw(self.game.canvas)
-
-            pygame.display.update()
-
-        log.debug("Return VALUE: {}".format(repr(self.value)))
-        return str(self.value)
-    
-    def draw(self, canvas):
-        canvas.blit(self._dialogSurface, self._dialogRect)
-        canvas.blit(self._promptSurface, self._promptRect)
-        canvas.blit(self._entrySurface, self._entryRect)
-        
-    def _renderEntry(self):
-        surface, rect = self.font.render(self.entry, (0,0,0,255))
-        rect.centerx = self.game.width/2
-        rect.centery = self.game.height/2
-
-        self._entrySurface = surface
-        self._entryRect = rect
-
-    def entryAdd(self, unicode):
-        self.entry += unicode
-        self._renderEntry()
-    def entryBackspace(self):
-        self.entry = self.entry[:-1]
-        self._renderEntry()
+##class DialogEntry(object):
+##    def __init__(self, game, prompt):
+##        log.info("intializing DialogEntry for prompt '{}'".format(prompt))
+##        self._dialogSurface = pygame.Surface(
+##            (int(game.width / 2), int(game.height / 2)))
+##        self._dialogSurface.fill((255,255,255))
+##        self._dialogSurface = self._dialogSurface.convert()
+##        self._dialogRect = self._dialogSurface.get_rect()
+##        self._dialogRect.centerx = game.width / 2
+##        self._dialogRect.centery = game.height / 2
+##
+##        self.font = compat.freetypeFont("font/consola.ttf", 12)
+##
+##        self._promptSurface, self._promptRect = \
+##                             self.font.render(prompt, (0,0,0,255))
+##        self._promptRect.centerx = game.width // 2
+##        self._promptRect.centery = game.width // 3
+##
+##        self.entry = ""
+##        self.game = game
+##
+##        self.value = None
+##
+##        self._renderEntry()
+##
+##    def get(self):
+##        while self.value == None:
+##            for event in pygame.event.get():
+##                if event.type == QUIT:
+##                    game.quit()
+##                elif event.type == KEYDOWN:
+##                    if event.key == K_ESCAPE:
+##                        self.postEvent(QUIT)
+##                    elif event.key == K_RETURN:
+##                        self.value = str(self.entry)
+##                    elif event.key == K_BACKSPACE:
+##                        self.entryBackspace()
+##                    else:
+##                        self.entryAdd(event.unicode)
+##
+##            self.draw(self.game.canvas)
+##
+##            pygame.display.update()
+##
+##        log.debug("Return VALUE: {}".format(repr(self.value)))
+##        return str(self.value)
+##    
+##    def draw(self, canvas):
+##        canvas.blit(self._dialogSurface, self._dialogRect)
+##        canvas.blit(self._promptSurface, self._promptRect)
+##        canvas.blit(self._entrySurface, self._entryRect)
+##        
+##    def _renderEntry(self):
+##        surface, rect = self.font.render(self.entry, (0,0,0,255))
+##        rect.centerx = self.game.width/2
+##        rect.centery = self.game.height/2
+##
+##        self._entrySurface = surface
+##        self._entryRect = rect
+##
+##    def entryAdd(self, unicode):
+##        self.entry += unicode
+##        self._renderEntry()
+##    def entryBackspace(self):
+##        self.entry = self.entry[:-1]
+##        self._renderEntry()
 
 class ConsoleSTDOUT(object):
     """
