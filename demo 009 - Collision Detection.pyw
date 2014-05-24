@@ -89,8 +89,13 @@ class Demo(arche.engine.Application):
         # always state 'pixelAlpha = False'.  Drawing will be
         # considerably faster with no per pixel alpha values.
         Bullet.img = arche.image.ImageSurface("image/test.png", pixelAlpha = False)
+
+        # Scale the image down
         Bullet.img.setSize((30, 30))
 
+        # Set the source of the image to the new scale
+        #  This is irreversable and replaces the image
+        #  in memory with the scaled down version we made.
         Bullet.img.permeate()
 
         self.mouseCursor = Cursor()
