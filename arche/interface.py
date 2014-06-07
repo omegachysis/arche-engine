@@ -236,7 +236,11 @@ class ImageButton(Button):
         self._surface = self.imagePress
     def reset(self):
         self._surface = self.imageReset
-        
+
+class Entry(object):
+    def __init__(self, surface, font, fontColor, fontSize, padding, maxBuffer=100,
+                 restricted=[]):
+        pass
 
 if __name__ == "__main__":
     import Debug
