@@ -21,6 +21,10 @@ class Demo(arche.engine.Application):
 
         self.backgroundColor = (80,80,80)
 
+        self.text = arche.Text(value = "Hello World!", x = self.game.xprop(.5), y = self.game.yprop(.5),
+                               color = (255,255,255), size = 50, font = None)
+        self.addSprite(self.text)
+
     def update(self, dt):
         pass
 
