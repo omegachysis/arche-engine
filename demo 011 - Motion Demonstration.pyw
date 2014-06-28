@@ -25,6 +25,16 @@ class Demo(arche.engine.Application):
                                color = (255,255,255), size = 50, font = None)
         self.addSprite(self.text)
 
+        self.entrybox = arche.interface.Entry(
+            surface = arche.interface.newRectangle(width = 200, height = 50, color = (80,80,80)),
+            font = "consolas.ttf",
+            fontColor = (255,255,255),
+            fontSize = 20,
+            padding = 5,
+            maxBuffer = 100,
+            restricted = []
+            )
+
     def update(self, dt):
         pass
 
