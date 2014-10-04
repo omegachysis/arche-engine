@@ -1,7 +1,7 @@
 
 import pygame
 import sys
-from pygame.locals import *
+from pygame import locals
 import traceback
 import logging
 from .motion.action import Action
@@ -87,7 +87,7 @@ class Sprite(object):
     children = property(getChildren)
         
     def __repr__(self):
-        return "sprite '{}' {}".format(self.name, super().__repr__())
+        return "sprite '{}' {}".format(self.name, self.__class__)
 
     def _pprop(self, prop, default):
         if self._parent:

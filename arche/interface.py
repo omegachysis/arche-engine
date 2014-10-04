@@ -1,6 +1,6 @@
 
 import pygame
-from pygame.locals import *
+from pygame import locals
 import logging
 
 from . import engine

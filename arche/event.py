@@ -1,4 +1,4 @@
-from pygame.locals import *
+from pygame import locals
 
 import logging
 
@@ -17,7 +17,7 @@ class Handler(object):
 
 class KeyHandler(Handler):
     def __init__(self):
-        super().__init__()
+        super(self.__class__, self).__init__()
 
         # NAME : [KEY, COMMAND, ARGS]
         self.commands = {}
@@ -43,7 +43,7 @@ class KeyHandler(Handler):
             del self.commands[name]
 
     def run(self, event, game):
-        if event.type == KEYDOWN:
+        if event.type == locals.KEYDOWN:
             if event.key in self._commandKeys:
                 for name in self._commandKeys[event.key]:
                     key, command, args = self.commands[name]
@@ -51,32 +51,32 @@ class KeyHandler(Handler):
 
 class GameEngineHandler(Handler):
     def __init__(self):
-        super().__init__()
+        super(self.__class__, self).__init__()
         log.debug("game engine handler initialized")
         
     def run(self, event, game):
-        if event.type == QUIT:
+        if event.type == locals.QUIT:
             game.quit()
-        elif event.type == KEYDOWN:
-            if event.key == K_ESCAPE:
-                game.postEvent(QUIT)
-            elif event.key == K_BACKQUOTE:
+        elif event.type == locals.KEYDOWN:
+            if event.key == locals.K_ESCAPE:
+                game.postEvent(locals.QUIT)
+            elif event.key == locals.K_BACKQUOTE:
                 if game.autoPause:
                     if game.paused == False:
                         game.paused = True
                     else:
                         game.paused = False
                 game.gameConsole.toggleHidden()
-            elif event.key == K_RETURN:
+            elif event.key == locals.K_RETURN:
                 if not game.gameConsole.hidden:
                     game.gameConsole.executeEntry()
-            elif event.key == K_BACKSPACE:
+            elif event.key == locals.K_BACKSPACE:
                 if not game.gameConsole.hidden:
                     game.gameConsole.entryBackspace()
             else:
                 if not game.gameConsole.hidden:
                     game.gameConsole.entryAdd(event.unicode)
-        elif event.type == MOUSEBUTTONDOWN:
+        elif event.type == locals.MOUSEBUTTONDOWN:
             if not game.gameConsole.hidden:
                 if event.button == 2:
                     game.gameConsole.pickSprite()
@@ -84,6 +84,6 @@ class GameEngineHandler(Handler):
                     game.gameConsole.scrollUp()
                 elif event.button == 5:
                     game.gameConsole.scrollDown()
-        elif event.type == KEYUP:
-            if event.key == K_BACKSPACE:
+        elif event.type == locals.KEYUP:
+            if event.key == locals.K_BACKSPACE:
                 game.gameConsole.backspaceHoldingReset()

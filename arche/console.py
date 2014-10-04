@@ -9,7 +9,7 @@ from os import path
 from . import config
 from . import compat
 
-from pygame.locals import *
+from pygame import locals
 
 log = logging.getLogger("R.Console")
 
@@ -305,7 +305,8 @@ class GameConsole(object):
         self.hidden = not self.hidden
 
     def _renderEntry(self):
-        surface, rect = self.font.render(self.entry, (255,255,255,255))
+        surface, rect = compat.freetypeRender(self.font, self.entry, (255,255,255,255))
+        surface, rect = compat.freetypeRender(self.font, self.entry, (255,255,255,255))
         rect.left = GameConsole.PADDING_LEFT
         rect.bottom = self.game.height - GameConsole.ENTRY_PADDING
 
@@ -332,14 +333,14 @@ class GameConsole(object):
         self = self.env
         try:
             if name[0] != "@":
-                surface, rect = self.font.render(name + " = " + repr(eval(source)), (255,255,255,255))
+                surface, rect = compat.freetypeRender(self.font, name + " = " + repr(eval(source)), (255,255,255,255))
             else:
                 if self.sprite.app.active:
-                    surface, rect = self.font.render(name + " = " + repr(eval(source)), (150,255,150,255))
+                    surface, rect = compat.freetypeRender(self.font, name + " = " + repr(eval(source)), (150,255,150,255))
                 else:
-                    surface, rect = self.font.render(name + " = " + repr(eval(source)), (80,120,80,255))
+                    surface, rect = compat.freetypeRender(self.font, name + " = " + repr(eval(source)), (80,120,80,255))
         except:
-            surface, rect = self.font.render(name + " = INVALID", (255,255,100,255))
+            surface, rect = compat.freetypeRender(self.font, name + " = INVALID", (255,255,100,255))
         return surface, rect
 
     def renderMessage(self, stream):

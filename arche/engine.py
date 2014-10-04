@@ -1,9 +1,8 @@
 
 import pygame
 import sys
-from pygame.locals import *
+from pygame import locals
 from pygame import transform
-import pygame.freetype
 import traceback
 import logging
 
@@ -176,6 +175,13 @@ class Application(object):
         self.canvas = Application.canvas
 
         self.addLayer("default")
+
+    def xprop(self, proportion):
+        if self.game:
+            return self.game.xprop(proportion)
+    def yprop(self, proportion):
+        if self.game:
+            return self.game.yprop(proportion)
 
     def getCanvas(self):
         return pygame.display.get_surface()

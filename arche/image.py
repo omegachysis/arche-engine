@@ -1,6 +1,6 @@
 
 import pygame
-from pygame.locals import *
+from pygame import locals
 import logging
 
 log = logging.getLogger("R.Surface")
@@ -147,12 +147,12 @@ class ImageSurface(object):
             if not self._pixelAlpha:
                 self._modColor = self._modScale.convert()
                 self._modColor.fill((self._red, self._green, self._blue),
-                                    None, BLEND_RGB_MULT)
+                                    None, locals.BLEND_RGB_MULT)
                 self.applyAlpha()
             else:
                 self._modColor = self._modScale.convert_alpha()
                 self._modColor.fill((self._red, self._green, self._blue, self._alpha),
-                                    None, BLEND_RGBA_MULT)
+                                    None, locals.BLEND_RGBA_MULT)
                 self.composite = self._modColor
         else:
             self.composite = self._modScale
