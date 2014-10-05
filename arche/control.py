@@ -10,8 +10,9 @@ def isEventKeydown(event):
 
 def keyPressed(key):
     if isinstance(key, str):
-        key = eval("K_" + key.upper())
+        key = eval("locals.K_" + key.upper())
     return (pygame.key.get_pressed()[key])
+
 key = keyPressed
 
 def mousePressed(index):
