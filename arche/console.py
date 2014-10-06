@@ -135,9 +135,8 @@ class GameConsole(object):
         self._monitorUpdateWait = 0
         self.trackerUpdateDelay = 100.0e-3
 
-        self.monitors = [("fps", "self.fps"),
-                         ("sprite", "self.sprite"),
-                         ("game.autoPause", "self.game.autoPause")]
+        self.monitors = []
+        self.resetTrackers()
         self._monitorBlits = []
 
         self._backspaceHolding = False
@@ -198,7 +197,7 @@ class GameConsole(object):
             if name.lower() == monitorBit[0].lower():
                 self.monitors.remove(monitorBit)
     def resetTrackers(self):
-        self.monitors = [("fps", "self.fps")]
+        self.monitors = [("fps", "self.fps"), ("sprite", "self.sprite")]
 
     def sprite(self, spriteName):
         """ Return sprite from application registry """
