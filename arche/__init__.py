@@ -16,6 +16,7 @@ from . import interface
 from . import sprite
 from . import image
 from . import control
+from . import draw
 
 from . import motion
 

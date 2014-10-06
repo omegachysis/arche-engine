@@ -26,7 +26,7 @@ class Demo(arche.engine.Application):
         self.addSprite(self.text)
 
         self.entrybox = arche.interface.Entry(
-            surface = arche.interface.newRectangle(width = 200, height = 50, color = (80,80,80)),
+            surface = arche.draw.Rectangle(width = 200, height = 50, color = (20,20,20)),
             font = "consolas.ttf",
             fontColor = (255,255,255),
             fontSize = 20,

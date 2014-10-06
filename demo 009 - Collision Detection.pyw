@@ -35,7 +35,7 @@ class Cursor(arche.Sprite):
             bullet.color = (255,50,50)
 
         # consistently results in 'true' when the spacebar is being pressed
-        if arche.control.key(arche.control.K_SPACE):
+        if arche.control.key(arche.control.locals.K_SPACE):
             # reset the colors of all the bullets in the bulletBatch
             for bullet in self.app.bulletBatch.sprites:
                 bullet.resetColor()

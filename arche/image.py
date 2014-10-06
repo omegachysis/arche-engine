@@ -78,6 +78,17 @@ class ImageSurface(object):
         if self._surface:
             self.refresh()
 
+    def setAllowPixelAlpha(self, allowPixelAlpha):
+        if allowPixelAlpha != self._pixelAlpha:
+            if allowPixelAlpha:
+                self._surface = self._surface.convert_alpha()
+            else:
+                self._surface = self._surface.convert()
+            self._pixelAlpha = allowPixelAlpha
+    def getAllowPixelAlpha(self):
+        return self._pixelAlpha
+    allowPixelAlpha = property(getAllowPixelAlpha, setAllowPixelAlpha)
+
     def _revealPixelAlpha(self):
         if self._pixelAlpha:
             surface = pygame.Surface((self._width, self._height)).convert_alpha()
