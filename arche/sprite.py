@@ -16,6 +16,9 @@ log = logging.getLogger("R.Sprite")
 
 class Sprite(object):
     game = None
+
+    _x = None
+    _y = None
     def __init__(self, surface, x=0, y=0, pixelAlpha=True, imageInstance=False):
         self.log = log # Compatibility reasons - refactoring
 
@@ -219,6 +222,14 @@ class Sprite(object):
         
     x = property(getX, setX)
     y = property(getY, setY)
+
+    def getPos(self):
+        return (self._x, self._y)
+    def setPos(self, value):
+        self._x = value[0]
+        self._y = value[1]
+    pos = property(getPos, setPos)
+    position = property(getPos, setPos)
 
     def getLeft(self):
         return self._x - self.rect.width / 2
