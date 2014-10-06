@@ -44,3 +44,4 @@ nosetests.xml
 *.pyproj
 *.sln
 *.suo
+arche-engine.pyproj.user
