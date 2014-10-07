@@ -17,6 +17,7 @@ from . import sprite
 from . import image
 from . import control
 from . import draw
+from . import update
 
 from . import motion
 
@@ -24,3 +25,6 @@ from .sprite import Sprite
 from .engine import Game
 from .engine import Application
 from .sprite import Text
+
+from .update import getVersion
+version = getVersion()
