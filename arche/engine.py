@@ -51,12 +51,12 @@ class Game(object):
         pygame.init()
         
         if fullscreen:
-            self.canvas = pygame.display.set_mode((width, height), FULLSCREEN)
+            self.canvas = pygame.display.set_mode((width, height), locals.FULLSCREEN)
         else:
             if frame:
                 self.canvas = pygame.display.set_mode((width, height))
             else:
-                self.canvas = pygame.display.set_mode((width, height), NOFRAME)
+                self.canvas = pygame.display.set_mode((width, height), locals.NOFRAME)
         pygame.display.set_caption(titleName)
         self.clock = pygame.time.Clock()
 
