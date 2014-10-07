@@ -237,10 +237,23 @@ class ImageButton(Button):
     def reset(self):
         self._surface = self.imageReset
 
-class Entry(object):
-    def __init__(self, surface, font, fontColor, fontSize, padding, maxBuffer=100,
+class Entry(sprite.Sprite):
+
+    _padding = None
+    _maxBuffer = None
+    def __init__(self, surface, x, y, textObject, padding, maxBuffer=100,
                  restricted=[]):
-        pass
+        super(Entry, self).__init__(
+            surface, x, y, False)
+
+        self.text = textObject
+        self.text.parent = self
+
+        self.padding = padding
+        self.maxBuffer = maxBuffer
+
+    #padding
+    #maxBuffer
 
 if __name__ == "__main__":
     import Debug

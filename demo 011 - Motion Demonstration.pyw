@@ -27,13 +27,15 @@ class Demo(arche.engine.Application):
 
         self.entrybox = arche.interface.Entry(
             surface = arche.draw.Rectangle(width = 200, height = 50, color = (20,20,20)),
-            font = "consolas.ttf",
-            fontColor = (255,255,255),
-            fontSize = 20,
+            x = self.game.xprop(.5),
+            y = self.game.yprop(.7),
+            textObject = arche.Text(value = "Hello kitty!", x = 0, y = 0, 
+                        color = (255,255,255), size = 20,),
             padding = 5,
             maxBuffer = 100,
             restricted = []
             )
+        self.addSprite(self.entrybox)
 
     def update(self, dt):
         pass
