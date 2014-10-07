@@ -17,8 +17,8 @@ log = logging.getLogger("R.Sprite")
 class Sprite(object):
     game = None
 
-    _x = None
-    _y = None
+    _x = 0
+    _y = 0
     def __init__(self, surface, x=0, y=0, pixelAlpha=True, imageInstance=False):
         self.log = log # Compatibility reasons - refactoring
 
@@ -92,11 +92,11 @@ class Sprite(object):
     def __repr__(self):
         return "sprite '{}' {}".format(self.name, self.__class__)
 
-    def _pprop(self, prop, default):
-        if self._parent:
-            return getattr(self._parent, prop)
-        else:
-            return default
+    #def _pprop(self, prop, default):
+    #    if self._parent:
+    #        return getattr(self._parent, prop)
+    #    else:
+    #        return default
 
     def addChild(self, child):
         log.debug("Added child '%s' to parent '%s'" % (child, self))
@@ -108,6 +108,8 @@ class Sprite(object):
             log.debug(" * child.y = {}".format(child.y))
             log.debug(" * parent.x = {}".format(self.x))
             log.debug(" * parent.y = {}".format(self.y))
+
+            self._introduceChild(child)
 ##            child.x = child.x - self.x
 ##            child.y = child.y - self.y
 ##            child.alpha = child.alpha
@@ -122,8 +124,9 @@ class Sprite(object):
     def getAlpha(self):
         return self._surface.alpha
     def setAlpha(self, alpha):
-        self._surface.alpha = alpha * (self._pprop("alpha", 255)/255)
-        self._refreshChildren()
+        delta = alpha - self._surface.alpha
+        self._surface.alpha = alpha
+        self._influenceChildren("alpha", delta)
     alpha = property(getAlpha, setAlpha)
 
     def getColor(self):
@@ -201,24 +204,30 @@ class Sprite(object):
         for batch in self.batches:
             batch.removeSprite(self)
 
-    def _refreshChildren(self):
+    def _influenceChild(self, child, variableName, delta):
+        setattr(child, variableName, getattr(child, variableName)+delta)
+    def _influenceChildren(self, variableName, delta):
         for child in self._children:
-            child.x = child.x
-            child.y = child.y
-            child.alpha = child.alpha
+            self._influenceChild(child, variableName, delta)
+    def _introduceChild(self, child):
+        varsToChange = ["x", "y"]
+        for variableName in varsToChange:
+            self._influenceChild(child, variableName, getattr(self, variableName))
     
     def getX(self):
         return self._x
     def setX(self, x):
-        self.rect.centerx = x + self._pprop('x', 0)
+        self.rect.centerx = x
+        dx = x - self._x
         self._x = x
-        self._refreshChildren()
+        self._influenceChildren("x", dx)
     def getY(self):
         return self._y
     def setY(self, y):
-        self.rect.centery = y + self._pprop('y', 0)
+        self.rect.centery = y
+        dy = y - self._y
         self._y = y
-        self._refreshChildren()
+        self._influenceChildren("y", dy)
         
     x = property(getX, setX)
     y = property(getY, setY)
