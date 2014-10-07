@@ -9,6 +9,8 @@ from os import path
 from . import config
 from . import compat
 
+import arche
+
 from pygame import locals
 
 log = logging.getLogger("R.Console")
