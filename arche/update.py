@@ -27,10 +27,33 @@ def update():
         log.info("Downloading release package %s"%(url))
         import urllib.request
         response = urllib.request.urlopen(url)
-        file = open("release " + tagName + ".zip", "wb")
+        from os import mkdir
+        from os import path
+        if not path.exists("_updatePackages/"):
+            mkdir("_updatePackages/")
+        file = open("_updatePackages/" + updateFilename, "wb")
         file.write(response.read())
         file.close()
+        log.info("Download complete!")
     except:
-        log.warn("Downloading of release package %s failed!"%(tagName))
-        log.warn("The engine reported the following download error: ")
-        log.warn(traceback.format_exc())
+        log.error("Updating of release package %s failed!"%(tagName))
+        log.error("The engine reported the following update error: ")
+        log.error(traceback.format_exc())
+##        import zipfile
+##        log.info("Extracting release contents...")
+##        with zipfile.ZipFile("_updatePackages/" + updateFilename, "r") as z:
+##            z.extractall("_updatePackages/")
+##        log.info("Extracted release contents!")
+##        log.info("Backing up current installation...")
+##        from shutil import copytree
+##        from shutil import rmtree
+##        rmtree("_updateBackup/", True)
+##        copytree(".", "_updateBackup/")
+##        log.info("Installing update...")
+##        rmtree(".", True)
+##        copytree("_updatePackages/{}/".format(releasePackageName), ".")
+##        log.info("Update installed!")
+##    except:
+##        log.error("Updating of release package %s failed!"%(tagName))
+##        log.error("The engine reported the following update error: ")
+##        log.error(traceback.format_exc())
