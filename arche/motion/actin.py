@@ -27,17 +27,17 @@ class Fade(Action):
         super(Fade, self).__init__(sprite)
 
     def begin(self):
-        self.x = 0.0
+        self.t = 0.0
         self.sprite.alpha = 0.0
         self.sprite.unhide()
         
     def update(self, dt):
-        self.x += dt
-        if self.x >= self.time:
+        self.t += dt
+        if self.t >= self.time:
             self.sprite.alpha = self.alpha
             self.finish()
         else:
-            self.sprite.alpha = self.m * self.x
+            self.sprite.alpha = self.m * self.t
 
     def cancel(self):
         self.sprite.alpha = self.alpha
