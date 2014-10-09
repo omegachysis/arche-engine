@@ -82,18 +82,26 @@ class ImageSurface(object):
     _clipX = 0
     _clipY = 0
 
+    def resetClip(self):
+        self.setClip((0,0,self.getWidth(),self.getHeight()))
+    def removeClip(self):
+        self.setClip(None)
+
     def getClip(self):
         return self._clip
     def setClip(self, value):
-        self._clipX = value[0]
-        self._clipY = value[1]
+        if value:
+            self._clipX = value[0]
+            self._clipY = value[1]
+            self.applyClip()
         self._clip = value
-        self.applyClip()
     clip = property(getClip, setClip)
 
     def getClipX(self):
         return self._clipX
     def setClipX(self, value):
+        if not self._clip:
+            self.resetClip()
         self._clipX = value
         clip = self.getClip()
         self.setClip((value, clip[1], clip[2], clip[3]))
@@ -102,11 +110,12 @@ class ImageSurface(object):
     def getClipY(self):
         return self._clipY
     def setClipY(self, value):
+        if not self._clip:
+            self.resetClip()
         self._clipY = value
         clip = self.getClip()
         self.setClip((clip[0], value, clip[2], clip[3]))
     clipY = property(getClipY, setClipY)
-
 
     def setAllowPixelAlpha(self, allowPixelAlpha):
         if allowPixelAlpha != self._pixelAlpha:
