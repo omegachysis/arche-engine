@@ -78,6 +78,36 @@ class ImageSurface(object):
         if self._surface:
             self.refresh()
 
+    _clip = None
+    _clipX = 0
+    _clipY = 0
+
+    def getClip(self):
+        return self._clip
+    def setClip(self, value):
+        self._clipX = value[0]
+        self._clipY = value[1]
+        self._clip = value
+        self.applyClip()
+    clip = property(getClip, setClip)
+
+    def getClipX(self):
+        return self._clipX
+    def setClipX(self, value):
+        self._clipX = value
+        clip = self.getClip()
+        self.setClip((value, clip[1], clip[2], clip[3]))
+    clipX = property(getClipX, setClipX)
+
+    def getClipY(self):
+        return self._clipY
+    def setClipY(self, value):
+        self._clipY = value
+        clip = self.getClip()
+        self.setClip((clip[0], value, clip[2], clip[3]))
+    clipY = property(getClipY, setClipY)
+
+
     def setAllowPixelAlpha(self, allowPixelAlpha):
         if allowPixelAlpha != self._pixelAlpha:
             if allowPixelAlpha:
@@ -151,6 +181,7 @@ class ImageSurface(object):
                 self._modScale.fill((0,255,0,255))
         self.applyColor()
         self.applyAlpha()
+        self.applyClip()
 
     def applyColor(self):
         # This is a semi fast pass.  Use the scaling slow passed image.
@@ -173,11 +204,16 @@ class ImageSurface(object):
         if not ImageSurface.debugRevealPixelAlpha:
             if not self._pixelAlpha:
                 self._modColor.set_alpha(self._alpha)
-                self.composite = self._modColor
             else:
                 self.applyColor()
         else:
             self.composite = self._modScale
+
+    def applyClip(self):
+        # This is a very fast pass.  Use the triple passed image from scale, color, and alpha
+        image = self._modColor
+        image.set_clip(self._clip)
+        self.composite = image
 
     def getSource(self):
         return self._surface
