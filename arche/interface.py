@@ -241,7 +241,7 @@ class Entry(sprite.Sprite):
 
     _padding = None
     _maxBuffer = None
-    def __init__(self, surface, x, y, textObject, padding, maxBuffer=100,
+    def __init__(self, surface, x, y, textObject, padding=20, maxBuffer=100,
                  restricted=[]):
         super(Entry, self).__init__(
             surface, x, y, False)
@@ -252,8 +252,18 @@ class Entry(sprite.Sprite):
         self.padding = padding
         self.maxBuffer = maxBuffer
 
-    #padding
-    #maxBuffer
+    def getPadding(self):
+        return self._padding
+    def setPadding(self, value):
+        self._padding = value
+        self.text.left = value + self.left
+    padding = property(getPadding, setPadding)
+
+    def getMaxBuffer(self):
+        return self._maxBuffer
+    def setMaxBuffer(self, value):
+        self._maxBuffer = value
+    maxBuffer = property(getMaxBuffer, setMaxBuffer)
 
 if __name__ == "__main__":
     import Debug

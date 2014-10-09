@@ -31,7 +31,7 @@ class Demo(arche.engine.Application):
             y = self.game.yprop(.7),
             textObject = arche.Text(value = "Hello kitty!", x = 0, y = 0, 
                         color = (255,255,255), size = 20,),
-            padding = 5,
+            padding = 20,
             maxBuffer = 100,
             restricted = []
             )
