@@ -82,6 +82,9 @@ class ImageSurface(object):
     _clipX = 0
     _clipY = 0
 
+    def copy(self):
+        return ImageSurface(self, self._pixelAlpha)
+
     def resetClip(self):
         self.setClip((0,0,self.getWidth(),self.getHeight()))
     def removeClip(self):
@@ -140,7 +143,8 @@ class ImageSurface(object):
 
     def refresh(self):
         """ Apply all modified image parameters. """
-        self.applyScale()
+        if self.source:
+            self.applyScale()
 
     def replace(self, surface, normalize=True):
         """ Replace source surface with another. """
@@ -213,6 +217,7 @@ class ImageSurface(object):
         if not ImageSurface.debugRevealPixelAlpha:
             if not self._pixelAlpha:
                 self._modColor.set_alpha(self._alpha)
+                self.composite = self._modColor
             else:
                 self.applyColor()
         else:

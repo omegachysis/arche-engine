@@ -31,8 +31,7 @@ class Cursor(arche.Sprite):
 
         # cycle through all the bullets and check for a collision.
         for bullet in self.app.bulletBatch.getCollisions(self):
-            # if there was, turn the bullet a reddish color.
-            bullet.color = (255,50,50)
+            bullet.tintRed()
 
         # consistently results in 'true' when the spacebar is being pressed
         if arche.control.key(arche.control.locals.K_SPACE):
@@ -43,7 +42,9 @@ class Cursor(arche.Sprite):
 class Bullet(arche.sprite.Sprite):
     def __init__(self):
         super().__init__( # save precious loading time by loading the image once elsewhere.
-            surface = Bullet.img)
+            surface = Bullet.img.copy() # we must make a copy of the surface
+            #because we will change properties independently for the bullets that are collided with.
+            )
         
         self.x = self.game.xprop(random.random()-.5)
         self.y = self.game.yprop(random.random()-.5)
@@ -56,6 +57,10 @@ class Bullet(arche.sprite.Sprite):
         #  move 1 pixel per second
         self.dx = random.random() / 5 * 1000
         self.dy = random.random() / 5 * 1000
+
+    def tintRed(self):
+        #  turn the bullet a reddish color.
+        self.color = (255,50,50)
 
     # Create a method to be used later
     def resetColor(self):

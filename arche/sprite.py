@@ -19,7 +19,7 @@ class Sprite(object):
 
     _x = 0
     _y = 0
-    def __init__(self, surface, x=0, y=0, pixelAlpha=True, imageInstance=False):
+    def __init__(self, surface, x=0, y=0, pixelAlpha=True):
         self.log = log # Compatibility reasons - refactoring
 
         # set up any private class variables.
@@ -32,11 +32,11 @@ class Sprite(object):
 
         self._pixelAlpha = pixelAlpha
         
-        if imageInstance:
-            self._surface = surface
-            self.rect = self._surface.rect()
-        else:
-            self.surface = image.ImageSurface(surface, pixelAlpha)
+        #if not isinstance(surface, image.ImageSurface):
+        #    surface = image.ImageSurface(surface)
+
+        self.surface = surface
+        #self.rect = self._surface.rect()
 
         self.x = x
         self.y = y
@@ -117,7 +117,11 @@ class Sprite(object):
     def getSurface(self):
         return self._surface
     def setSurface(self, surface):
-        self._surface = image.ImageSurface(surface, self._pixelAlpha)
+        if not isinstance(surface, image.ImageSurface):
+            self._surface = image.ImageSurface(surface, self._pixelAlpha)
+        else:
+            self._surface = surface
+        self._surface.refresh()
         self.rect = self._surface.rect()
     surface = property(getSurface, setSurface)
 
