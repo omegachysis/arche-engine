@@ -27,6 +27,7 @@ from .sprite import Sprite
 from .engine import Game
 from .engine import Application
 from .sprite import Text
+from .collision import Batch
 
 from .update import getVersion
 version = getVersion()

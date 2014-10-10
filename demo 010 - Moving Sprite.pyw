@@ -82,7 +82,7 @@ class Demo(arche.engine.Application):
         self.player = WalkingRectangle()
         self.addSprite(self.player)
 
-        self.obstacleBatch = arche.sprite.Batch()
+        self.obstacleBatch = arche.Batch()
 
         Obstacle(self, 200, 40, self.game.xprop(.30), self.game.yprop(.30))
         Obstacle(self, 200, 40, self.game.xprop(.60), self.game.yprop(.60))

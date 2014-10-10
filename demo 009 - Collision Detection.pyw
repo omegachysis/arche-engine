@@ -88,7 +88,7 @@ class Demo(arche.engine.Application):
         # A batch is a collection of sprites optimized
         # for collision detection that is faster
         # than wasting precious time checking all collisions twice.
-        self.bulletBatch = arche.sprite.Batch()
+        self.bulletBatch = arche.Batch()
 
         # If your image does not have per pixel alpha values,
         # always state 'pixelAlpha = False'.  Drawing will be
