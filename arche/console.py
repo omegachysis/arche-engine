@@ -174,17 +174,26 @@ class GameConsole(object):
 
         self._renderEntry()
 
-        handler = logging.StreamHandler(self)
-        handler.setLevel(level)
+        self._level = level
+
+        self.handler = logging.StreamHandler(self)
+        self.handler.setLevel(level)
         formatter = logging.Formatter(
             "%(levelname)s ; %(name)s ; %(message)s")
-        handler.setFormatter(formatter)
-        rootLogger.addHandler(handler)
+        self.handler.setFormatter(formatter)
+        rootLogger.addHandler(self.handler)
 
         self.resetConfiguration()
 
         for blacklistedSource in GameConsole.blacklistedSources:
             self.blacklistSource(blacklistedSource)
+
+    def getLevel(self):
+        return self._level
+    def setLevel(self, value):
+        self._level = value
+        self.handler.setLevel(value)
+    level = property(getLevel, setLevel)
 
     def addTracker(self, name, source=None):
         if source:

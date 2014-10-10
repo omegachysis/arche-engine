@@ -24,7 +24,7 @@ configDefaultDebug = """
 #  ERROR
 #  CRITCAL
 
-levelGameConsole =	 INFO
+levelGameConsole =	 DEBUG
 levelSystemConsole =	 INFO
 levelLogFile =		 DEBUG
 

@@ -6,6 +6,8 @@ from pygame import transform
 import traceback
 import logging
 
+import multiprocessing
+
 from os import path
 
 from .motion import action
@@ -132,13 +134,15 @@ class Game(object):
 
     def run(self):
         log.info("starting main loop")
+
         while True:
             dt = self.clock.get_time() / 1000
-            
+           
             if self.app:
                 if not self.paused:
                     self.app.tick(dt)
                 self.app.draw()
+            
             if not self.gameConsole.hidden:
                 self.gameConsole.update(dt)
                 self.gameConsole.draw(self.canvas)
