@@ -17,3 +17,10 @@ key = keyPressed
 
 def mousePressed(index):
     return (pygame.mouse.get_pressed()[index])
+
+def isLeftClicking():
+    return mousePressed(0)
+def isRightClicking():
+    return mousePressed(2)
+def isWheelClicking():
+    return mousePressed(1)
