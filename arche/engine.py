@@ -164,6 +164,7 @@ class Application(object):
     def __init__(self):
         self._layers = []
         self.layers = {}
+        self._orderedLayers = []
         self.registrar = {}
 
         log.info("initializing application " + repr(self))
@@ -193,8 +194,19 @@ class Application(object):
         return (self.game.app == self)
     active = property(isActive)
 
-    def getLayerlevel(self, layer):
-        return self._layers.index(layer)
+    def refreshLayers(self):
+        self._orderedLayers = []
+        layersLeft = list(self._layers)
+        while len(self._orderedLayers) < len(self._layers):
+            minValue = layersLeft[0].getLevel()
+            minLayer = layersLeft[0]
+            for layer in layersLeft:
+                if layer not in self._orderedLayers and layer.getLevel() <= minValue:
+                    minLayer = layer
+                    minValue = layer.getLevel()
+            layersLeft.remove(minLayer)
+            self._orderedLayers.append(minLayer)
+        self._orderedLayers.reverse()
 
     def addLayer(self, name, level=0):
         log.info("adding new layer '%s' on level %d"%(name,level))
@@ -202,33 +214,20 @@ class Application(object):
         layer.app = self
         self.layers[name] = layer
         self._layers.append(layer)
-        layer.level = len(self.layers) - 1
         layer.setLevel(level)
+        self.refreshLayers()
         
     def removeLayer(self, layer):
         log.info("removing layer '%s' on level %d"%(layer.name, layer.level))
         layer = self.getLayer(layer)
         self._layers.remove(layer)
         del self.layers[layer.name]
+        self._orderedLayers.remove(layer)
         
     def renameLayer(self, layer, name):
         log.info("renaming layer '%s' to new name '%s'"%(layer.name,name))
         del self.layers[layer.name]
         self.layers[name] = layer
-        
-    def moveLayer(self, layer, level):
-        log.info("moving layer '%s' to level %d"%(layer.name,level))
-        layer = self.getLayer(layer)
-        
-        if level < -1:
-            level = len(self._layers) - level
-        
-        if level >= len(self._layers) or level == -1:
-            self._layers.append(layer)
-        else:
-            self._layers = self._layers[:level] + [layer] + self._layers[level:]
-            
-        self.layers[layer.name] = layer
 
     def getLayer(self, layer):
         if isinstance(layer, Layer):
@@ -293,10 +292,8 @@ class Application(object):
     
     def tick(self, dt):
         #dt /= 1000.0
-        i = len(self._layers)
-        while i > 0:
-            i -= 1
-            self._layers[i].update(dt)
+        for layer in self._orderedLayers:
+            layer.update(dt)
         self.update(dt)
 
     def update(self, dt):
@@ -308,10 +305,8 @@ class Application(object):
         elif self.backgroundColor:
             self.canvas.fill(self.backgroundColor)
         
-        i = len(self._layers)
-        while i > 0:
-            i -= 1
-            self._layers[i].draw(Application.canvas)
+        for layer in self._orderedLayers:
+            layer.draw(Application.canvas)
 
     def getSprite(self, name):
         return self.reg(name)
@@ -324,16 +319,18 @@ class Application(object):
     sprites = property(getSprites)
 
 class Layer(object):
-    def __init__(self, name):
+    def __init__(self, name, level=0):
         self.sprites = []
         self._name = name
         self.app = None
+        self._level = level
 
     def getLevel(self):
-        return self.app.getLayerlevel(self)
+        return self._level
     def setLevel(self, level):
-        if level != self.getLevel():
-            self.app.moveLayer(self, level)
+        self._level = level
+        if self.app:
+            self.app.refreshLayers()
     level = property(getLevel, setLevel)
 
     def getName(self):

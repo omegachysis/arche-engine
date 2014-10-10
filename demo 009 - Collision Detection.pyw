@@ -81,7 +81,7 @@ class Demo(arche.engine.Application):
         self.backgroundColor = (50,0,0)
 
         # create a layer to draw all the bullets on.
-        # '1' means it will be above the default layer,
+        # '1' means it will be below the default layer,
         # which is created on '0'.  The cursor is on that layer.
         self.addLayer("bullets", 1)
 
