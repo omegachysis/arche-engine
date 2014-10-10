@@ -24,8 +24,8 @@ configDefaultDebug = """
 #  ERROR
 #  CRITCAL
 
-levelGameConsole =	 DEBUG
-levelSystemConsole =	 INFO
+levelGameConsole =	 INFO
+levelSystemConsole =	 DEBUG
 levelLogFile =		 DEBUG
 
 formatLogging = "%(levelname)8s | %(lineno)4d | %(name)-15s |: %(message)s"
