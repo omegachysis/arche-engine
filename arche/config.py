@@ -24,14 +24,14 @@ configDefaultDebug = """
 #  ERROR
 #  CRITCAL
 
-levelGameConsole =	 INFO
-levelSystemConsole =	 DEBUG
-levelLogFile =		 DEBUG
+levelGameConsole =	        INFO
+levelSystemConsole =	    DEBUG
+levelLogFile =		        DEBUG
 
 formatLogging = "%(levelname)8s | %(lineno)4d | %(name)-15s |: %(message)s"
 
-# Delete logs in the '/log' folder that are not critical error logs
-purgeNonCriticalLogs = True
+# Save logs in the /log folder
+logTermStorage = False
 
 # Use the top level 'error.log' file.  Note that this log will not automatically recycle.
 standardErrorLog = True

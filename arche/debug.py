@@ -20,6 +20,7 @@ if not os.path.exists("log"):
 if not os.path.exists("config"):
     os.makedirs("config")
 
+exec(config.configDefaultDebug)
 exec(config.loadConfiguration("debug.cfg").read())
 
 alog = logging.getLogger("R")
@@ -32,23 +33,22 @@ if standardErrorLog:
     logfile = logging.FileHandler("error.log")
     logfile.setLevel(levelLogFile)
 
-timestampName = "log/{}.log".format(time.strftime("%y %j %H %M %S %A %b %d"))
-logfileTimestamp = logging.FileHandler(timestampName)
-logfileTimestamp.setLevel(levelLogFile)
-
 formatter = logging.Formatter(formatLogging)
 
 console.setFormatter(formatter)
 if standardErrorLog:
     logfile.setFormatter(formatter)
 
-logfileTimestamp.setFormatter(formatter)
-
 alog.addHandler(console)
 if standardErrorLog:
     alog.addHandler(logfile)
 
-alog.addHandler(logfileTimestamp)
+if logTermStorage:
+    timestampName = "log/{}.log".format(time.strftime("%y %j %H %M %S %A %b %d"))
+    logfileTimestamp = logging.FileHandler(timestampName)
+    logfileTimestamp.setLevel(levelLogFile)
+    logfileTimestamp.setFormatter(formatter)
+    alog.addHandler(logfileTimestamp)
 
 def log(name):
     name = name.replace(".", " ")
@@ -72,7 +72,11 @@ def test(main):
     except:
         criticalError = True
         alog.critical(traceback.format_exc())
-    logfileTimestamp.close()
+    try:
+        logfileTimestamp.close()
+    except:
+        pass
     if not criticalError:
-        if purgeNonCriticalLogs:
-            os.remove(timestampName)
+        #if purgeNonCriticalLogs:
+        #    os.remove(timestampName)
+        pass
