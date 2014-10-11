@@ -288,6 +288,7 @@ class Application(object):
             self._layers[layer].addSprite(sprite)
         else:
             pass
+        sprite.onAdd()
         
     def removeSprite(self, sprite):
         #log.debug("removing sprite on level %d"%(sprite.layer.level))

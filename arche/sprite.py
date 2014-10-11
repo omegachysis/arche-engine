@@ -53,6 +53,10 @@ class Sprite(object):
 
         self.batches = []
 
+    def onAdd(self):
+        """ Called when the sprite is added to the application. """
+        pass
+
     def isOnScreen(self):
         return (self.right > 0 and \
                 self.left < self.game.width and \
