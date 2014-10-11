@@ -3,10 +3,16 @@ import logging
 log = logging.getLogger("R.Collision")
 
 class Batch(object):
+    """
+    Collection of game sprites used to optimize collisions
+    by calculating collision iterations over this list
+    and one other object.
+    """
     game = None
     def __init__(self, sprites=[]):
         self.sprites = sprites
         self._process()
+
     def _process(self):
         self.rects = []
         for sprite in self.sprites:

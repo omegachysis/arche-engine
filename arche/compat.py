@@ -9,6 +9,10 @@ except:
     pyfont.init()
 
 def freetypeFont(font, size):
+    """
+    Return a Font type compatible with this version
+    of pygame.
+    """
     try:
         return freetype.Font(font, ptsize = size)
     except(TypeError):
@@ -21,6 +25,10 @@ def freetypeFont(font, size):
         pass
 
 def freetypeRender(freetypeFont, value, color, rotation=0, size=0):
+    """
+    Render a Font type compatible with this version
+    of pygame.
+    """
     try:
         return freetypeFont.render(
             text = value, fgcolor = color, bgcolor = None,
