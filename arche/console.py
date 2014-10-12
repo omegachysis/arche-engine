@@ -462,11 +462,11 @@ class GameConsole(object):
     def pickSprite(self):
         mousex, mousey = pygame.mouse.get_pos()
         for sprite in self.game.app.sprites:
-            if sprite.left < mousex < sprite.right and \
-               sprite.top  < mousey < sprite.bottom and \
+            if sprite.rect.left < mousex < sprite.rect.right and \
+               sprite.rect.top  < mousey < sprite.rect.bottom and \
                sprite.pickable:
                 self.sprite = sprite
-                log.info("-> {}".format(repr(sprite)))
+                log.info("-> {}".format(str(sprite)))
 
     def write(self, data):
         try:

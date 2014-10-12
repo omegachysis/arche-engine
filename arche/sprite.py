@@ -93,8 +93,8 @@ class Sprite(object):
         return self._children
     children = property(getChildren)
         
-    def __repr__(self):
-        return "sprite '{}' {}".format(self.name, self.__class__)
+    def __str__(self):
+        return "sprite '{}' {}".format(self.name, self.__repr__)
 
     #def _pprop(self, prop, default):
     #    if self._parent:
@@ -302,9 +302,9 @@ class Sprite(object):
     bottom = property(getBottom, setBottom)
 
     def getWidth(self):
-        return self.rect.width
+        return self._surface.rect.width
     def getHeight(self):
-        return self.rect.height
+        return self._surface.rect.height
     def setWidth(self, width):
         self.rect.width = width
         self._surface.width = width
