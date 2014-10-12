@@ -224,22 +224,28 @@ class Sprite(object):
                 #self._influenceChild(child, variableName, getattr(self, variableName))
                 setattr(child, variableName, getattr(child, variableName))
 
-    def getAbsoluteX(self):
+    #def getAbsoluteX(self):
+    #    if self.parent:
+    #        return self._x + self.parent.getAbsoluteX()
+    #    else:
+    #        return self._x
+    #def getAbsoluteY(self):
+    #    if self.parent:
+    #        return self._y + self.parent.getAbsoluteY()
+    #    else:
+    #        return self._y
+
+    def getAbsoluteProperty(self, variableName):
         if self.parent:
-            return self._x + self.parent.getAbsoluteX()
+            return getattr(self, variableName, 0) + getattr(self.parent, variableName, 0)
         else:
-            return self._x
-    def getAbsoluteY(self):
-        if self.parent:
-            return self._y + self.parent.getAbsoluteY()
-        else:
-            return self._y
+            return getattr(self, variableName, 0)
     
     def getX(self):
         return self._x
     def setX(self, x):
         if self.parent:
-            self.rect.centerx = x + self.parent.getAbsoluteX()
+            self.rect.centerx = x + self.parent.getAbsoluteProperty('x')
         else:
             self.rect.centerx = x
         #dx = x - self._x
@@ -252,7 +258,7 @@ class Sprite(object):
         return self._y
     def setY(self, y):
         if self.parent:
-            self.rect.centery = y + self.parent.getAbsoluteY()
+            self.rect.centery = y + self.parent.getAbsoluteProperty('y')
         else:
             self.rect.centery = y
         #dy = y - self._y
