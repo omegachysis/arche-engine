@@ -28,13 +28,16 @@ class Game(object):
                  windowIcon="image/arche-engine.bmp", windowIconColorKey=False):
         log.info("initializing game engine")
 
-        if windowIcon:
-            if not windowIconColorKey:
-                pygame.display.set_icon(pygame.image.load(windowIcon))
-            else:
-                image = pygame.image.load(windowIcon)
-                image.set_colorkey(image.get_at((0,0)))
-                pygame.display.set_icon(image)
+        try:
+            if windowIcon:
+                if not windowIconColorKey:
+                    pygame.display.set_icon(pygame.image.load(windowIcon))
+                else:
+                    image = pygame.image.load(windowIcon)
+                    image.set_colorkey(image.get_at((0,0)))
+                    pygame.display.set_icon(image)
+        except:
+            log.warning(traceback.format_exc())
 
         self.limitFramerate = 0
 
