@@ -132,9 +132,9 @@ class Sprite(object):
     def getAlpha(self):
         return self._surface.alpha
     def setAlpha(self, alpha):
-        delta = alpha - self._surface.alpha
+        #delta = alpha - self._surface.alpha
         self._surface.alpha = alpha
-        self._influenceChildren("alpha", delta)
+        #self._influenceChildren("alpha", delta)
     alpha = property(getAlpha, setAlpha)
 
     def getColor(self):
@@ -302,15 +302,15 @@ class Sprite(object):
     bottom = property(getBottom, setBottom)
 
     def getWidth(self):
-        return self._surface.rect.width
+        return self.rect.width
     def getHeight(self):
-        return self._surface.rect.height
+        return self.rect.height
     def setWidth(self, width):
         self.rect.width = width
-        self._surface.width = width
+        self._surface.width = int(width)
     def setHeight(self, height):
         self.rect.height = height
-        self._surface.height = height
+        self._surface.height = int(height)
     width = property(getWidth, setWidth)
     height= property(getHeight, setHeight)
 
@@ -320,6 +320,12 @@ class Sprite(object):
         self.setWidth(size[0])
         self.setHeight(size[1])
     size = property(getSize, setSize)
+
+    def setScale(self, scalar):
+        self.setWidth(self.getWidth() * scalar)
+        self.setHeight(self.getHeight() * scalar)
+
+    
 
 class Text(Sprite):
     game = None

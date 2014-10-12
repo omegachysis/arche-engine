@@ -182,7 +182,7 @@ class Application(object):
         log.info("initializing application " + repr(self))
         
         self.width, self.height = Application.canvas.get_size()
-        self.backgroundsurface = None
+        self.backgroundSurface = None
         self.backgroundColor = (0,0,0,255)
         
         self.canvas = Application.canvas
@@ -313,8 +313,8 @@ class Application(object):
         pass
                 
     def draw(self):
-        if self.backgroundsurface:
-            self.canvas.blit(self.backgroundsurface, (0,0))
+        if self.backgroundSurface:
+            self.canvas.blit(self.backgroundSurface.get(), (0,0))
         elif self.backgroundColor:
             self.canvas.fill(self.backgroundColor)
         

@@ -186,7 +186,7 @@ class ImageSurface(object):
 
     def applyScale(self):
         # This is a slow pass.  Do this as little as possible.
-        self._modScale = scaleImage(self._surface, self._width, self._height)
+        self._modScale = scaleImage(self._surface, int(self._width), int(self._height))
         if ImageSurface.debugRevealPixelAlpha:
             if self._pixelAlpha:
                 self._modScale.fill((255,0,0,255))
@@ -258,6 +258,9 @@ class ImageSurface(object):
         self._height = size[1]
         self.applyScale()
     size = property(getSize, setSize)
+
+    def setScale(self, scalar):
+        self.setSize((self.getWidth() * scalar, self.getHeight() * scalar))
 
     def getRed(self):
         return self._red
