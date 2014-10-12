@@ -41,6 +41,8 @@ class Walker(arche.Sprite):
         rectangle.addChild(rectangleSmaller)
         self.app.addSprite(rectangleSmaller)
 
+        super(Walker, self).onAdd()
+
     def update(self, dt):
         if arche.control.key("left"):
             self.x -= dt * self.WALKING_SPEED

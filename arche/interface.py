@@ -72,6 +72,9 @@ class Button(sprite.Sprite):
 
         self.command = command
 
+    def onAdd(self):
+        self.app.addSprite(self.text)
+
     def getEnabled(self):
         return self._enabled
     def setEnabled(self, enabled):

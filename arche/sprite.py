@@ -204,8 +204,8 @@ class Sprite(object):
     def draw(self, canvas):
         if not self.hidden:
             canvas.blit(self._surface.get(), self.rect, self._surface.clip)
-        for child in self._children:
-            child.draw(canvas)
+        #for child in self._children:
+        #    child.draw(canvas)
             
     def destroy(self):
         self.app.removeSprite(self)
