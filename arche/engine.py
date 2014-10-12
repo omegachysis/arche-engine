@@ -110,6 +110,11 @@ class Game(object):
     def showMouse(self):
         pygame.mouse.set_visible(True)
 
+    def pause(self):
+        self.paused = True
+    def unpause(self):
+        self.paused = False
+
 ##    def pause(self):
 ##        self.paused = True
 ##        self.runPaused()
