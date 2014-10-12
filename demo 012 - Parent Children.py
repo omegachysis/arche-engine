@@ -70,8 +70,8 @@ class Rectangle(arche.Sprite):
 
     def update(self, dt):
         self._animTime += dt * self.ANIMATION_SCALAR
-        self.x = self.parent.x + self.ANIMATION_RADIUS * math.cos(self._animTime)
-        self.y = self.parent.y + self.ANIMATION_RADIUS * math.sin(self._animTime)
+        self.x = self.ANIMATION_RADIUS * math.cos(self._animTime)
+        self.y = self.ANIMATION_RADIUS * math.sin(self._animTime)
 
 class Demo(arche.engine.Application):
     def __init__(self):

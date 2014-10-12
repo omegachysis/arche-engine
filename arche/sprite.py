@@ -220,19 +220,37 @@ class Sprite(object):
     def _introduceChild(self, child):
         varsToChange = ["x", "y"]
         for variableName in varsToChange:
-            self._influenceChild(child, variableName, getattr(self, variableName))
+            #self._influenceChild(child, variableName, getattr(self, variableName))
+            setattr(child, variableName, getattr(child, variableName))
+
+    def getAbsoluteX(self):
+        if self.parent:
+            return self._x + self.parent.getAbsoluteX()
+        else:
+            return self._x
+    def getAbsoluteY(self):
+        if self.parent:
+            return self._y + self.parent.getAbsoluteY()
+        else:
+            return self._y
     
     def getX(self):
         return self._x
     def setX(self, x):
-        self.rect.centerx = x
+        if self.parent:
+            self.rect.centerx = x + self.parent.getAbsoluteX()
+        else:
+            self.rect.centerx = x
         dx = x - self._x
         self._x = x
         self._influenceChildren("x", dx)
     def getY(self):
         return self._y
     def setY(self, y):
-        self.rect.centery = y
+        if self.parent:
+            self.rect.centery = y + self.parent.getAbsoluteY()
+        else:
+            self.rect.centery = y
         dy = y - self._y
         self._y = y
         self._influenceChildren("y", dy)
