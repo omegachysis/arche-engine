@@ -113,7 +113,7 @@ class Sprite(object):
             log.debug(" * parent.x = {}".format(self.x))
             log.debug(" * parent.y = {}".format(self.y))
 
-            self._introduceChild(child)
+            self._refreshChildren(('x','y'))
 ##            child.x = child.x - self.x
 ##            child.y = child.y - self.y
 ##            child.alpha = child.alpha
@@ -212,16 +212,17 @@ class Sprite(object):
         for batch in self.batches:
             batch.removeSprite(self)
 
-    def _influenceChild(self, child, variableName, delta):
-        setattr(child, variableName, getattr(child, variableName)+delta)
-    def _influenceChildren(self, variableName, delta):
+    #def _influenceChild(self, child, variableName, delta):
+    #    setattr(child, variableName, getattr(child, variableName)+delta)
+    #def _influenceChildren(self, variableName, delta):
+    #    log.debug("Influencing Children: %s %s"%(variableName, delta))
+    #    for child in self._children:
+    #        self._influenceChild(child, variableName, delta)
+    def _refreshChildren(self, vars=['x','y']):
         for child in self._children:
-            self._influenceChild(child, variableName, delta)
-    def _introduceChild(self, child):
-        varsToChange = ["x", "y"]
-        for variableName in varsToChange:
-            #self._influenceChild(child, variableName, getattr(self, variableName))
-            setattr(child, variableName, getattr(child, variableName))
+            for variableName in vars:
+                #self._influenceChild(child, variableName, getattr(self, variableName))
+                setattr(child, variableName, getattr(child, variableName))
 
     def getAbsoluteX(self):
         if self.parent:
@@ -241,9 +242,12 @@ class Sprite(object):
             self.rect.centerx = x + self.parent.getAbsoluteX()
         else:
             self.rect.centerx = x
-        dx = x - self._x
+        #dx = x - self._x
         self._x = x
-        self._influenceChildren("x", dx)
+
+        self._refreshChildren(('x'))
+        #if dx:
+        #    self._influenceChildren("x", dx)
     def getY(self):
         return self._y
     def setY(self, y):
@@ -251,9 +255,12 @@ class Sprite(object):
             self.rect.centery = y + self.parent.getAbsoluteY()
         else:
             self.rect.centery = y
-        dy = y - self._y
+        #dy = y - self._y
         self._y = y
-        self._influenceChildren("y", dy)
+
+        self._refreshChildren(('y'))
+        #if dy:
+        #    self._influenceChildren("y", dy)
         
     x = property(getX, setX)
     y = property(getY, setY)
