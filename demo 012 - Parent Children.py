@@ -37,7 +37,7 @@ class Walker(arche.Sprite):
         rectangleSmaller = Rectangle()
         rectangleSmaller.ANIMATION_RADIUS = 20
         rectangleSmaller.ANIMATION_SCALAR = 5
-        rectangleSmaller.color = (0,0,0)
+        rectangleSmaller.color = (0,0,255)
         rectangle.addChild(rectangleSmaller)
         self.app.addSprite(rectangleSmaller)
 
