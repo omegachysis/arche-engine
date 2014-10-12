@@ -34,6 +34,13 @@ class Walker(arche.Sprite):
         self.addChild(rectangle)
         self.app.addSprite(rectangle)
 
+        rectangleSmaller = Rectangle()
+        rectangleSmaller.ANIMATION_RADIUS = 20
+        rectangleSmaller.ANIMATION_SCALAR = 5
+        rectangleSmaller.color = (0,0,0)
+        rectangle.addChild(rectangleSmaller)
+        self.app.addSprite(rectangleSmaller)
+
     def update(self, dt):
         if arche.control.key("left"):
             self.x -= dt * self.WALKING_SPEED
@@ -45,7 +52,8 @@ class Walker(arche.Sprite):
             self.y += dt * self.WALKING_SPEED
 
 class Rectangle(arche.Sprite):
-    ANIMATION_RADIUS = 50
+    ANIMATION_RADIUS = 80
+    ANIMATION_SCALAR = 1
     def __init__(self):
         super(Rectangle, self).__init__(
             surface = arche.draw.Rectangle(
@@ -61,7 +69,7 @@ class Rectangle(arche.Sprite):
         self.name = "walker child"
 
     def update(self, dt):
-        self._animTime += dt
+        self._animTime += dt * self.ANIMATION_SCALAR
         self.x = self.parent.x + self.ANIMATION_RADIUS * math.cos(self._animTime)
         self.y = self.parent.y + self.ANIMATION_RADIUS * math.sin(self._animTime)
 
