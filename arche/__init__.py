@@ -28,6 +28,7 @@ from .engine import Game
 from .engine import Application
 from .sprite import Text
 from .collision import Batch
+from .engine import Task
 
 try:
     from .update import getVersion
