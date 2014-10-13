@@ -94,7 +94,7 @@ class Sprite(object):
     children = property(getChildren)
         
     def __str__(self):
-        return "sprite '{}' {}".format(self.name, self.__repr__)
+        return "sprite '{}' {}".format(self.name, self.__repr__())
 
     #def _pprop(self, prop, default):
     #    if self._parent:

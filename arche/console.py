@@ -208,7 +208,7 @@ class GameConsole(object):
             if name.lower() == monitorBit[0].lower():
                 self.monitors.remove(monitorBit)
     def resetTrackers(self):
-        self.monitors = [("fps", "self.fps"), ("sprite", "self.sprite")]
+        self.monitors = [("fps", "self.fps"), ("sprite", "str(self.sprite)")]
 
     def sprite(self, spriteName):
         """ Return sprite from application registry """
