@@ -83,7 +83,7 @@ class ImageSurface(object):
     _clipY = 0
 
     def getPixel(self, x, y):
-        return self.get().get_at(x,y)
+        return self.get().get_at((x,y))
 
     def copy(self):
         return ImageSurface(self, self._pixelAlpha)
