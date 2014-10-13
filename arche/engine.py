@@ -73,6 +73,7 @@ class Game(object):
         Application.canvas = self.canvas
         Application.game = self
         sprite.Sprite.game = self
+        Task.game = self
 
         self._handler = event.GameEngineHandler()
         self.handlers = []
@@ -145,7 +146,7 @@ class Game(object):
 
         while True:
             dt = self.clock.get_time() / 1000
-           
+         
             if self.app:
                 if not self.paused:
                     self.app.tick(dt)
@@ -179,6 +180,8 @@ class Application(object):
         self._orderedLayers = []
         self.registrar = {}
 
+        self.tasks = []
+
         log.info("initializing application " + repr(self))
         
         self.width, self.height = Application.canvas.get_size()
@@ -187,7 +190,15 @@ class Application(object):
         
         self.canvas = Application.canvas
 
+        Task.app = self
+
         self.addLayer("default")
+
+    def addTask(self, task):
+        self.tasks.append(task)
+    def removeTask(self, task):
+        if task in self.tasks:
+            self.tasks.append(task)
 
     def xprop(self, proportion):
         if self.game:
@@ -307,6 +318,8 @@ class Application(object):
         #dt /= 1000.0
         for layer in self._orderedLayers:
             layer.update(dt)
+        for task in self.tasks:
+            task.tick()
         self.update(dt)
 
     def update(self, dt):
@@ -330,6 +343,19 @@ class Application(object):
                 sprites.append(sprite)
         return sprites
     sprites = property(getSprites)
+
+class Task(object):
+    app = None
+    game = None
+    def __init__(self, name):
+        self.name = name
+    def tick(self):
+        pass
+    def onFinish(self):
+        pass
+    def finish(self):
+        self.app.removeTask(self)
+        self.onFinish()
 
 class Layer(object):
     def __init__(self, name, level=0):
