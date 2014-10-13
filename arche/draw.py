@@ -3,6 +3,11 @@ import pygame
 
 from . import image
 
+class BlankSurface(image.ImageSurface):
+    def __init__(self, width, height):
+        super(BlankSurface, self).__init__(
+            pygame.Surface((width, height)), False)
+
 class Rectangle(image.ImageSurface):
 
     _width = None
