@@ -33,6 +33,17 @@ def newRectangle(width, height, color = (255,255,255)):
     surface = pygame.Surface((width, height))
     surface.fill(color)
     return surface
+
+class ImageCanvas(object):
+    def __init__(self, pygameSurface):
+        self.composite = pygameSurface.convert()
+        self.clip = None
+    def refresh(self):
+        pass
+    def rect(self):
+        return self.composite.get_rect()
+    def get(self):
+        return self.composite
     
 class ImageSurface(object):
     imageSurfaces = []

@@ -122,7 +122,10 @@ class Sprite(object):
         return self._surface
     def setSurface(self, surface):
         if not isinstance(surface, image.ImageSurface):
-            self._surface = image.ImageSurface(surface, self._pixelAlpha)
+            if not isinstance(surface, image.ImageCanvas):
+                self._surface = image.ImageSurface(surface, self._pixelAlpha)
+            else:
+                self._surface = surface
         else:
             self._surface = surface
         self._surface.refresh()
