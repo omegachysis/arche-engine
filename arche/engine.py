@@ -23,6 +23,7 @@ from . import event
 log = logging.getLogger("R.Engine")
 
 class Game(object):
+    app = None
     
     def __init__(self, width, height, fullscreen=False, titleName="My Game", frame=True,
                  windowIcon="image/arche-engine.bmp", windowIconColorKey=False):
@@ -79,7 +80,7 @@ class Game(object):
         self.handlers = []
         self.keyHandler = event.KeyHandler()
 
-        self.app = None
+        Game.app = None
 
     def getAutoPause(self):
         return self._autoPause
@@ -103,7 +104,7 @@ class Game(object):
         return int(self.height * proportion)
         
     def startApp(self, application):
-        self.app = application
+        Game.app = application
 
     def postEvent(self, event):
         log.info("posted event - " + repr(event))
@@ -191,6 +192,7 @@ class Application(object):
         self.canvas = Application.canvas
 
         Task.app = self
+        sprite.Sprite.app = self
 
         self.addLayer("default")
 
@@ -198,7 +200,7 @@ class Application(object):
         self.tasks.append(task)
     def removeTask(self, task):
         if task in self.tasks:
-            self.tasks.append(task)
+            self.tasks.remove(task)
 
     def xprop(self, proportion):
         if self.game:
@@ -210,8 +212,12 @@ class Application(object):
     def getCanvas(self):
         return pygame.display.get_surface()
 
+    def onStart(self):
+        pass
+
     def start(self):
         self.game.startApp(self)
+        self.onStart()
 
     def isActive(self):
         return (self.game.app == self)
@@ -347,13 +353,20 @@ class Application(object):
 class Task(object):
     app = None
     game = None
+
+    name = ""
+    finished = False
     def __init__(self, name):
+        log.debug("Started new Task %s"%(name))
         self.name = name
+        self.finished = False
     def tick(self):
         pass
     def onFinish(self):
         pass
     def finish(self):
+        log.debug("Task {} finished!".format(self))
+        self.finished = True
         self.app.removeTask(self)
         self.onFinish()
 

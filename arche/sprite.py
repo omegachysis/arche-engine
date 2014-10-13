@@ -16,6 +16,7 @@ log = logging.getLogger("R.Sprite")
 
 class Sprite(object):
     game = None
+    app = None
 
     _x = 0
     _y = 0
