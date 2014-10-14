@@ -1,6 +1,9 @@
 
-import pygame
-from pygame import locals
+try:
+    import pygame
+    from pygame import locals
+except: pass
+
 import logging
 
 from . import engine

@@ -1,6 +1,9 @@
 
-import pygame
-from pygame import locals
+try:
+    import pygame
+    from pygame import locals
+except:
+    pass
 
 def getMouse():
     """ Return the current mouse pointer position. """

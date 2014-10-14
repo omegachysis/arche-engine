@@ -1,10 +1,22 @@
 
-import pygame
-import sys
-from pygame import locals
-from pygame import transform
-import traceback
 import logging
+import traceback
+log = logging.getLogger("R.Engine")
+
+_panda = None
+try:
+    import pygame
+    from pygame import locals
+    from pygame import transform
+    _panda = False
+except:
+    #log.warning("*** could not load pygame modules... -> {}".format(traceback.format_exc()))
+    from direct.task.Task import Task as PandaTask
+    from direct.showbase.DirectObject import DirectObject
+    _panda = True
+
+import sys
+
 
 import multiprocessing
 
@@ -13,18 +25,63 @@ from os import path
 from .motion import action
 
 from . import debug
-#import Interface
 from . import console
 from . import sprite
 from . import config
 from . import image
 from . import event
+from . import vars
+from . import enum
 
-log = logging.getLogger("R.Engine")
+if (_panda and vars.BACKEND != enum.backend.PANDA) or \
+    (not _panda and vars.BACKEND == enum.backend.PANDA):
+    log.error(" ---> ************ Major errors loading BACKEND! ************")
 
-class Game(object):
-    app = None
-    
+def initGame(width, height, fullscreen=False, titleName="My Game", frame=True,
+         windowIcon="image/arche-engine.bmp", windowIconColorKey=False):
+    if vars.BACKEND == enum.backend.PYGAME:
+        log.info("********* Pygame BACKEND loaded *********")
+        return GamePygame(width, height, fullscreen, titleName, frame, windowIcon, windowIconColorKey)
+    elif vars.BACKEND == enum.backend.PANDA:
+        log.info("********* Panda3D BACKEND loaded *********")
+        return GamePanda(width, height, fullscreen, titleName, frame, windowIcon, windowIconColorKey)
+    else:
+        log.error("vars.BACKEND is specified incorrectly.")
+        return None
+
+class Game(object): app = None
+
+if _panda:
+    class _GamePandaObject(DirectObject):
+        def __init__(self, gamePanda):
+            base.disableMouse()
+            self.mainloopTask = taskMgr.add(gamePanda._gameLoop, "mainloop")
+
+class GamePanda(object):
+    def __init__(self, width, height, fullscreen=False, titleName="My Game", frame=True,
+                 windowIcon="image/arche-engine.bmp", windowIconColorKey=False):
+        log.info("initializing game engine")
+
+        import direct.directbase.DirectStart
+
+        self._pandaGameObject = _GamePandaObject(self)
+
+    def run(self):
+        log.info("starting main loop")
+        run()
+
+    def _gameLoop(self, task):
+        dt = globalClock.getDt()
+        #fps = globalClock.getFrameTime()
+        return PandaTask.cont
+
+    def getApp(self):
+        return Game.app
+    def setApp(self, value):
+        Game.app = value
+    app = property(getApp, setApp)
+
+class GamePygame(object):
     def __init__(self, width, height, fullscreen=False, titleName="My Game", frame=True,
                  windowIcon="image/arche-engine.bmp", windowIconColorKey=False):
         log.info("initializing game engine")
@@ -68,7 +125,7 @@ class Game(object):
 
         log.debug("DEBUG.LEVELGAMECONSOLE = {}".format(debug.levelGameConsole))
 
-        self.gameConsole = console.GameConsole(self, debug.levelGameConsole)
+        self.gameConsole = console.GameConsole(self, Game, debug.levelGameConsole)
         self.console = self.gameConsole
 
         Application.canvas = self.canvas
@@ -81,6 +138,14 @@ class Game(object):
         self.keyHandler = event.KeyHandler()
 
         Game.app = None
+
+    def getApp(self):
+        log.warning("--> Using deprecated game.getApp() function.  Use arche.game.app instead: {}".format(traceback.extract_stack(limit=2)))
+        return Game.app
+    def setApp(self, value):
+        log.warning("--> Using deprecated game.setApp() method.  Use arche.game.app instead: {}".format(traceback.extract_stack(limit=2)))
+        Game.app = value
+    app = property(getApp, setApp)
 
     def getAutoPause(self):
         return self._autoPause
@@ -148,10 +213,10 @@ class Game(object):
         while True:
             dt = self.clock.get_time() / 1000
          
-            if self.app:
+            if Game.app:
                 if not self.paused:
-                    self.app.tick(dt)
-                self.app.draw()
+                    Game.app.tick(dt)
+                Game.app.draw()
             
             if not self.gameConsole.hidden:
                 self.gameConsole.update(dt)

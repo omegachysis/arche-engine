@@ -1,4 +1,6 @@
-from pygame import locals
+try:
+    from pygame import locals
+except: pass
 
 import logging
 

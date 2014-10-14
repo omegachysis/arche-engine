@@ -5,8 +5,11 @@ log = logging.getLogger("R.Compat")
 try:
     from pygame import freetype
 except:
-    from pygame import font as pyfont
-    pyfont.init()
+    try:
+        from pygame import font as pyfont
+        pyfont.init()
+    except:
+        pass
 
 def freetypeFont(font, size):
     """

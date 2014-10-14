@@ -1,5 +1,8 @@
 
-import pygame
+try:
+    import pygame
+except:
+    pass
 
 from . import image
 

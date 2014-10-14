@@ -1,5 +1,8 @@
 
-import pygame
+try:
+    import pygame
+except:
+    pass
 import logging
 import traceback
 import sys
@@ -11,7 +14,10 @@ from . import compat
 
 import arche
 
-from pygame import locals
+try:
+    from pygame import locals
+except:
+    pass
 
 log = logging.getLogger("R.Console")
 
@@ -122,9 +128,13 @@ class GameConsole(object):
 
     BACKSPACE_HOLDING_DELAY = 500.0e-3
     BACKSPACE_HOLDING_ERASE_DELAY = 40.0e-3
+
+    archeGameClass = None
     
-    def __init__(self, game, level=logging.INFO):
+    def __init__(self, game, archeGameClass, level=logging.INFO):
         sys.stdout = ConsoleSTDOUT(self)
+
+        GameConsole.archeGameClass = archeGameClass
         
         rootLogger = logging.getLogger("R")
 
@@ -335,8 +345,8 @@ class GameConsole(object):
 
     def _renderMonitor(self, name, source):
         c = self
-        game = self.game
-        app = self.game.app
+        game = GameConsole.archeGameClass
+        app = GameConsole.archeGameClass.app
         shell = self.shell
         sprite = self.sprite
         s = shell
@@ -461,7 +471,7 @@ class GameConsole(object):
 
     def pickSprite(self):
         mousex, mousey = pygame.mouse.get_pos()
-        for sprite in self.game.app.sprites:
+        for sprite in GameConsole.archeGameClass.app.sprites:
             if sprite.rect.left < mousex < sprite.rect.right and \
                sprite.rect.top  < mousey < sprite.rect.bottom and \
                sprite.pickable:
