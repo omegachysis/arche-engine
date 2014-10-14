@@ -95,7 +95,7 @@ class GamePygame(object):
 
         log.debug("DEBUG.LEVELGAMECONSOLE = {}".format(debug.levelGameConsole))
 
-        self.gameConsole = console.GameConsole(self, debug.levelGameConsole)
+        self.gameConsole = console.GameConsole(self, Game, debug.levelGameConsole)
         self.console = self.gameConsole
 
         Application.canvas = self.canvas
@@ -110,10 +110,10 @@ class GamePygame(object):
         Game.app = None
 
     def getApp(self):
-        log.warning("--> Using deprecated game.getApp() function.  Use arche.game.app instead")
+        log.warning("--> Using deprecated game.getApp() function.  Use arche.game.app instead: {}".format(traceback.extract_stack(limit=2)))
         return Game.app
     def setApp(self, value):
-        log.warning("--> Using deprecated game.setApp() method.  Use arche.game.app instead")
+        log.warning("--> Using deprecated game.setApp() method.  Use arche.game.app instead: {}".format(traceback.extract_stack(limit=2)))
         Game.app = value
     app = property(getApp, setApp)
 
