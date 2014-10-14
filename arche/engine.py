@@ -10,7 +10,7 @@ try:
     from pygame import transform
     _panda = False
 except:
-    log.warning("*** could not load pygame modules... -> {}".format(traceback.format_exc()))
+    #log.warning("*** could not load pygame modules... -> {}".format(traceback.format_exc()))
     from direct.task.Task import Task as PandaTask
     from direct.showbase.DirectObject import DirectObject
     _panda = True
@@ -32,8 +32,6 @@ from . import image
 from . import event
 from . import vars
 from . import enum
-
-
 
 if (_panda and vars.BACKEND != enum.backend.PANDA) or \
     (not _panda and vars.BACKEND == enum.backend.PANDA):
