@@ -1,9 +1,14 @@
 
+_panda = None
 try:
     import pygame
     from pygame import locals
     from pygame import transform
-except: pass
+    _panda = False
+except:
+    from direct.task.Task import Task as PandaTask
+    from direct.showbase.DirectObject import DirectObject
+    _panda = True
 
 import sys
 import traceback
@@ -16,7 +21,6 @@ from os import path
 from .motion import action
 
 from . import debug
-#import Interface
 from . import console
 from . import sprite
 from . import config
@@ -41,12 +45,29 @@ def initGame(width, height, fullscreen=False, titleName="My Game", frame=True,
 
 class Game(object): app = None
 
+if _panda:
+    class _GamePandaObject(DirectObject):
+        def __init__(self, gamePanda):
+            base.disableMouse()
+            self.mainloopTask = taskMgr.add(gamePanda._gameLoop, "mainloop")
+
 class GamePanda(object):
     def __init__(self, width, height, fullscreen=False, titleName="My Game", frame=True,
                  windowIcon="image/arche-engine.bmp", windowIconColorKey=False):
         log.info("initializing game engine")
 
         import direct.directbase.DirectStart
+
+        self._pandaGameObject = _GamePandaObject(self)
+
+    def run(self):
+        log.info("starting main loop")
+        run()
+
+    def _gameLoop(self, task):
+        dt = globalClock.getDt()
+        #fps = globalClock.getFrameTime()
+        return PandaTask.cont
 
     def getApp(self):
         return Game.app
