@@ -5,7 +5,10 @@ __all__ = [
     "draw", "update", "collision",
     ]
 
-from pygame import locals
+try:
+    from pygame import locals
+except:
+    pass
 
 from . import compat
 from . import config

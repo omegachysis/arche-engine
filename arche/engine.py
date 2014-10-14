@@ -1,8 +1,11 @@
 
-import pygame
+try:
+    import pygame
+    from pygame import locals
+    from pygame import transform
+except: pass
+
 import sys
-from pygame import locals
-from pygame import transform
 import traceback
 import logging
 

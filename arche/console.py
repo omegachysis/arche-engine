@@ -1,5 +1,8 @@
 
-import pygame
+try:
+    import pygame
+except:
+    pass
 import logging
 import traceback
 import sys
@@ -11,7 +14,10 @@ from . import compat
 
 import arche
 
-from pygame import locals
+try:
+    from pygame import locals
+except:
+    pass
 
 log = logging.getLogger("R.Console")
 

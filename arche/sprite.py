@@ -1,12 +1,14 @@
 
-import pygame
+try:
+    import pygame
+    from pygame import transform
+    from pygame import locals
+except: pass
+
 import sys
-from pygame import locals
 import traceback
 import logging
 from .motion.action import Action
-
-from pygame import transform
 
 from . import compat
 from . import image
