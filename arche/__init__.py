@@ -20,6 +20,8 @@ from . import control
 from . import draw
 from . import update
 from . import collision
+from . import enum
+from . import vars
 
 from . import motion
 
