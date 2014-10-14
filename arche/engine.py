@@ -19,12 +19,39 @@ from . import sprite
 from . import config
 from . import image
 from . import event
+from . import vars
+from . import enum
 
 log = logging.getLogger("R.Engine")
 
-class Game(object):
-    app = None
-    
+def initGame(width, height, fullscreen=False, titleName="My Game", frame=True,
+         windowIcon="image/arche-engine.bmp", windowIconColorKey=False):
+    if vars.BACKEND == enum.backend.PYGAME:
+        log.info("********* Pygame BACKEND loaded *********")
+        return GamePygame(width, height, fullscreen, titleName, frame, windowIcon, windowIconColorKey)
+    elif vars.BACKEND == enum.backend.PANDA:
+        log.info("********* Pygame BACKEND loaded *********")
+        return GamePanda(width, height, fullscreen, titleName, frame, windowIcon, windowIconColorKey)
+    else:
+        log.error("vars.BACKEND is specified incorrectly.")
+        return None
+
+class Game(object): app = None
+
+class GamePanda(object):
+    def __init__(self, width, height, fullscreen=False, titleName="My Game", frame=True,
+                 windowIcon="image/arche-engine.bmp", windowIconColorKey=False):
+        log.info("initializing game engine")
+
+        import direct.directbase.DirectStart
+
+    def getApp(self):
+        return Game.app
+    def setApp(self, value):
+        Game.app = value
+    app = property(getApp, setApp)
+
+class GamePygame(object):
     def __init__(self, width, height, fullscreen=False, titleName="My Game", frame=True,
                  windowIcon="image/arche-engine.bmp", windowIconColorKey=False):
         log.info("initializing game engine")
@@ -81,6 +108,12 @@ class Game(object):
         self.keyHandler = event.KeyHandler()
 
         Game.app = None
+
+    def getApp(self):
+        return Game.app
+    def setApp(self, value):
+        Game.app = value
+    app = property(getApp, setApp)
 
     def getAutoPause(self):
         return self._autoPause
@@ -148,10 +181,10 @@ class Game(object):
         while True:
             dt = self.clock.get_time() / 1000
          
-            if self.app:
+            if Game.app:
                 if not self.paused:
-                    self.app.tick(dt)
-                self.app.draw()
+                    Game.app.tick(dt)
+                Game.app.draw()
             
             if not self.gameConsole.hidden:
                 self.gameConsole.update(dt)

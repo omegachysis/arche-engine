@@ -26,7 +26,8 @@ from . import vars
 from . import motion
 
 from .sprite import Sprite
-from .engine import Game
+from .engine import initGame as Game
+from .engine import Game as game
 from .engine import Application
 from .sprite import Text
 from .collision import Batch

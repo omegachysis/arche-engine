@@ -6,6 +6,8 @@ log = logging.getLogger("R.Vars")
 from . import config
 from . import enum
 
+BACKEND = enum.backend.PYGAME
+
 configDefault = """
 BACKEND = enum.backend.PYGAME
 """
