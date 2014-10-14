@@ -357,7 +357,7 @@ class Task(object):
     name = ""
     finished = False
     def __init__(self, name):
-        log.debug("Started new Task %s"%(name))
+        #log.debug("Started new Task %s"%(name))
         self.name = name
         self.finished = False
     def tick(self):
@@ -365,7 +365,7 @@ class Task(object):
     def onFinish(self):
         pass
     def finish(self):
-        log.debug("Task {} finished!".format(self))
+        #log.debug("Task {} finished!".format(self))
         self.finished = True
         self.app.removeTask(self)
         self.onFinish()
