@@ -57,7 +57,7 @@ class Game(object):
         pygame.init()
         
         if fullscreen:
-            self.canvas = pygame.display.set_mode((width, height), locals.FULLSCREEN)
+            self.canvas = pygame.display.set_mode((width, height), locals.FULLSCREEN|locals.HWSURFACE)
         else:
             if frame:
                 self.canvas = pygame.display.set_mode((width, height))

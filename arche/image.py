@@ -38,6 +38,10 @@ class ImageCanvas(object):
     def __init__(self, pygameSurface):
         self.composite = pygameSurface.convert()
         self.clip = None
+    def convert(self):
+        return self.composite.convert()
+    def convertAlpha(self):
+        return self.composite.convert_alpha()
     def refresh(self):
         pass
     def rect(self):
@@ -92,6 +96,11 @@ class ImageSurface(object):
     _clip = None
     _clipX = 0
     _clipY = 0
+
+    def convert(self):
+        return self.composite.convert()
+    def convertAlpha(self):
+        return self.composite.convert_alpha()
 
     def getPixel(self, x, y):
         return self.get().get_at((x,y))
