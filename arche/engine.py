@@ -110,8 +110,10 @@ class GamePygame(object):
         Game.app = None
 
     def getApp(self):
+        log.warning("--> Using deprecated game.getApp() function.  Use arche.game.app instead")
         return Game.app
     def setApp(self, value):
+        log.warning("--> Using deprecated game.setApp() method.  Use arche.game.app instead")
         Game.app = value
     app = property(getApp, setApp)
 
