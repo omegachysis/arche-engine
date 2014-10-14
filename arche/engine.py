@@ -37,7 +37,7 @@ def initGame(width, height, fullscreen=False, titleName="My Game", frame=True,
         log.info("********* Pygame BACKEND loaded *********")
         return GamePygame(width, height, fullscreen, titleName, frame, windowIcon, windowIconColorKey)
     elif vars.BACKEND == enum.backend.PANDA:
-        log.info("********* Pygame BACKEND loaded *********")
+        log.info("********* Panda3D BACKEND loaded *********")
         return GamePanda(width, height, fullscreen, titleName, frame, windowIcon, windowIconColorKey)
     else:
         log.error("vars.BACKEND is specified incorrectly.")

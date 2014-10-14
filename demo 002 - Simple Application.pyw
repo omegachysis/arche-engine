@@ -20,7 +20,7 @@ def main():
 #  in a slide show.
 class SimpleApplication(arche.Application):
     def __init__(self):
-        super().__init__() # run this at the beginning of every class derivation
+        super(SimpleApplication, self).__init__() # run this at the beginning of every class derivation
 
         # Change the background color to dark grey
         self.backgroundColor = (80,80,80)
