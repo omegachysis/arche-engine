@@ -1,4 +1,8 @@
 
+import logging
+import traceback
+log = logging.getLogger("R.Engine")
+
 _panda = None
 try:
     import pygame
@@ -6,13 +10,13 @@ try:
     from pygame import transform
     _panda = False
 except:
+    log.warning("*** could not load pygame modules... -> {}".format(traceback.format_exc()))
     from direct.task.Task import Task as PandaTask
     from direct.showbase.DirectObject import DirectObject
     _panda = True
 
 import sys
-import traceback
-import logging
+
 
 import multiprocessing
 
@@ -29,7 +33,11 @@ from . import event
 from . import vars
 from . import enum
 
-log = logging.getLogger("R.Engine")
+
+
+if (_panda and vars.BACKEND != enum.backend.PANDA) or \
+    (not _panda and vars.BACKEND == enum.backend.PANDA):
+    log.error(" ---> ************ Major errors loading BACKEND! ************")
 
 def initGame(width, height, fullscreen=False, titleName="My Game", frame=True,
          windowIcon="image/arche-engine.bmp", windowIconColorKey=False):
