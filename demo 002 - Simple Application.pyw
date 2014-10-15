@@ -23,7 +23,7 @@ class SimpleApplication(arche.Application):
         super(SimpleApplication, self).__init__() # run this at the beginning of every class derivation
 
         # Change the background color to dark grey
-        self.backgroundColor = (80,80,80)
+        self.backgroundColor = (255,80,80)
 
 if __name__ == "__main__":
     arche.debug.test(main)

@@ -57,6 +57,7 @@ if _panda:
             base.disableMouse()
             self.mainloopTask = taskMgr.add(gamePanda._gameLoop, "mainloop")
 
+
 def getGameClass():
     if _panda:
         return GamePanda
@@ -86,6 +87,27 @@ class GamePanda(object):
     def setApp(self, value):
         Game.app = value
     app = property(getApp, setApp)
+
+class ApplicationPanda(object):
+    def __init__(self):
+        log.info("__init__() new ApplicationPanda object")
+        self.backgroundColor = (0,0,0)
+
+    def _initialize(self):
+        log.debug("_initialize() ApplicationPanda object")
+        self.setBackgroundColor(self.backgroundColor)
+
+    def start(self):
+        log.info("Starting ApplicationPanda object")
+        self._initialize()
+        Game.app = self
+
+    def getBackgroundColor(self):
+        return self._backgroundColor
+    def setBackgroundColor(self, value):
+        self._backgroundColor = value
+        base.setBackgroundColor([i/255.0 for i in value])
+    backgroundColor = property(getBackgroundColor, setBackgroundColor)
 
 class GamePygame(object):
     def __init__(self, width, height, fullscreen=False, titleName="My Game", frame=True,
@@ -478,3 +500,6 @@ class Layer(object):
     def draw(self, canvas):
         for sprite in self.sprites:
             sprite.draw(canvas)
+
+if _panda:
+    Application = ApplicationPanda
