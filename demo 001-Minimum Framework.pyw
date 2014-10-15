@@ -10,8 +10,9 @@ def main():
     log.info("starting demo 001")
     
     # Start a default game engine
-    game = arche.Game(width = 1280, height = 800, fullscreen = False,
-                    titleName = "ArcheEngine Demo - Minimum Framework")
+    Game = arche.getGameClass()
+    game = Game(width = 1280, height = 800, fullscreen = False,
+                titleName = "ArcheEngine Demo - Minimum Framework")
     game.run()
 
 if __name__ == "__main__":

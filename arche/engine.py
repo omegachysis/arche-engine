@@ -57,6 +57,12 @@ if _panda:
             base.disableMouse()
             self.mainloopTask = taskMgr.add(gamePanda._gameLoop, "mainloop")
 
+def getGameClass():
+    if _panda:
+        return GamePanda
+    else:
+        return GamePygame
+
 class GamePanda(object):
     def __init__(self, width, height, fullscreen=False, titleName="My Game", frame=True,
                  windowIcon="image/arche-engine.bmp", windowIconColorKey=False):
