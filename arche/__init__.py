@@ -35,6 +35,7 @@ from .engine import Application
 from .sprite import Text
 from .collision import Batch
 from .engine import Task
+from .engine import getGameClass
 
 try:
     from .update import getVersion
