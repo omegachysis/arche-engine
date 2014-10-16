@@ -57,6 +57,8 @@ if _panda:
             base.disableMouse()
             self.mainloopTask = taskMgr.add(gamePanda._gameLoop, "mainloop")
 
+def isUsingPanda():
+    return _panda
 
 def getGameClass():
     if _panda:
