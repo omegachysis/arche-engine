@@ -21,7 +21,7 @@ def main():
 #  in a slide show.
 class InterfaceExample(arche.Application):
     def __init__(self):
-        super().__init__() # run this at the beginning of every class derivation
+        super(InterfaceExample, self).__init__() # run this at the beginning of every class derivation
 
         self.backgroundColor = (50,0,0)
 

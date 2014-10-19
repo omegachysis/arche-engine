@@ -75,9 +75,15 @@ class GamePanda(object):
 
         self._pandaGameObject = _GamePandaObject(self)
 
+        ApplicationPanda.game = self
+
     def run(self):
         log.info("starting main loop")
         run()
+
+    def quit(self):
+        log.info("calling game.quit() command")
+        sys.exit(0)
 
     def _gameLoop(self, task):
         dt = globalClock.getDt()

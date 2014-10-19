@@ -1,8 +1,10 @@
 
+_panda = False
 try:
     import pygame
     from pygame import locals
-except: pass
+except: 
+    _panda = True
 
 import logging
 
@@ -36,6 +38,40 @@ def newRectangle(width, height, color = (255,255,255)):
     surface = pygame.Surface((width, height))
     surface.fill(color)
     return surface
+
+class _ImageRect(object):
+    def __init__(self, x, y, width, height):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+
+class ImageSurfacePanda(object):
+    def __init__(self, surface, pixelAlpha=True):
+        if isinstance(surface, str):
+            self.surface = loader.loadTexture(surface)
+
+    def getSurface(self):
+        return self._surface
+    def setSurface(self, value):
+        self._surface = value
+        self._rect = _ImageRect(0, 0, self.width, self.height)
+    surface = property(getSurface, setSurface)
+
+    def getWidth(self):
+        return self._surface.getSimpleXSize()
+    def getHeight(self):
+        return self._surface.getSimpleYSize()
+    width = property(getWidth)
+    height = property(getHeight)
+
+    def rect(self):
+        try:
+            return self._rect
+        except:
+            return None
+    def refresh(self):
+        pass
 
 class ImageCanvas(object):
     def __init__(self, pygameSurface):
@@ -325,4 +361,5 @@ class ImageSurface(object):
         self.applyColor()
     color = property(getColor, setColor)
         
-            
+if _panda:
+    ImageSurface = ImageSurfacePanda

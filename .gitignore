@@ -45,3 +45,4 @@ nosetests.xml
 *.sln
 *.suo
 arche-engine.pyproj.user
+/_pandaCode/Tut-Asteroids.py
