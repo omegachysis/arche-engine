@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{13446757-216b-4815-8f4a-ff20670cfbb2}</ProjectGuid>
+    <ProjectHome />
+    <StartupFile>demo 002 - Simple Application.pyw</StartupFile>
+    <SearchPath />
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <ProjectTypeGuids>{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
+    <LaunchProvider>Standard Python launcher</LaunchProvider>
+    <InterpreterId>{9a7a9026-48c1-4688-9d5d-e5699d47d074}</InterpreterId>
+    <InterpreterVersion>3.3</InterpreterVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
+  <PropertyGroup>
+    <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>
+    <PtvsTargetsFile>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets</PtvsTargetsFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="arche\collision.py" />
+    <Compile Include="arche\compat.py" />
+    <Compile Include="arche\config.py" />
+    <Compile Include="arche\console.py" />
+    <Compile Include="arche\control.py" />
+    <Compile Include="arche\debug.py" />
+    <Compile Include="arche\draw.py" />
+    <Compile Include="arche\engine.py" />
+    <Compile Include="arche\enum.py" />
+    <Compile Include="arche\event.py" />
+    <Compile Include="arche\image.py" />
+    <Compile Include="arche\interface.py" />
+    <Compile Include="arche\motion\actanim.py" />
+    <Compile Include="arche\motion\actin.py" />
+    <Compile Include="arche\motion\action.py" />
+    <Compile Include="arche\motion\actout.py" />
+    <Compile Include="arche\motion\__init__.py" />
+    <Compile Include="arche\sprite.py" />
+    <Compile Include="arche\update.py" />
+    <Compile Include="arche\vars.py" />
+    <Compile Include="arche\__init__.py" />
+    <Compile Include="demo 001-Minimum Framework.pyw" />
+    <Compile Include="demo 002 - Simple Application.pyw" />
+    <Compile Include="demo 003 - Interface Example.pyw" />
+    <Compile Include="demo 004 - Application Switching.pyw" />
+    <Compile Include="demo 005 - Motion.pyw" />
+    <Compile Include="demo 006 - Mouse Reading.pyw" />
+    <Compile Include="demo 007 - Custom Event Handlers.pyw" />
+    <Compile Include="demo 008 - Key Handler.pyw" />
+    <Compile Include="demo 009 - Collision Detection.pyw" />
+    <Compile Include="demo 010 - Moving Sprite.pyw" />
+    <Compile Include="demo 011 - Motion Demonstration.pyw" />
+    <Compile Include="demo 012 - Parent Children.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="arche\version.txt" />
+    <Content Include="image\arche-engine.bmp" />
+    <Content Include="image\test.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="arche" />
+    <Folder Include="arche\motion" />
+    <Folder Include="image" />
+  </ItemGroup>
+  <ItemGroup>
+    <InterpreterReference Include="{9a7a9026-48c1-4688-9d5d-e5699d47d074}\3.3" />
+  </ItemGroup>
+  <Import Project="$(PtvsTargetsFile)" Condition="Exists($(PtvsTargetsFile))" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="!Exists($(PtvsTargetsFile))" />
+</Project>

@@ -25,5 +25,9 @@ class SimpleApplication(arche.Application):
         # Change the background color to dark grey
         self.backgroundColor = (255,80,80)
 
+        # Create a little test sprite
+        self.testSprite = arche.Sprite("image/test.png", 100, 100, False)
+        self.addSprite(self.testSprite)
+
 if __name__ == "__main__":
     arche.debug.test(main)
