@@ -1,9 +1,14 @@
 
+_panda = False
 try:
     import pygame
     from pygame import transform
     from pygame import locals
-except: pass
+except:
+    #from panda3d.core import Texture
+    #from direct.gui.OnscreenImage import OnscreenImage
+    #_panda = True
+    pass
 
 import sys
 import traceback
@@ -15,6 +20,30 @@ from . import image
 from . import control
 
 log = logging.getLogger("R.Sprite")
+
+#class SpritePanda(object):
+#    game = None
+#    app = None
+
+#    _x = 0
+#    _y = 0
+#    def __init__(self, surface, x=0, y=0, pixelAlpha=True):
+#        self.imageObject = OnscreenImage(
+#            image = surface, pos = (100, 0, -100),
+#            scale = 100)
+#        self.imageObject.reparentTo(pixel2d)
+
+#    def add(self):
+#        pass
+
+#    def getWidth(self):
+#        pass
+#    def setWidth(self, value):
+#        pass
+#    def getHeight(self):
+#        pass
+#    def setHeight(self, value):
+#        pass
 
 class Sprite(object):
     game = None
@@ -439,3 +468,6 @@ def scaleImage(surface, width, height):
 #        if self.obstacleBatch and self.obstacleBatch.getCollisions(self):
 #            self.x -= dx
 #            self.y -= dy
+
+if _panda:
+    Sprite = SpritePanda

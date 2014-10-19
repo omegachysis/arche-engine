@@ -28,14 +28,12 @@ from . import vars
 
 from . import motion
 
+from .engine import Game
 from .sprite import Sprite
-from .engine import initGame as Game
-from .engine import Game as game
 from .engine import Application
 from .sprite import Text
 from .collision import Batch
 from .engine import Task
-from .engine import getGameClass
 
 try:
     from .update import getVersion
